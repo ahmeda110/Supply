@@ -10,6 +10,7 @@ public class Logic {
     public Connection dbConnect;
     public ArrayList<String> columns;
     public HashMap<String, String> minCombination;
+    // Can change to bigger value, placeholder for comparison
     public int minPrice = 100000;
 
     /**
@@ -76,11 +77,11 @@ public class Logic {
             }
 
             for(HashMap<String,String> test: furniture) {
-                recursiveCalc(furniture, test, rows);
+                findMinimumPrice(furniture, test, rows);
             }
             
             System.out.println(minPrice);
-            System.out.println(minCombination.get("Price"));
+            System.out.println(minCombination.get("ID"));
 
             stmt.close();
         } catch(SQLException e) {
@@ -90,7 +91,7 @@ public class Logic {
     }
 
 
-    public void recursiveCalc(ArrayList<HashMap<String,String>> furniture, HashMap<String,String> current, int rows) {
+    public void findMinimumPrice(ArrayList<HashMap<String,String>> furniture, HashMap<String,String> current, int rows) {
 
         // Check if all columns are Y, this is base case
         if(hasAllParts(current)) {
@@ -127,7 +128,7 @@ public class Logic {
                         }   
                     }
 
-                    recursiveCalc(furniture, tmp, rows);
+                    findMinimumPrice(furniture, tmp, rows);
 
                 }
             }
@@ -165,8 +166,7 @@ public class Logic {
         logic.initConnection();
 
         // Assume situation where user wants a "chair" that's type "mesh" 
-        
-        System.out.println(logic.retrieveData("lamp", "Desk"));
+        System.out.println(logic.retrieveData("chair", "Mesh"));
         
     }
 
