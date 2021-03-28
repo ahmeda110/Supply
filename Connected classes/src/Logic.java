@@ -1,4 +1,5 @@
 import java.sql.*;
+import java.time.chrono.MinguoEra;
 import java.util.*;
 
 public class Logic {
@@ -12,33 +13,33 @@ public class Logic {
         DatabaseConnection db = new DatabaseConnection(DBURL,USERNAME, PASSWORD);
         ArrayList<HashMap<String,String>> fur = db.retrieveData("chair", "Mesh");
         int price = 0; 
-        ArrayList<String> itemsAL = new ArrayList(); 
+        ArrayList<String> itemsAL = new ArrayList<String>(); 
         for(int i =0; i < numberOfItems; i++){
-            findMinPrice(fur, db.getRows());
+            findMinPrice(fur, fur.size());
             price += minPrice;
             if(minCombination != null){
              String[] temp = minCombination.get("ID").split(" ");
              for(String x: temp){
                  itemsAL.add(x);
              }
-             System.out.println(fur.size());
              for(String temp1: temp){
                 for(int j = 0; j < fur.size(); j++){
                     if(temp1.equals(fur.get(j).get("ID").toString())){
                         fur.remove(j);
                     }
                 } 
+             }
+             minPrice = 1000000;
             }
-            System.out.println(fur.size());
-            }
+
         }
         items = new String[itemsAL.size()];
         items = itemsAL.toArray(items);
         String request = catagory + " " + item + ", " + numberOfItems;
         Output output;
         if(minCombination != null){
-            items = minCombination.get("ID").split(" ");
             output = new Output(faculty, contact, request, items, price);
+            db.deleteUsedItems(items, item);
         }else{
             List < Map < String, Object >> manufacturersResult = db.getPossibleManufacturer(item,catagory);
             Iterator < Map < String, Object >> manufacturersResultIterator = manufacturersResult.iterator();
@@ -57,6 +58,7 @@ public class Logic {
     public void findMinPrice(ArrayList<HashMap<String,String>> furniture, int rows){
         for(HashMap<String,String> test: furniture) {
             findMinimumPrice(furniture, test, rows);
+            System.out.println(test.toString());
         }
     }
     public void findMinimumPrice(ArrayList<HashMap<String,String>> furniture, HashMap<String,String> current, int rows) {

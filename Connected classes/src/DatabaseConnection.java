@@ -3,6 +3,8 @@ import java.util. * ;
 import java.sql. * ;
 import java.util.regex.Pattern;
 
+import jdk.internal.jshell.tool.resources.l10n;
+
 public class DatabaseConnection {
 	public final String DBURL;
 	public final String USERNAME;
@@ -262,9 +264,7 @@ public class DatabaseConnection {
 		return null;
 	}
 
-	public void deleteUsedItems(HashMap<String, String> minCombination, String itemTable) {
-
-		String[] id = minCombination.get("ID").split(" ");
+	public void deleteUsedItems(String[] id, String itemTable) {
 		for (int i = 0; i < id.length; i++) {
 
 			try {
