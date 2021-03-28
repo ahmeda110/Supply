@@ -4,42 +4,68 @@ import java.util.*;
 
 public class Logic {
 
-    public final String DB;
-    public final String USERNAME;
-    public final String PASSWORD;
-    public Connection dbConnect;
+    //public final String DB;
+    //public final String USERNAME;
+    //public final String PASSWORD;
+    //public Connection dbConnect;
     public ArrayList<String> columns;
     public HashMap<String, String> minCombination;
+	   String tableName;
+     private DatabaseConnection myDatabase;
+     List < Map < String, Object >> possibleManufacturer = null;
+     //private ArrayList<String> columns;
     // Can change to bigger value, placeholder for comparison
     public int minPrice = 100000;
 
-    /**
+
+	/**
      * Constructor for Registration class. Initializes DBURL, USERNAME, and PASSWORD.
      * @param DBURL URL for database
-     * @param USERNAME username of user    
+     * @param USERNAME username of user
      * @param PASSWORD password of user
     */
-    public Logic(String DB, String USERNAME, String PASSWORD) {
+    /*public Logic(String DB, String USERNAME, String PASSWORD) {
         this.DB = DB;
         this.USERNAME = USERNAME;
         this.PASSWORD = PASSWORD;
-    }
+    }*/
 
     /**
      * Method that establishes connection with database.
     */
-    public void initConnection() {
+    /*public void initConnection() {
         try {
             dbConnect = DriverManager.getConnection(DB, USERNAME, PASSWORD);
         } catch(SQLException e) {
             e.printStackTrace();
         }
+    }*/
+
+    public Logic(String DBURL, String USERNAME, String PASSWORD) {
+        myDatabase = new DatabaseConnection(DBURL, USERNAME, PASSWORD);
     }
-
     // Decide on retrieval type
-    public String retrieveData(String tableName, String type) {
+    public void runMin(String tableName, String type) {
 
-        try {
+			ArrayList<HashMap<String,String>> furniture = myDatabase.retrieveData(tableName, type);
+			int rows = myDatabase.getRows();
+      this.columns = myDatabase.getColumns();
+
+			for(HashMap<String,String> test: furniture)
+      {
+        findMinimumPrice(furniture, test, rows);
+      }
+            System.out.println(minPrice);
+            System.out.println(minCombination.get("ID"));
+            if(minCombination == null){
+              possibleManufacturer = myDatabase.getPossibleManufacturer(tableName, type);
+            }
+            else{
+              myDatabase.deleteUsedItems(minCombination, tableName);
+            }
+          }
+
+        /*try {
 
             ArrayList<String> columns = new ArrayList<String>();
             ArrayList<HashMap<String,String>> furniture = new ArrayList<HashMap<String,String>>();
@@ -79,7 +105,7 @@ public class Logic {
             for(HashMap<String,String> test: furniture) {
                 findMinimumPrice(furniture, test, rows);
             }
-            
+
             System.out.println(minPrice);
             System.out.println(minCombination.get("ID"));
 
@@ -88,7 +114,8 @@ public class Logic {
             e.printStackTrace();
         }
         return "";
-    }
+    }*/
+
 
 
     public void findMinimumPrice(ArrayList<HashMap<String,String>> furniture, HashMap<String,String> current, int rows) {
@@ -116,7 +143,7 @@ public class Logic {
                     tmp.replace("ID", tmp.get("ID") + " " + map.get("ID"));
                     int tempPrice = Integer.parseInt(tmp.get("Price")) + Integer.parseInt(map.get("Price"));
                     tmp.replace("Price", "" + tempPrice);
-                    
+
                     for(Map.Entry<String, String> entry: current.entrySet()) {
                         // Checking parts data
                         String columnName = entry.getKey();
@@ -125,14 +152,14 @@ public class Logic {
                             if(entry.getValue().equals("N") && map.get(columnName).equals("Y")) {
                                 tmp.replace(columnName, map.get(columnName));
                             }
-                        }   
+                        }
                     }
 
                     findMinimumPrice(furniture, tmp, rows);
-
                 }
             }
         }
+
     }
 
     // Checks if all components are Y, returns false otherwise
@@ -162,12 +189,12 @@ public class Logic {
     }
 
     public static void main(String[] args) {
-        Logic logic = new Logic("jdbc:mysql://localhost/inventory","flare30","ensf409");
-        logic.initConnection();
+        Logic logic = new Logic("jdbc:mysql://localhost/inventory","Ahmed","ensf409");
+        //logic.initConnection();
 
-        // Assume situation where user wants a "chair" that's type "mesh" 
-        System.out.println(logic.retrieveData("chair", "Mesh"));
-        
+        // Assume situation where user wants a "chair" that's type "mesh"
+        logic.runMin("Chair", "Mesh");
+
     }
 
 }
