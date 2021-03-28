@@ -184,10 +184,10 @@ public class GUI extends javax.swing.JFrame {
         jLabel13.setText("# of Items:");
 
         jLabel3.setFont(new java.awt.Font("Segoe UI Light", 0, 14)); // NOI18N
-        jLabel3.setText("Category:");
+        jLabel3.setText("Item:");
 
         jLabel10.setFont(new java.awt.Font("Segoe UI Light", 0, 14)); // NOI18N
-        jLabel10.setText("Item:");
+        jLabel10.setText("Type:");
 
         jLabel11.setFont(new java.awt.Font("Segoe UI Light", 0, 14)); // NOI18N
         jLabel11.setText("# of Items:");
@@ -727,7 +727,7 @@ public class GUI extends javax.swing.JFrame {
            resultString = "No Combination found";
         }
         else{
-           resultString = "Order Text File is Genertaed at Source Directory.";
+           resultString = "Your total price is: $" + resultPrice + ". For more information please refer to your order text file at source directory.";
         }
         jLabel19.setText(resultString);
     }

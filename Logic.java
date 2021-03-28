@@ -9,14 +9,14 @@ public class Logic {
     private String[] items;
     // Can change to bigger value, placeholder for comparison
     private int minPrice = 1000000;
-    
+    private int price = 0; 
     public int getPrice(){
-        return this.minPrice;
+        return this.price;
     }
     public Logic( String DBURL, String USERNAME, String PASSWORD, String faculty, String contact, String catagory, String item, int numberOfItems){
         DatabaseConnection db = new DatabaseConnection(DBURL,USERNAME, PASSWORD);
         ArrayList<HashMap<String,String>> fur = db.retrieveData("chair", "Mesh");
-        int price = 0; 
+        price = 0; 
         ArrayList<String> itemsAL = new ArrayList<String>(); 
         for(int i =0; i < numberOfItems; i++){
             findMinPrice(fur, fur.size());
@@ -66,7 +66,7 @@ public class Logic {
     public void findMinPrice(ArrayList<HashMap<String,String>> furniture, int rows){
         for(HashMap<String,String> test: furniture) {
             findMinimumPrice(furniture, test, rows);
-            System.out.println(test.toString());
+            // System.out.println(test.toString());
         }
     }
     public void findMinimumPrice(ArrayList<HashMap<String,String>> furniture, HashMap<String,String> current, int rows) {
