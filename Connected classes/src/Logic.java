@@ -1,4 +1,3 @@
-
 import java.sql.*;
 import java.util.*;
 
@@ -8,8 +7,27 @@ public class Logic {
     public ArrayList<String> columns;
     public HashMap<String, String> minCombination;
     // Can change to bigger value, placeholder for comparison
-    public int minPrice = 100000;
+    public int minPrice = 1000000;
+    public Logic( String DBURL, String USERNAME, String PASSWORD, String faculty, String contact, String catagory, String item, int numberOfItems){
+        DatabaseConnection db = new DatabaseConnection(DBURL,USERNAME, PASSWORD);
+        ArrayList<HashMap<String,String>> fur = db.retrieveData("chair", "Mesh");
+        int totalPrice = 0;
+        for(int i =0; i < numberOfItems; i++){
+            findMinPrice(fur, db.getRows());
+            totalPrice += Integer.parseInt(minCombination.get("Price"));
+            //implement delete used items
+        }
+        String[] items = minCombination.get("ID").split(" ");
+        String request = catagory + " " + item + ", " + numberOfItems;
+        Output output;
+        if(minPrice > totalPrice){
+            output = new Output(faculty, contact, request, items, totalPrice);
+        }else{
+            // output = new Output(faculty, contact, request);
+        }
 
+    }
+    
     public void findMinPrice(ArrayList<HashMap<String,String>> furniture, int rows){
         for(HashMap<String,String> test: furniture) {
             findMinimumPrice(furniture, test, rows);
