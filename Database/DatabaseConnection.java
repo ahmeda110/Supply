@@ -12,7 +12,7 @@ public class DatabaseConnection {
 	private Statement myStatment;
 	private PreparedStatement myPreparedStatment;
 	private ArrayList < String > availableTables = new ArrayList < String > ();
-
+	private int rows = 0; 
 	/**
      * Sets the url, username and password of registeration class.
      * @param DBURL url of database.
@@ -88,7 +88,9 @@ public class DatabaseConnection {
 
 		return itemTable.trim();
 	}
-
+	public int getRows(){
+		return rows;
+	}
 	private String getItemType(String furnitureItem, String itemTable) {
 		int stopIndex = furnitureItem.toLowerCase().indexOf(itemTable.toLowerCase());
 		String itemType = furnitureItem.substring(0, stopIndex).trim();
@@ -240,6 +242,50 @@ public class DatabaseConnection {
 			e.printStackTrace();
 		}
 	}
+
+	  // Decide on retrieval type
+	  public  ArrayList<HashMap<String,String>> retrieveData(String tableName, String type) {
+		ArrayList<String> columns = new ArrayList<String>();
+		ArrayList<HashMap<String,String>> furniture = new ArrayList<HashMap<String,String>>();
+		HashMap <String, String> parts = new HashMap<String, String>();
+        try {
+            // Get column names
+            Statement getColumns = databaseConnection.createStatement();
+            ResultSet result = getColumns.executeQuery("SELECT `COLUMN_NAME` FROM `INFORMATION_SCHEMA`.`COLUMNS` WHERE `TABLE_SCHEMA`= 'inventory' AND `TABLE_NAME` = '" + tableName + "'");
+
+            while(result.next()) {
+                columns.add(result.getString("COLUMN_NAME"));
+            }
+
+
+            Statement stmt = databaseConnection.createStatement();
+            ResultSet results = stmt.executeQuery("SELECT * FROM " + tableName +" WHERE Type = \"" + type + "\"");
+
+            // Need this number to terminate recursive function.
+            rows = 0;
+
+            // Inserting all furnitures retrieved into furniture ArrayList
+            // Each element in ArrayList is a HashMap that contains the column name and the value.
+            while(results.next()) {
+                parts = new HashMap<String, String>();
+
+                for(String column : columns) {
+                    // Populating HashMap
+                    parts.put(column, results.getString(column));
+                }
+
+                rows += 1;
+                furniture.add(parts);
+            }
+			for(HashMap<String,String> test: furniture) {
+                Logic.findMinimumPrice(furniture, test, rows);
+            }
+            stmt.close();
+        } catch(SQLException e) {
+            e.printStackTrace();
+        }
+        return furniture;
+    }
 
 	public static void main(String[] args) {
 

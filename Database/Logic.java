@@ -4,93 +4,17 @@ import java.util.*;
 
 public class Logic {
 
-    public final String DB;
-    public final String USERNAME;
-    public final String PASSWORD;
     public Connection dbConnect;
     public ArrayList<String> columns;
     public HashMap<String, String> minCombination;
     // Can change to bigger value, placeholder for comparison
     public int minPrice = 100000;
 
-    /**
-     * Constructor for Registration class. Initializes DBURL, USERNAME, and PASSWORD.
-     * @param DBURL URL for database
-     * @param USERNAME username of user    
-     * @param PASSWORD password of user
-    */
-    public Logic(String DB, String USERNAME, String PASSWORD) {
-        this.DB = DB;
-        this.USERNAME = USERNAME;
-        this.PASSWORD = PASSWORD;
-    }
-
-    /**
-     * Method that establishes connection with database.
-    */
-    public void initConnection() {
-        try {
-            dbConnect = DriverManager.getConnection(DB, USERNAME, PASSWORD);
-        } catch(SQLException e) {
-            e.printStackTrace();
+    public void findMinPrice(ArrayList<HashMap<String,String>> furniture, int rows){
+        for(HashMap<String,String> test: furniture) {
+            findMinimumPrice(furniture, test, rows);
         }
     }
-
-    // Decide on retrieval type
-    public String retrieveData(String tableName, String type) {
-
-        try {
-
-            ArrayList<String> columns = new ArrayList<String>();
-            ArrayList<HashMap<String,String>> furniture = new ArrayList<HashMap<String,String>>();
-            HashMap <String, String> parts = new HashMap<String, String>();
-
-            // Get column names
-            Statement getColumns = dbConnect.createStatement();
-            ResultSet result = getColumns.executeQuery("SELECT `COLUMN_NAME` FROM `INFORMATION_SCHEMA`.`COLUMNS` WHERE `TABLE_SCHEMA`= 'inventory' AND `TABLE_NAME` = '" + tableName + "'");
-
-            while(result.next()) {
-                columns.add(result.getString("COLUMN_NAME"));
-            }
-
-            this.columns = columns;
-
-
-            Statement stmt = dbConnect.createStatement();
-            ResultSet results = stmt.executeQuery("SELECT * FROM " + tableName +" WHERE Type = \"" + type + "\"");
-
-            // Need this number to terminate recursive function.
-            int rows = 0;
-
-            // Inserting all furnitures retrieved into furniture ArrayList
-            // Each element in ArrayList is a HashMap that contains the column name and the value.
-            while(results.next()) {
-                parts = new HashMap<String, String>();
-
-                for(String column : columns) {
-                    // Populating HashMap
-                    parts.put(column, results.getString(column));
-                }
-
-                rows += 1;
-                furniture.add(parts);
-            }
-
-            for(HashMap<String,String> test: furniture) {
-                findMinimumPrice(furniture, test, rows);
-            }
-            
-            System.out.println(minPrice);
-            System.out.println(minCombination.get("ID"));
-
-            stmt.close();
-        } catch(SQLException e) {
-            e.printStackTrace();
-        }
-        return "";
-    }
-
-
     public void findMinimumPrice(ArrayList<HashMap<String,String>> furniture, HashMap<String,String> current, int rows) {
 
         // Check if all columns are Y, this is base case
@@ -161,13 +85,13 @@ public class Logic {
         return copy;
     }
 
-    public static void main(String[] args) {
-        Logic logic = new Logic("jdbc:mysql://localhost/inventory","flare30","ensf409");
-        logic.initConnection();
+    // public static void main(String[] args) {
+    //     Logic logic = new Logic("jdbc:mysql://localhost/inventory","flare30","ensf409");
+    //     logic.initConnection();
 
-        // Assume situation where user wants a "chair" that's type "mesh" 
-        System.out.println(logic.retrieveData("chair", "Mesh"));
+    //     // Assume situation where user wants a "chair" that's type "mesh" 
+    //     System.out.println(logic.retrieveData("chair", "Mesh"));
         
-    }
+    // }
 
 }
