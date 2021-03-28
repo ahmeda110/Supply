@@ -2,28 +2,36 @@ import java.sql.*;
 import java.util.*;
 
 public class Logic {
-
-    public Connection dbConnect;
-    public ArrayList<String> columns;
-    public HashMap<String, String> minCombination;
+    private ArrayList<String> columns;
+    private HashMap<String, String> minCombination;
+    private String[] manufacturers; 
+    private String[] items;
     // Can change to bigger value, placeholder for comparison
-    public int minPrice = 1000000;
+    private int minPrice = 1000000;
     public Logic( String DBURL, String USERNAME, String PASSWORD, String faculty, String contact, String catagory, String item, int numberOfItems){
         DatabaseConnection db = new DatabaseConnection(DBURL,USERNAME, PASSWORD);
         ArrayList<HashMap<String,String>> fur = db.retrieveData("chair", "Mesh");
-        int totalPrice = 0;
         for(int i =0; i < numberOfItems; i++){
             findMinPrice(fur, db.getRows());
-            totalPrice += Integer.parseInt(minCombination.get("Price"));
             //implement delete used items
         }
-        String[] items = minCombination.get("ID").split(" ");
+        items = minCombination.get("ID").split(" ");
         String request = catagory + " " + item + ", " + numberOfItems;
         Output output;
-        if(minPrice > totalPrice){
-            output = new Output(faculty, contact, request, items, totalPrice);
+        if( 1000000 > minPrice ){
+            output = new Output(faculty, contact, request, items, minPrice);
+            db.deleteUsedItems(minCombination, item);
         }else{
-            // output = new Output(faculty, contact, request);
+            List < Map < String, Object >> manufacturersResult = db.getPossibleManufacturer(item,catagory);
+            Iterator < Map < String, Object >> manufacturersResultIterator = manufacturersResult.iterator();
+            ArrayList <String> manufacturer = new ArrayList<String>();
+            while (manufacturersResultIterator.hasNext()) {
+                Map < String, Object > temp = manufacturersResultIterator.next();
+                manufacturer.add(temp.get("Name").toString());
+            }
+            manufacturers = new String[manufacturer.size()];
+            manufacturers = manufacturer.toArray(manufacturers);
+            output = new Output(faculty, contact, request, manufacturers);
         }
 
     }
@@ -34,7 +42,6 @@ public class Logic {
         }
     }
     public void findMinimumPrice(ArrayList<HashMap<String,String>> furniture, HashMap<String,String> current, int rows) {
-
         // Check if all columns are Y, this is base case
         if(hasAllParts(current)) {
             if(Integer.parseInt(current.get("Price")) < minPrice) {
