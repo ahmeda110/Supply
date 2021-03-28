@@ -151,8 +151,15 @@ public class DatabaseConnection {
             HashMap <String, String> parts = new HashMap<String, String>();
 
             // Get column names
-            Statement getColumns = databaseConnection.createStatement();
+            Statement getColumns = databaseConnection.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
             ResultSet result = getColumns.executeQuery("SELECT `COLUMN_NAME` FROM `INFORMATION_SCHEMA`.`COLUMNS` WHERE `TABLE_SCHEMA`= 'inventory' AND `TABLE_NAME` = '" + tableName + "'");
+			
+			if (result.next() == false) {
+				getColumns.close();
+				return null;
+			}
+
+			result.previous();
 
             while(result.next()) {
                 columns.add(result.getString("COLUMN_NAME"));

@@ -11,16 +11,34 @@ public class Logic {
     public Logic( String DBURL, String USERNAME, String PASSWORD, String faculty, String contact, String catagory, String item, int numberOfItems){
         DatabaseConnection db = new DatabaseConnection(DBURL,USERNAME, PASSWORD);
         ArrayList<HashMap<String,String>> fur = db.retrieveData("chair", "Mesh");
+        int price = 0; 
+        ArrayList<String> itemsAL = new ArrayList(); 
         for(int i =0; i < numberOfItems; i++){
             findMinPrice(fur, db.getRows());
-            //implement delete used items
+            price += minPrice;
+            if(minCombination != null){
+             String[] temp = minCombination.get("ID").split(" ");
+             for(String x: temp){
+                 itemsAL.add(x);
+             }
+             System.out.println(fur.size());
+             for(String temp1: temp){
+                for(int j = 0; j < fur.size(); j++){
+                    if(temp1.equals(fur.get(j).get("ID").toString())){
+                        fur.remove(j);
+                    }
+                } 
+            }
+            System.out.println(fur.size());
+            }
         }
-        items = minCombination.get("ID").split(" ");
+        items = new String[itemsAL.size()];
+        items = itemsAL.toArray(items);
         String request = catagory + " " + item + ", " + numberOfItems;
         Output output;
-        if( 1000000 > minPrice ){
-            output = new Output(faculty, contact, request, items, minPrice);
-            db.deleteUsedItems(minCombination, item);
+        if(minCombination != null){
+            items = minCombination.get("ID").split(" ");
+            output = new Output(faculty, contact, request, items, price);
         }else{
             List < Map < String, Object >> manufacturersResult = db.getPossibleManufacturer(item,catagory);
             Iterator < Map < String, Object >> manufacturersResultIterator = manufacturersResult.iterator();
