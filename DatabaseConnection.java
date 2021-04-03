@@ -1,3 +1,5 @@
+package FinalProject;
+
 import java.io. * ;
 import java.util. * ;
 import java.sql. * ;
@@ -199,7 +201,7 @@ public class DatabaseConnection {
         return furniture;
     }
 
-	public List < Map < String, Object >> getPossibleManufacturer(String itemTable, String itemType) {
+	/*public List < Map < String, Object >> getPossibleManufacturer(String itemTable, String itemType) {
 
 		if (itemTable == "") {
 			return null;
@@ -213,6 +215,70 @@ public class DatabaseConnection {
 		try {
 			myStatment = databaseConnection.createStatement();
 			queryResults = myStatment.executeQuery("SELECT * FROM " + itemTable + " WHERE Type = '" + itemType + "'");
+
+			if (queryResults.next() == false) {
+				myStatment.close();
+				return null;
+			} else {
+				possibleManufacturers.add(queryResults.getString("ManuID"));
+				while (queryResults.next()) {
+					possibleManufacturers.add(queryResults.getString("ManuID"));
+				}
+				myStatment.close();
+				result = new String[possibleManufacturers.size()];
+				possibleManufacturers.toArray(result);
+				//return result;
+			}
+		} catch(SQLException ex) {
+			ex.printStackTrace();
+		}
+
+		try {
+			List < Map < String, Object >> queryResultList = new ArrayList < Map < String, Object >> ();
+			Map < String, Object > entry = null;
+
+			for (int i = 0; i < result.length; i++) {
+				myStatment = databaseConnection.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
+				queryResults = myStatment.executeQuery("SELECT * FROM MANUFACTURER WHERE ManuID = '" + result[i] + "'");
+
+				if (queryResults.next() == false) {
+					myStatment.close();
+					return queryResultList;
+				} else {
+					ResultSetMetaData metaData = queryResults.getMetaData();
+					Integer columnCount = metaData.getColumnCount();
+
+					entry = new HashMap < String,
+					Object > ();
+					for (int j = 1; j <= columnCount.intValue(); j++) {
+						entry.put(metaData.getColumnName(j), queryResults.getObject(j));
+					}
+					queryResultList.add(entry);
+				}
+			}
+			myStatment.close();
+			return queryResultList;
+		}
+		catch(SQLException ex) {
+			ex.printStackTrace();
+		}
+
+		return null;
+	}*/
+        public List < Map < String, Object >> getPossibleManufacturer(String itemTable, String itemType) {
+
+		if (itemTable == "") {
+			return null;
+		}
+
+		//String itemType = getItemType(furnitureItem, itemTable);
+
+		HashSet < String > possibleManufacturers = new HashSet < String > ();
+
+		String result[] = null;
+		try {
+			myStatment = databaseConnection.createStatement();
+			queryResults = myStatment.executeQuery("SELECT * FROM " + itemTable);
 
 			if (queryResults.next() == false) {
 				myStatment.close();
