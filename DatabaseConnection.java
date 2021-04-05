@@ -1,310 +1,220 @@
 package FinalProject;
 
-import java.io. * ;
-import java.util. * ;
-import java.sql. * ;
-import java.util.regex.Pattern;
+import java.util.*;
+import java.sql.*;
 
-//import jdk.internal.jshell.tool.resources.l10n;
-
+/**
+* Class responsible for getting info from the database and
+* editing the database
+* @author Ahmed Abdullah
+* @author Dong Wook Son
+* @author Jonathan Chong
+* @author Ahmed Abbas
+* @version 1.5
+* @since 1.0
+*/
 public class DatabaseConnection {
-	public final String DBURL;
-	public final String USERNAME;
-	public final String PASSWORD;
+	private final String DBURL;
+	private final String USERNAME;
+	private final String PASSWORD;
 	private Connection databaseConnection;
 	private ResultSet queryResults;
 	private Statement myStatment;
 	private PreparedStatement myPreparedStatment;
 	private ArrayList<String> columns;
-	private ArrayList < String > availableTables = new ArrayList < String > ();
 	private int rows;
-
-	/**
-     * Sets the url, username and password of registeration class.
-     * @param DBURL url of database.
-     * @param USERNAME connesction username.
-     * @param PASSWORD connection passowrd.
-     */
-	DatabaseConnection (String DBURL, String USERNAME, String PASSWORD) {
+        
+        /**
+         * A constructor, stores connection data as member variables and
+         * initializes connection with the database
+         * @param DBURL URL of the desired inventory database
+         * @param USERNAME username of the local database
+         * @param PASSWORD password of the local database
+         */
+	DatabaseConnection(String DBURL, String USERNAME, String PASSWORD) {
 		this.DBURL = DBURL;
 		this.USERNAME = USERNAME;
 		this.PASSWORD = PASSWORD;
-		initializeConnection();
-		populateAvailableTables();
+                try{
+                  initializeConnection();
+                }
+                catch (SQLException e) {
+                    e.printStackTrace();
+		}
+		
 	}
-
-	/**
-     * gets the stored database url
-     * @return A String containing the url.
-     */
+        
+        /**
+         * Gets the stored database URL
+         * @return A String containing the stored database URL
+         */
 	public String getDburl() {
 		return this.DBURL;
 	}
 
-	public int getRows() {
-		return this.rows;
-	}
-
-	/**
-     * gets the stored connection username
-     * @return A String containing the username.
-     */
+        /**
+         * Gets the stored username used to access database 
+         * @return A String containing the stored username
+         */
 	public String getUsername() {
 		return this.USERNAME;
 	}
-
-	/**
-     * gets the stored connection password
-     * @return A String containing the password.
-     */
+        
+        /**
+         * Gets the stored password used to access database 
+         * @return A String containing the stored password
+         */
 	public String getPassword() {
 		return this.PASSWORD;
 	}
-
-	public ArrayList<String> getColumns(){
+        
+        /**
+         * Gets the current connection 
+         * @return An Object representing the current connection
+         */
+	public Connection getDatabaseConnection() {
+		return this.databaseConnection;
+	}
+        
+        /**
+         * Gets the number of rows of the table being searched
+         * @return An int representing the current table's number of rows
+         */
+	public int getRows() {
+		return this.rows;
+	}
+        
+        /**
+         * Returns the names of all the columns in the table being searched
+         * @return An ArrayList containing the header names of the columns
+         * of the current table
+         */
+	public ArrayList<String> getColumns() {
 		return this.columns;
 	}
+        
+        /**
+         * Initializes the connection with the local database using the passed username,
+         * password and database URL
+         */
+	private void initializeConnection() throws SQLException {
+            // Setup connection with database
+            databaseConnection = DriverManager.getConnection(this.DBURL, this.USERNAME, this.PASSWORD);
+        }
+        
+        /**
+         * Given a table name and a type of furniture, it populates an ArrayList
+         * with column names of the current table and populates an ArrayList of HashMaps with
+         * the content of all columns in a database for items which match the given type in 
+         * the given table
+         * @param tableName name of the table to search for data in the database
+         * @param type type of furniture to search for in the given table
+         * @return An ArrayList of HashMaps with String keys and String values representing
+         * the column name and corresponding data in the data base for each row in the given table
+         * that matches the given type
+         */
+	public ArrayList<HashMap<String, String>> retrieveData(String tableName, String type) {
 
-	/**
-    creates a new connection with the given data base url
-    */
-	private void initializeConnection() {
+		ArrayList<HashMap<String, String>> furniture = null;
 		try {
-			databaseConnection = DriverManager.getConnection(this.DBURL, this.USERNAME, this.PASSWORD);
-		} catch(SQLException e) {
-			e.printStackTrace();
-		}
-	}
 
-	private void populateAvailableTables() {
-		try {
-			myStatment = databaseConnection.createStatement();
-			queryResults = myStatment.executeQuery("Show tables");
+			ArrayList<String> columns = new ArrayList<String> ();
+			furniture = new ArrayList<HashMap<String, String>> ();
+			HashMap<String, String> parts = new HashMap<String, String> ();
+
+			// Get column names
+			myStatment = databaseConnection.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
+			queryResults = myStatment.executeQuery("SELECT `COLUMN_NAME` FROM `INFORMATION_SCHEMA`.`COLUMNS` WHERE `TABLE_SCHEMA`= 'inventory' AND `TABLE_NAME` = '" + tableName + "'");
+
+                        // if tablename is not available in the invntory database
+			if (queryResults.next() == false) {
+				myStatment.close();
+				return null;
+			}
+
+			queryResults.previous(); //go back to first result object
 
 			while (queryResults.next()) {
-				availableTables.add(queryResults.getString(1));
-			}
-			myStatment.close();
-		} catch(SQLException ex) {
-			ex.printStackTrace();
-		}
-	}
-
-	private String getItemTable(String furnitureItem) {
-		String itemTable = "";
-
-		for (int i = 0; i < availableTables.size(); i++) {
-			if (Pattern.compile(Pattern.quote(availableTables.get(i)), Pattern.CASE_INSENSITIVE).matcher(furnitureItem).find()) {
-				itemTable = availableTables.get(i);
-				break;
-			}
-		}
-
-		return itemTable.trim();
-	}
-
-	private String getItemType(String furnitureItem, String itemTable) {
-		int stopIndex = furnitureItem.toLowerCase().indexOf(itemTable.toLowerCase());
-		String itemType = furnitureItem.substring(0, stopIndex).trim();
-
-		return itemType.trim();
-	}
-
-	/*public List < Map < String, Object >> getItemRecords(String furnitureItem) {
-		String itemTable = getItemTable(furnitureItem);
-		if (itemTable == "") {
-			return null;
-		}
-		String itemType = getItemType(furnitureItem, itemTable);
-		try {
-			myStatment = databaseConnection.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
-			queryResults = myStatment.executeQuery("SELECT * FROM " + itemTable + " WHERE Type = '" + itemType + "'");
-			if (queryResults.next() == false) {
-				myStatment.close();
-				return null;
-			} else {
-				queryResults.previous();
-				List < Map < String, Object >> queryResultList = new ArrayList < Map < String, Object >> ();
-				Map < String, Object > entry = null;
-				ResultSetMetaData metaData = queryResults.getMetaData();
-				Integer columnCount = metaData.getColumnCount();
-				while (queryResults.next()) {
-					entry = new HashMap < String, Object > ();
-					for (int i = 1; i <= columnCount.intValue(); i++) {
-						entry.put(metaData.getColumnName(i), queryResults.getObject(i));
-						//queryResultList.add(entry);
-					}
-					queryResultList.add(entry);
-				}
-				myStatment.close();
-				return queryResultList;
-			}
-		} catch(SQLException ex) {
-			ex.printStackTrace();
-		}
-		return null;
-	}*/
-
-	public ArrayList<HashMap<String,String>> retrieveData(String tableName, String type) {
-
-				ArrayList<HashMap<String,String>> furniture = null;
-        try {
-
-            ArrayList<String> columns = new ArrayList<String>();
-            furniture = new ArrayList<HashMap<String,String>>();
-            HashMap <String, String> parts = new HashMap<String, String>();
-
-            // Get column names
-            Statement getColumns = databaseConnection.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
-            ResultSet result = getColumns.executeQuery("SELECT `COLUMN_NAME` FROM `INFORMATION_SCHEMA`.`COLUMNS` WHERE `TABLE_SCHEMA`= 'inventory' AND `TABLE_NAME` = '" + tableName + "'");
-			
-			if (result.next() == false) {
-				getColumns.close();
-				return null;
+				columns.add(queryResults.getString("COLUMN_NAME")); //add all coulmn names to ArrayList
 			}
 
-			result.previous();
+			this.columns = columns;
 
-            while(result.next()) {
-                columns.add(result.getString("COLUMN_NAME"));
-            }
-
-            this.columns = columns;
-
-
-            Statement stmt = databaseConnection.createStatement();
-            ResultSet results = stmt.executeQuery("SELECT * FROM " + tableName +" WHERE Type = \"" + type + "\"");
-
-            // Need this number to terminate recursive function.
-            int rows = 0;
-
-            // Inserting all furnitures retrieved into furniture ArrayList
-            // Each element in ArrayList is a HashMap that contains the column name and the value.
-            while(results.next()) {
-                parts = new HashMap<String, String>();
-
-                for(String column : columns) {
-                    // Populating HashMap
-                    parts.put(column, results.getString(column));
-                }
-
-                rows += 1;
-                furniture.add(parts);
-            }
-
-						this.rows = rows;
-
-            stmt.close();
-        } catch(SQLException e) {
-            e.printStackTrace();
-        }
-        return furniture;
-    }
-
-	/*public List < Map < String, Object >> getPossibleManufacturer(String itemTable, String itemType) {
-
-		if (itemTable == "") {
-			return null;
-		}
-
-		//String itemType = getItemType(furnitureItem, itemTable);
-
-		HashSet < String > possibleManufacturers = new HashSet < String > ();
-
-		String result[] = null;
-		try {
 			myStatment = databaseConnection.createStatement();
-			queryResults = myStatment.executeQuery("SELECT * FROM " + itemTable + " WHERE Type = '" + itemType + "'");
+			queryResults = myStatment.executeQuery("SELECT * FROM " + tableName + " WHERE Type = \"" + type + "\"");
 
-			if (queryResults.next() == false) {
-				myStatment.close();
-				return null;
-			} else {
-				possibleManufacturers.add(queryResults.getString("ManuID"));
-				while (queryResults.next()) {
-					possibleManufacturers.add(queryResults.getString("ManuID"));
+			// Need this number to terminate recursive function.
+			int rows = 0;
+
+			// Inserting all furnitures retrieved into furniture ArrayList
+			// Each element in ArrayList is a HashMap that contains the column name and the value.
+			while (queryResults.next()) {
+				parts = new HashMap<String, String> ();
+
+				for (String column: columns) {
+					// Populating HashMap
+					parts.put(column, queryResults.getString(column));
 				}
-				myStatment.close();
-				result = new String[possibleManufacturers.size()];
-				possibleManufacturers.toArray(result);
-				//return result;
+
+				rows += 1;
+				furniture.add(parts);
 			}
-		} catch(SQLException ex) {
-			ex.printStackTrace();
-		}
 
-		try {
-			List < Map < String, Object >> queryResultList = new ArrayList < Map < String, Object >> ();
-			Map < String, Object > entry = null;
+			this.rows = rows;
 
-			for (int i = 0; i < result.length; i++) {
-				myStatment = databaseConnection.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
-				queryResults = myStatment.executeQuery("SELECT * FROM MANUFACTURER WHERE ManuID = '" + result[i] + "'");
-
-				if (queryResults.next() == false) {
-					myStatment.close();
-					return queryResultList;
-				} else {
-					ResultSetMetaData metaData = queryResults.getMetaData();
-					Integer columnCount = metaData.getColumnCount();
-
-					entry = new HashMap < String,
-					Object > ();
-					for (int j = 1; j <= columnCount.intValue(); j++) {
-						entry.put(metaData.getColumnName(j), queryResults.getObject(j));
-					}
-					queryResultList.add(entry);
-				}
-			}
 			myStatment.close();
-			return queryResultList;
+		} catch (SQLException e) {
+			e.printStackTrace();
 		}
-		catch(SQLException ex) {
-			ex.printStackTrace();
-		}
+		return furniture;
+	}
 
-		return null;
-	}*/
-        public List < Map < String, Object >> getPossibleManufacturer(String itemTable, String itemType) {
+        /**
+         * Given a table and an item type, returns a List of Maps having a String key and String value
+         * representing a possible furniture manufacturer where the data of each manufacturer are stored
+         * as key value pairs
+         * @param itemTable table name to search for item
+         * @param itemType item type to search for in the given table
+         * @return List of possible manufacturers of the given item stored as key-value pairs
+         * in a Map
+         */
+	public ArrayList<HashMap<String, Object>> getPossibleManufacturer(String itemTable, String itemType) {
 
-		if (itemTable == "") {
-			return null;
-		}
-
-		//String itemType = getItemType(furnitureItem, itemTable);
-
-		HashSet < String > possibleManufacturers = new HashSet < String > ();
+		HashSet<String> possibleManufacturers = new HashSet<String> ();
 
 		String result[] = null;
 		try {
 			myStatment = databaseConnection.createStatement();
 			queryResults = myStatment.executeQuery("SELECT * FROM " + itemTable);
-
+                        
+                        // if itemTable is not available in inventory
 			if (queryResults.next() == false) {
 				myStatment.close();
 				return null;
 			} else {
-				possibleManufacturers.add(queryResults.getString("ManuID"));
-				while (queryResults.next()) {
+                                // get all manufacturers of current table
+				possibleManufacturers.add(queryResults.getString("ManuID")); //add without calling next(), already
+				while (queryResults.next()) {                                   //called in if statment
 					possibleManufacturers.add(queryResults.getString("ManuID"));
 				}
 				myStatment.close();
 				result = new String[possibleManufacturers.size()];
 				possibleManufacturers.toArray(result);
-				//return result;
 			}
-		} catch(SQLException ex) {
+		} catch (SQLException ex) {
 			ex.printStackTrace();
 		}
 
 		try {
-			List < Map < String, Object >> queryResultList = new ArrayList < Map < String, Object >> ();
-			Map < String, Object > entry = null;
+			ArrayList<HashMap<String, Object>> queryResultList = new ArrayList<HashMap<String, Object>> ();
+			HashMap<String, Object> entry = null;
 
-			for (int i = 0; i < result.length; i++) {
+                        // for each manufacturer id, get all data associated with id and store it in a HashMap
+			for (int i = 0; i<result.length; i++) {
 				myStatment = databaseConnection.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
 				queryResults = myStatment.executeQuery("SELECT * FROM MANUFACTURER WHERE ManuID = '" + result[i] + "'");
-
+                                
+                                // if id not available in manufacturers table
 				if (queryResults.next() == false) {
 					myStatment.close();
 					return queryResultList;
@@ -312,9 +222,9 @@ public class DatabaseConnection {
 					ResultSetMetaData metaData = queryResults.getMetaData();
 					Integer columnCount = metaData.getColumnCount();
 
-					entry = new HashMap < String,
-					Object > ();
-					for (int j = 1; j <= columnCount.intValue(); j++) {
+					entry = new HashMap<String,Object> ();
+                                        // add all data in the row of the manufaturer with the current id in a HashMap
+					for (int j = 1; j<= columnCount.intValue(); j++) {
 						entry.put(metaData.getColumnName(j), queryResults.getObject(j));
 					}
 					queryResultList.add(entry);
@@ -322,61 +232,47 @@ public class DatabaseConnection {
 			}
 			myStatment.close();
 			return queryResultList;
-		}
-		catch(SQLException ex) {
+		} catch (SQLException ex) {
 			ex.printStackTrace();
 		}
 
 		return null;
 	}
 
+        /**
+         * Given an array of IDs and a table, deletes these IDs from the table
+         * @param id An array containing the IDs to be deleted
+         * @param itemTable the table from which the IDs should be deleted
+         */
 	public void deleteUsedItems(String[] id, String itemTable) {
+                
+                // delete each of the given IDs
 		for (int i = 0; i < id.length; i++) {
 
 			try {
 				String query = "DELETE FROM " + itemTable + " WHERE ID = ?";
 				myPreparedStatment = databaseConnection.prepareStatement(query);
 
-				myPreparedStatment.setString(1, id[i]);
+				myPreparedStatment.setString(1, id[i]); // set first argument to the ID
 
 				int rowCount = myPreparedStatment.executeUpdate();
 				System.out.println("Rows deleted: " + rowCount);
 				myPreparedStatment.close();
-			} catch(SQLException ex) {
+			} catch (SQLException ex) {
 				ex.printStackTrace();
 			}
 		}
 	}
-
+        
+        /**
+         * closes ResultSet ana Connection to the database
+         */
 	public void close() {
 		try {
 			queryResults.close();
 			databaseConnection.close();
-		} catch(SQLException e) {
+		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 	}
-
-	/*public static void main(String[] args) {
-		//DatabaseConnection testConnection = new DatabaseConnection("jdbc:mysql://localhost/inventory", "Ahmed", "ensf409");
-		//List < Map < String, Object >> orderResult = testConnection.getItemRecords("mesh chair");
-		//Iterator < Map < String, Object >> resultIterator = orderResult.iterator();
-		/*System.out.println("Possible Items are: ");
-		while (resultIterator.hasNext()) {
-			Map < String, Object > temp = resultIterator.next();
-			System.out.println("ID: " + temp.get("ID").toString() + " and Type: " + temp.get("Type").toString());
-		}
-		List < Map < String, Object >> manufacturersResult = testConnection.getPossibleManufacturer("mesh chair");
-		Iterator < Map < String, Object >> manufacturersResultIterator = manufacturersResult.iterator();
-		System.out.println("\n\nPossible Manufacturers are:");
-		while (manufacturersResultIterator.hasNext()) {
-			Map < String, Object > temp = manufacturersResultIterator.next();
-			System.out.println("ManuID: " + temp.get("ManuID").toString() + " and Name: " + temp.get("Name").toString());
-		}
-		/*String[] test = {"C0914"};
-		testConnection.deleteUsedItems(test, "chair");*/
-
-		//testConnection.close();
-
-	//}
 }
