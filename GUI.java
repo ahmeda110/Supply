@@ -3,10 +3,10 @@ import java.awt.Font;
 /**
  * Class responsible for getting info from the database and
  * editing the database
+ * @author Ahmed Abbas
  * @author Ahmed Abdullah
  * @author Dong Wook Son
  * @author Jonathan Chong
- * @author Ahmed Abbas
  * @version 1.5
  * @since 1.0
  */

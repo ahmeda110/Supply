@@ -5,10 +5,10 @@ import javax.swing.*;
 /**
 * Class responsible for requesting database username and 
 * password from user
+* @author Ahmed Abbas
 * @author Ahmed Abdullah
 * @author Dong Wook Son
 * @author Jonathan Chong
-* @author Ahmed Abbas
 * @version 1.3
 * @since 1.0
 */
