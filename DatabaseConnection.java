@@ -29,7 +29,7 @@ public class DatabaseConnection {
 	 * @param USERNAME username of the local database
 	 * @param PASSWORD password of the local database
 	 */
-	DatabaseConnection(String DBURL, String USERNAME, String PASSWORD) {
+	public DatabaseConnection(String DBURL, String USERNAME, String PASSWORD) {
 		this.DBURL = DBURL;
 		this.USERNAME = USERNAME;
 		this.PASSWORD = PASSWORD;
