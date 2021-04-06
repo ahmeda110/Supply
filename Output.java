@@ -10,7 +10,7 @@ public class Output{
     private String date;
     private int price; 
     private String[] manufacturers;
-    
+    private String text; 
     /*
     *  Call this constructor if order can be fulfilled
     */
@@ -47,11 +47,11 @@ public class Output{
             System.out.println("Error creating file.");
           e.printStackTrace();
         }
-        String text = "Furniture Order Form" +
-                          "\n\nFaculty Name: " + faculty + 
-                          "\nContact: " + contact + 
-                          "\nDate: " + date +
-                          "\n\nOriginal Request: " + request;
+        text = "Furniture Order Form" +
+                "\n\nFaculty Name: " + faculty + 
+                "\nContact: " + contact + 
+                "\nDate: " + date +
+                "\n\nOriginal Request: " + request;
         if(fulfilled){
             text += fulfilledString();
         }else{
@@ -89,6 +89,9 @@ public class Output{
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");  
         LocalDateTime now = LocalDateTime.now();  
         date = dtf.format(now);
+    }
+    public String getText(){
+        return text;
     }
     // public static void main(String []args){
     //     String[] items = {"ID: c9890", "ID: c0942"};

@@ -11,7 +11,7 @@ public class Logic {
     private int minPrice = Integer.MAX_VALUE;
     private int price = 0; 
 	private DatabaseConnection database;
-    
+    private Output output;
 	
     public Logic( String DBURL, String USERNAME, String PASSWORD, String faculty, String contact, String type, String category, int numberOfItems){
         database = new DatabaseConnection(DBURL,USERNAME, PASSWORD);
@@ -48,7 +48,6 @@ public class Logic {
         items = new String[itemsAL.size()];
         items = itemsAL.toArray(items);
         String request = type + " " + category + ", " + numberOfItems;
-        Output output;
         if(minCombination != null){
             output = new Output(faculty, contact, request, items, price);
             database.deleteUsedItems(items, category);
@@ -74,7 +73,9 @@ public class Logic {
 	public int getPrice(){
         return this.price;
     }
-    
+    public Output getOutput(){
+        return output;
+    }
     public void findMinPrice(ArrayList<HashMap<String,String>> furniture, int rows){
         for(HashMap<String,String> test: furniture) {
             findMinimumPrice(furniture, test, rows);
