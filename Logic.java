@@ -10,11 +10,11 @@ public class Logic {
     // Can change to bigger value, placeholder for comparison
     private int minPrice = 1000000;
     private int price = 0; 
-    public int getPrice(){
-        return this.price;
-    }
+	private DatabaseConnection db;
+    
+	
     public Logic( String DBURL, String USERNAME, String PASSWORD, String faculty, String contact, String category, String item, int numberOfItems){
-        DatabaseConnection db = new DatabaseConnection(DBURL,USERNAME, PASSWORD);
+        db = new DatabaseConnection(DBURL,USERNAME, PASSWORD);
         ArrayList<HashMap<String,String>> fur = db.retrieveData(category, item);
         price = 0; 
         ArrayList<String> itemsAL = new ArrayList<String>(); 
@@ -66,6 +66,10 @@ public class Logic {
             output = new Output(faculty, contact, request, manufacturers);
         }
 
+    }
+	
+	public int getPrice(){
+        return this.price;
     }
     
     public void findMinPrice(ArrayList<HashMap<String,String>> furniture, int rows){
