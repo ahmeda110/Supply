@@ -8,19 +8,22 @@ public class Logic {
     private String[] manufacturers; 
     private String[] items;
     // Can change to bigger value, placeholder for comparison
-    private int minPrice = 1000000;
+    private int minPrice = Integer.MAX_VALUE;
     private int price = 0; 
-	private DatabaseConnection db;
+	private DatabaseConnection database;
     
 	
-    public Logic( String DBURL, String USERNAME, String PASSWORD, String faculty, String contact, String category, String item, int numberOfItems){
-        db = new DatabaseConnection(DBURL,USERNAME, PASSWORD);
-        ArrayList<HashMap<String,String>> fur = db.retrieveData(category, item);
+    public Logic( String DBURL, String USERNAME, String PASSWORD, String faculty, String contact, String type, String category, int numberOfItems){
+        database = new DatabaseConnection(DBURL,USERNAME, PASSWORD);
+        ArrayList<HashMap<String,String>> furniture = database.retrieveData(category, type);
         price = 0; 
         ArrayList<String> itemsAL = new ArrayList<String>(); 
         for(int i =0; i < numberOfItems; i++){
-            findMinPrice(fur, fur.size());
-            if(minPrice == 1000000){  // terminate loop if no combination found 
+            if(furniture != null){
+                findMinPrice(furniture, furniture.size());
+            }
+            
+            if(minPrice == Integer.MAX_VALUE){  // terminate loop if no combination found 
                 minCombination = null; // for further items down the loop
                 break;
             }
@@ -32,25 +35,25 @@ public class Logic {
                  itemsAL.add(x);
              }
              for(String temp1: temp){
-                for(int j = 0; j < fur.size(); j++){
-                    if(temp1.equals(fur.get(j).get("ID").toString())){
-                        fur.remove(j);
+                for(int j = 0; j < furniture.size(); j++){
+                    if(temp1.equals(furniture.get(j).get("ID").toString())){
+                        furniture.remove(j);
                     }
                 } 
              }
-             minPrice = 1000000;
+             minPrice = Integer.MAX_VALUE;
             }
 
         }
         items = new String[itemsAL.size()];
         items = itemsAL.toArray(items);
-        String request = item + " " + category + ", " + numberOfItems;
+        String request = type + " " + category + ", " + numberOfItems;
         Output output;
         if(minCombination != null){
             output = new Output(faculty, contact, request, items, price);
-            db.deleteUsedItems(items, category);
+            database.deleteUsedItems(items, category);
         }else{
-            ArrayList < HashMap < String, String >> manufacturersResult = db.getPossibleManufacturer(category);
+            ArrayList < HashMap < String, String >> manufacturersResult = database.getPossibleManufacturer(category);
             if(manufacturersResult == null)
             {
               return;

@@ -723,7 +723,7 @@ public class GUI extends javax.swing.JFrame {
         Logic myLogic = new Logic("jdbc:mysql://localhost/inventory", Username, Password, FacultyE, ContactE, ItemE, CategoryE, Integer.parseInt(NumberOfTypeE));
         int resultPrice = myLogic.getPrice();
         String resultString = "";
-        if(resultPrice >= 1000000){
+        if(resultPrice == 0){
            resultString = "No Combination found. For more information please refer to your order text file at source directory.";
         }
         else{
