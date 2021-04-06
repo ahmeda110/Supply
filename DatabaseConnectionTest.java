@@ -1,3 +1,5 @@
+package MyProject;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -284,6 +286,7 @@ public class DatabaseConnectionTest {
 		expResult.add(entryThree);
 
 		ArrayList<HashMap<String, String>> result = instance.getPossibleManufacturer(itemTable);
+                System.out.println("hhhhhh" + result.get(0).get("Name"));
 		assertTrue(expResult.size() == result.size() && expResult.containsAll(result) && result.containsAll(expResult));
 	}
 
