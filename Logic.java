@@ -13,14 +13,19 @@ public class Logic {
     public int getPrice(){
         return this.price;
     }
-    public Logic( String DBURL, String USERNAME, String PASSWORD, String faculty, String contact, String catagory, String item, int numberOfItems){
+    public Logic( String DBURL, String USERNAME, String PASSWORD, String faculty, String contact, String category, String item, int numberOfItems){
         DatabaseConnection db = new DatabaseConnection(DBURL,USERNAME, PASSWORD);
-        ArrayList<HashMap<String,String>> fur = db.retrieveData("chair", "Mesh");
+        ArrayList<HashMap<String,String>> fur = db.retrieveData(category, item);
         price = 0; 
         ArrayList<String> itemsAL = new ArrayList<String>(); 
         for(int i =0; i < numberOfItems; i++){
             findMinPrice(fur, fur.size());
+            if(minPrice == 1000000){  // terminate loop if no combination found 
+                minCombination = null; // for further items down the loop
+                break;
+            }
             price += minPrice;
+
             if(minCombination != null){
              String[] temp = minCombination.get("ID").split(" ");
              for(String x: temp){
@@ -39,22 +44,22 @@ public class Logic {
         }
         items = new String[itemsAL.size()];
         items = itemsAL.toArray(items);
-        String request = catagory + " " + item + ", " + numberOfItems;
+        String request = item + " " + category + ", " + numberOfItems;
         Output output;
         if(minCombination != null){
             output = new Output(faculty, contact, request, items, price);
-            db.deleteUsedItems(items, item);
+            db.deleteUsedItems(items, category);
         }else{
-            List < Map < String, Object >> manufacturersResult = db.getPossibleManufacturer(item,catagory);
+            ArrayList < HashMap < String, String >> manufacturersResult = db.getPossibleManufacturer(category);
             if(manufacturersResult == null)
             {
               return;
             }
-            Iterator < Map < String, Object >> manufacturersResultIterator = manufacturersResult.iterator();
+            Iterator < HashMap < String, String >> manufacturersResultIterator = manufacturersResult.iterator();
             ArrayList <String> manufacturer = new ArrayList<String>();
             while (manufacturersResultIterator.hasNext()) {
-                Map < String, Object > temp = manufacturersResultIterator.next();
-                manufacturer.add(temp.get("Name").toString());
+                Map < String, String > temp = manufacturersResultIterator.next();
+                manufacturer.add(temp.get("Name"));
             }
             manufacturers = new String[manufacturer.size()];
             manufacturers = manufacturer.toArray(manufacturers);
