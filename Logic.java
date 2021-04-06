@@ -10,12 +10,18 @@ public class Logic {
     // Can change to bigger value, placeholder for comparison
     private int minPrice = Integer.MAX_VALUE;
     private int price = 0; 
-	private DatabaseConnection database;
+    private DatabaseConnection database;
     private Output output;
+    private boolean validTable = true;
 	
     public Logic( String DBURL, String USERNAME, String PASSWORD, String faculty, String contact, String type, String category, int numberOfItems){
         database = new DatabaseConnection(DBURL,USERNAME, PASSWORD);
         ArrayList<HashMap<String,String>> furniture = database.retrieveData(category, type);
+        
+        if(furniture == null){
+            validTable = false;
+        }
+        
         price = 0; 
         ArrayList<String> itemsAL = new ArrayList<String>(); 
         for(int i =0; i < numberOfItems; i++){
@@ -72,6 +78,9 @@ public class Logic {
 	
 	public int getPrice(){
         return this.price;
+    }
+    public boolean getValidTable(){
+      return this.validTable;
     }
     public Output getOutput(){
         return output;
