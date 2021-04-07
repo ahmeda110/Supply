@@ -14,8 +14,9 @@ public class Logic {
     private Output output;
     private boolean validTable = true;
 	
-    public Logic( String DBURL, String USERNAME, String PASSWORD, String faculty, String contact, String type, String category, int numberOfItems){
-        database = new DatabaseConnection(DBURL,USERNAME, PASSWORD);
+    public Logic(DatabaseConnection initialDatabase, String faculty, String contact, String type, String category, int numberOfItems){
+        
+        database = initialDatabase;
         ArrayList<HashMap<String,String>> furniture = database.retrieveData(category, type);
         
         if(furniture == null){

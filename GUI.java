@@ -1,19 +1,21 @@
 import java.awt.Font;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Class responsible for getting info from the database and
  * editing the database
- * @author Ahmed Abbas
  * @author Ahmed Abdullah
  * @author Dong Wook Son
  * @author Jonathan Chong
+ * @author Ahmed Abbas
  * @version 1.5
  * @since 1.0
  */
 public class GUI extends javax.swing.JFrame {
 
      String CategoryE, TypeE, NumberOfTypeE, FacultyE, ContactE, Date, ItemE, Username, Password;
-     //int labelSize = 300;
+     DatabaseConnection initialDatabase;
     /**
      * Creates new form GUI
      */
@@ -21,6 +23,7 @@ public class GUI extends javax.swing.JFrame {
         this.Username = username;
         this.Password = password;
         initComponents();
+        initialDatabase = new DatabaseConnection("jdbc:mysql://localhost/inventory", Username, Password);
     }
 
     
@@ -361,7 +364,7 @@ public class GUI extends javax.swing.JFrame {
     } catch (NumberFormatException e) {
         System.out.println("Input String cannot be parsed to Integer.");
     }
-        Logic myLogic = new Logic("jdbc:mysql://localhost/inventory", Username, Password, FacultyE, ContactE, ItemE, CategoryE, intValue);
+        Logic myLogic = new Logic(initialDatabase, FacultyE, ContactE, ItemE, CategoryE, intValue);
         //int labelSize = 300;
         if(myLogic.getValidTable() && validNumber){
             int fontSize = 14;
