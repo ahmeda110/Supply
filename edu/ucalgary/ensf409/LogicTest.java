@@ -16,7 +16,7 @@ import static org.junit.Assert.*;
  * @since 1.0
  */
 public class LogicTest {
-    DatabaseConnection connect = new DatabaseConnection("jdbc:mysql://localhost/inventory","flare30","ensf409");
+    DatabaseConnection connect = new DatabaseConnection("jdbc:mysql://localhost/inventory","flare30","ensf409"); // CHANGE TO YOUR OWN DATABASE USERNAME AND PASSWORD
     
     /**
 	 * Test of findMinimumPrice and getPrice method, of class Logic.
