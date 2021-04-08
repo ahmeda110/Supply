@@ -15,14 +15,17 @@ import java.util.HashMap;
 
 public class GUI extends javax.swing.JFrame {
 
-     private String categoryE, typeE, numberOfTypeE, facultyE, contactE;
-     private final String USERNAME, PASSWORD;
-     private Logic myLogic; 
-     private DatabaseConnection initialDatabase;
+     private String categoryE, typeE, numberOfTypeE, facultyE, contactE; // User inputs to be stored
+     private final String USERNAME, PASSWORD; // username and password to be collected from the Authentication class
+     private Logic myLogic; // instantiating the logic class
+     private DatabaseConnection initialDatabase; // instantiating the DatabaseConnection class
      private ArrayList <String> tables;
      
      /**
-     * Creates new form GUI
+     * Constructor - Launches the GUI as well as retrieve some parameters to be able to do so
+     *
+     * @param username username to the database
+     * @param password password to the database
      */
      public GUI(String username, String password) {
         this.USERNAME = username;
@@ -32,9 +35,10 @@ public class GUI extends javax.swing.JFrame {
         tables = initialDatabase.getAvailableTables();
     } 
 
-    
+    /**
+     * All the different compoenents that make up the GUI are in here
+     */
     @SuppressWarnings("unchecked")
-    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
         jSeparator7 = new javax.swing.JSeparator();
@@ -362,9 +366,15 @@ public class GUI extends javax.swing.JFrame {
         );
 
         pack();
-    }// </editor-fold>//GEN-END:initComponents
-
-    private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseClicked
+    }
+     
+     /**
+     * If the submit button is clicked collect the fields, check for correct inputs, and output result to GUI
+     * as well as creating a text file
+     *
+     * @param evt checks to see if the mouse is clicked
+     */
+    private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {
         this.categoryE = jTextField1.getText();
         this.typeE = jTextField2.getText();
         this.numberOfTypeE = jTextField3.getText();
@@ -407,17 +417,14 @@ public class GUI extends javax.swing.JFrame {
         else {
             jLabel11.setText("Please make sure that your categoty value is correct.");
         }
-    }//GEN-LAST:event_jButton1MouseClicked
+    }
 
     /**
+     * main
+     *
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(info.getName())) {
@@ -434,7 +441,7 @@ public class GUI extends javax.swing.JFrame {
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(GUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
-        //</editor-fold>
+        
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
@@ -444,7 +451,7 @@ public class GUI extends javax.swing.JFrame {
         });
     }
 
-    // Variables declaration - do not modify//GEN-BEGIN:variables
+    // Variables declaration 
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
