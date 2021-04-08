@@ -293,8 +293,7 @@ public class GUI extends javax.swing.JFrame {
 
         jLabel10.setFont(new java.awt.Font("Segoe UI Light", 0, 24)); // NOI18N
         jLabel10.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel10.setText("<html>Results will appear here:<br/><br/><span style=\"font-size:14px;\">Results will also be available in a text file "
-                + "in the directory from which the program was run.<span></html>");
+        jLabel10.setText("Results will appear here:");
 
         jLabel11.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel11.setForeground(new java.awt.Color(255, 0, 0));
@@ -382,13 +381,14 @@ public class GUI extends javax.swing.JFrame {
         if(myLogic.getValidTable() && validNumber){
             int fontSize = 14;
            
-           String outputText = myLogic.getOutput().getText();
+           String outputText = "<span style=\"color:green;\">A text file has been made at the root directory</span>\n\n" + 
+                                myLogic.getOutput().getText();
           
            if(outputText.split("\n").length > 12){
                fontSize = 270 / outputText.split("\n").length;
            }
            jLabel11.setFont(new Font("Serif", Font.PLAIN, fontSize));
-           jLabel11.setText("<html>" + outputText.replaceAll("<","&lt;").replaceAll(">", "&gt;").replaceAll("\n", "<br/>") + "</html>");
+           jLabel11.setText("<html>" + outputText.replaceAll("\n", "<br/>") + "</html>");
            jTextField1.setText("");
            jTextField2.setText("");
            jTextField3.setText("");

@@ -1,21 +1,23 @@
 import java.awt.*;
+import java.sql.DriverManager;
+import java.sql.*;
 import javax.swing.*;
 
 
 /**
-* Class responsible for requesting database username and 
-* password from user
+* Class responsible for collecting database credentials from users
 * @author Ahmed Abdullah
 * @author Dong Wook Son
 * @author Jonathan Chong
 * @author Ahmed Abbas
-* @version 1.3
+* @version 1.6
 * @since 1.0
 */
 public class Authentication extends javax.swing.JFrame {
 
     String username, password;
     char[] pass;
+    boolean validCredentials;
     
     /**
      * Creates new form NewJFrame
@@ -40,8 +42,10 @@ public class Authentication extends javax.swing.JFrame {
         jPasswordField1 = new javax.swing.JPasswordField();
         jLabel4 = new javax.swing.JLabel();
 
+        setPreferredSize(new java.awt.Dimension(895, 300));
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Authentication");
+        setResizable(false);
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -103,6 +107,8 @@ public class Authentication extends javax.swing.JFrame {
 
         jLabel4.setIcon(new javax.swing.ImageIcon("assets\\day9-toolbox.png"));
         jLabel4.setText(" ");
+        jLabel4.setBackground(Color.darkGray);
+        jLabel4.setOpaque(true);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -123,14 +129,25 @@ public class Authentication extends javax.swing.JFrame {
     }
 
     private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {
-        
+        validCredentials = true;
         this.username = jTextField1.getText();
         this.pass = jPasswordField1.getPassword();
         password = String.valueOf(pass);
+        try{
+            Connection databaseConnection = DriverManager.getConnection("jdbc:mysql://localhost/inventory", username, password);
+        }catch(SQLException ex) {
+            validCredentials = false;
+            jLabel2.setText("<html>Username:<br/><span style=\"color:red;font-size:10px;\">"
+                    + "Invalid username or password</span></html>");
+            jPasswordField1.setText("");
+            
+	}
         
-        GUI home = new GUI(username, password);
-        dispose();
-        home.setVisible(true);
+        if(validCredentials){
+            GUI home = new GUI(username, password);
+            dispose();
+            home.setVisible(true);
+        }
     }    
 
     /**
