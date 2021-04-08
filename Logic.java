@@ -21,7 +21,6 @@ public class Logic {
     // Can change to bigger value, placeholder for comparison
     private int minPrice = Integer.MAX_VALUE;
     private int price = 0; 
-    private DatabaseConnection database;
     private Output output;
     private boolean validTable = true;  
     /**
@@ -37,11 +36,11 @@ public class Logic {
       * @param contact contact information inputted in GUI
       * @param type type of furniture inputted in GUI
       * @param category category of furniture inputted in GUI
-      * @param numberOfItems number of furtniture requested inputted in GUI
+      * @param numberOfItems number of furniture requested inputted in GUI
 	  */
     public Logic(DatabaseConnection initialDatabase, String faculty, String contact, String type, String category, int numberOfItems){
         
-        database = initialDatabase;
+        DatabaseConnection database = initialDatabase;
         //data on the specific item
         furniture = database.retrieveData(category, type);
         
