@@ -30,7 +30,7 @@ public class LogicTest {
 	 * inventory.sql which should be placed in the directory from which the program was run
 	 * to make sure the state of the database is the same as the one that the program expects.
 	 */
-    public void resetDatabase() {
+    public static void resetDatabase() {
 		System.out.println("\n\n--------------------------------------------");
 		System.out.println("Resetting Local Database Before Starting Test.");
 		System.out.println("Please Wait..............");
@@ -92,14 +92,21 @@ public class LogicTest {
 	}
 
 	/**
-	 * Closes Connection object and ResultSet object after each test, and resets the database.
+	 * Closes Connection object and ResultSet object after each test
 	 */
 	@After
 	public void tearDown() {
 		// close ResultSet and Connection after using it
-        resetDatabase();
 		connect.close();
 	}
+
+    /**
+	 * Reset database after all tests were performed
+	 */
+    @AfterClass
+    public static void resetToDefault() {
+        resetDatabase();
+    }
     
     /**
 	 * Test of findMinimumPrice and getPrice method, of class Logic.
