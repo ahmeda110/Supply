@@ -3,7 +3,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.LocalDateTime;    
 /**
  * Class responsible for producing the output text file 
- * having the information accessible to the Logic lcass
+ * having the information accessible to the Logic class
  * @author Ahmed Abdullah
  * @author Dong Wook Son
  * @author Jonathan Chong
@@ -48,8 +48,19 @@ public class Output{
      * @param manufacturers list of suggested manufacturers
 	 */
     public Output(String faculty, String contact, String request, String[] manufacturers){
-        this.faculty = capitalize(faculty);
-        this.contact = capitalize(contact);
+        
+        if(faculty.length() > 1){
+            this.faculty = capitalize(faculty);
+        } else {
+            this.faculty = faculty;
+        }
+        
+        if(contact.length() > 1){
+            this.contact = capitalize(contact);
+        } else {
+            this.contact = contact;
+        }
+        
         this.request = capitalize(request);
         this.manufacturers = manufacturers;
         setTheDate();
