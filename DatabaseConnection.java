@@ -8,7 +8,7 @@ import java.sql.*;
  * @author Dong Wook Son
  * @author Jonathan Chong
  * @author Ahmed Abbas
- * @version 1.5
+ * @version 1.8
  * @since 1.0
  */
 public class DatabaseConnection {
@@ -20,7 +20,7 @@ public class DatabaseConnection {
 	private Statement myStatment;
 	private PreparedStatement myPreparedStatment;
 	private ArrayList<String> columns;
-	private int rows;
+	private int rows = -1;
         private ArrayList <String> availableTables;
         private HashMap<String, ArrayList<HashMap<String, String>>> manufacturers;
 
