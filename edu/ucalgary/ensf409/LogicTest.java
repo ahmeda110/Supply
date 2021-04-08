@@ -24,17 +24,15 @@ public class LogicTest {
     private DatabaseConnection connect = null;
     private static final String USERNAME = "flare30";
     private static final String PASSWORD = "ensf409";
-    
 
     /**
 	 * This method resets the inventory data base before the start of tests using the file
 	 * inventory.sql which should be placed in the directory from which the program was run
 	 * to make sure the state of the database is the same as the one that the program expects.
 	 */
-    @BeforeClass
-	public static void setUpClass() {
+    public void resetDatabase() {
 		System.out.println("\n\n--------------------------------------------");
-		System.out.println("Resetting Local Database Before Starting Tests.");
+		System.out.println("Resetting Local Database Before Starting Test.");
 		System.out.println("Please Wait..............");
 		System.out.println("--------------------------------------------\n\n");
 		Connection testConnection = null;
@@ -43,10 +41,10 @@ public class LogicTest {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-
+        
 		BufferedReader input = null;
 		try { //--------------!important----------------
-			input = new BufferedReader(new FileReader("./inventory.sql")); //inventory file must be in the 
+			input = new BufferedReader(new FileReader("C:/Users/Luke/Desktop/Hackathons/HYL 2021 (ENSF 409)/supply-chain-management-lukesno/edu/ucalgary/ensf409/inventory.sql")); //inventory file must be in the 
 		} //directory from which program was run
 		catch (FileNotFoundException e) {
 			e.printStackTrace();
@@ -79,25 +77,27 @@ public class LogicTest {
 			}
 
 		}
-	}
+    }
 
     /**
 	 *This method creates a new instance of DatabaseConnection before each test
-	 * to remove stored member variables left over from previous tests
+	 * to remove stored member variables left over from previous tests, and resets the database.
 	 */
 	@Before
 	public void setUp() {
 		// creating an instance for each class to remove stored member variables 
 		// from previous tests
+        resetDatabase();
 		connect = new DatabaseConnection("jdbc:mysql://localhost/inventory", USERNAME, PASSWORD);
 	}
 
 	/**
-	 * Closes Connection object and ResultSet object after each test
+	 * Closes Connection object and ResultSet object after each test, and resets the database.
 	 */
 	@After
 	public void tearDown() {
 		// close ResultSet and Connection after using it
+        resetDatabase();
 		connect.close();
 	}
     

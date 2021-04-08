@@ -13,7 +13,6 @@ import java.util.*;
  */
 
 public class Logic {
-    private ArrayList<String> columns;
     private HashMap<String, String> minCombination;
     private ArrayList<HashMap<String,String>> furniture;
     private String[] manufacturers; 
