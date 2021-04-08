@@ -1,45 +1,75 @@
 import java.io.*; 
 import java.time.format.DateTimeFormatter;  
 import java.time.LocalDateTime;    
+/**
+ * Class responsible for producing the output text file 
+ * having the information accessible to the Logic lcass
+ * @author Ahmed Abdullah
+ * @author Dong Wook Son
+ * @author Jonathan Chong
+ * @author Ahmed Abbas
+ * @version 1.3
+ * @since 1.0
+ */
 
 public class Output{
     private String faculty; 
     private String contact;
     private String request; 
-    private String[] items;
+    private String[] items = {""};
     private String date;
     private int price; 
-    private String[] manufacturers;
+    private String[] manufacturers= {""};
     private String text; 
-    /*
-    *  Call this constructor if order can be fulfilled
-    */
+    /**
+	 * A constructor, This constructor is called if the order can be fulfilled. 
+     * Stores the data given and calls setTheDate() then printFile(true)
+	 * @param faculty faculty name inputed by the user
+	 * @param contact contact name inputed by the user
+	 * @param request request, in the format "'type' 'category', '# of items'"
+     * @param items List of items ordered from the database
+     * @param price total price of the items ordered
+	 */
     public Output(String faculty, String contact, String request, String[] items, int price){
-        this.faculty = faculty;
-        this.contact = contact;
-        this.request = request; 
+        this.faculty = capitalize(faculty);
+        this.contact = capitalize(contact);
+        this.request = capitalize(request);
         this.items = items; 
         this.price = price;
         setTheDate();
         printFile(true);
     }
-    /*
-    *  Call this constructor if order canNOT be fulfilled
-    */
+    /**
+	 * A constructor, this is called if the order canNOT be fulfilled. 
+     * Stores the data given and calls setTheDate() then printFile(false)
+	 * @param faculty faculty name inputed by the user
+	 * @param contact contact name inputed by the user
+	 * @param request request, in the format "'type' 'category', '# of items'"
+     * @param manufacturers list of suggested manufacturers
+	 */
     public Output(String faculty, String contact, String request, String[] manufacturers){
-        this.faculty = faculty;
-        this.contact = contact;
-        this.request = request; 
+        this.faculty = capitalize(faculty);
+        this.contact = capitalize(contact);
+        this.request = capitalize(request);
         this.manufacturers = manufacturers;
         setTheDate();
         printFile(false);
     }
-    
+    /**
+	 * Function creates a new orderform text file the fills it 
+     * based on if the order can or cannot be fulfilled
+     * @param fulfilled is the order fulfilled or not, can be fulfilled = true,
+     *  cannot be fulfilled = false 
+	 */
     public void printFile(boolean fulfilled){
+        // temporarily replace illegal characters in date with legal ones 
+        // ' ' to '_', '/' to '-' and ':' to '.'
         String newDate = date.replace(' ', '_');
         newDate = newDate.replace('/', '-');
         newDate = newDate.replace(':', '.');
+
         try {
+            //creates new text with orderform_'the date and time of order'.txt
             File file = new File("orderform_" + newDate + ".txt" );
             file.createNewFile();
             
@@ -47,17 +77,21 @@ public class Output{
             System.out.println("Error creating file.");
           e.printStackTrace();
         }
+        //fill in String text with default information
         text = "Furniture Order Form" +
                 "\n\nFaculty Name: " + faculty + 
                 "\nContact: " + contact + 
                 "\nDate: " + date +
                 "\n\nOriginal Request: " + request;
+        //depending on if the order can be fulfilled or not fufilled it calls on 
+        //different functions, concats the resulting string into 'text'
         if(fulfilled){
             text += fulfilledString();
         }else{
             text += notFulfilledString();
         }
         try{
+            //write string in text into orderform_XX.txt 
             FileWriter writer = new FileWriter("orderform_" + newDate + ".txt");
             writer.write(text);
             writer.close();
@@ -66,7 +100,10 @@ public class Output{
             e.printStackTrace();
         }
     }
-    
+    /**
+     * used for only fulfilled orders, adds list of items into string
+     * @return returns string with information about the list of items in the proper format
+     */
     public String fulfilledString(){
         String text = "\n\nItems Ordered:";
         for(int i = 0; i < items.length; i++){
@@ -75,7 +112,10 @@ public class Output{
         text += "\n\nTotal Price: $" + price;
         return text;
     }
-
+    /**
+     * used for only not fulfilled orders, adds list of manufacturers into string
+     * @return returns string with information about the list of manufacturers in the proper format
+     */
     public String notFulfilledString(){
         String text = "\n\nOrder cannot be fulfilled based on current inventory."
                         + "\nSuggested Manufactuers:";
@@ -84,18 +124,40 @@ public class Output{
         }
         return text;
     }
-    
+
+    /**
+     * retrieves the current date and time and sets String date in the proper format 
+     */
     public void setTheDate(){
-        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");  
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm");  
         LocalDateTime now = LocalDateTime.now();  
         date = dtf.format(now);
     }
+    /**
+     * splits string into individual words then capitalizes them all
+     * @return capitalized version of string
+     */
+    public String capitalize(String words){
+        String[] temp = words.split(" ");
+        words = "";
+        for(String temp1:temp){
+            temp1 = temp1.toUpperCase().charAt(0)+temp1.toLowerCase().substring(1,temp1.length());
+            words += temp1 + " ";
+        }
+        return words.trim();
+    }
+    /**
+     * returns the String version of what would be written in the .txt
+     * @return returns String text 
+     */
     public String getText(){
         return text;
     }
-    // public static void main(String []args){
-    //     String[] items = {"ID: c9890", "ID: c0942"};
-    //     Output text = new Output("Engineering","Jonathan Chong","new Chair",items, 1234);
-    //     Output text1 = new Output("Engineering","Jonathan Chong","new Chair",items);
-    // }
+    /**
+     * returns the date
+     * @return returns String variable date
+     */
+    public String getDate(){
+        return date;
+    }
 }

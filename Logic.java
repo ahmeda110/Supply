@@ -1,3 +1,5 @@
+import java.sql.*;
+import java.time.chrono.MinguoEra;
 import java.util.*;
 
 /**
@@ -11,16 +13,17 @@ import java.util.*;
  */
 
 public class Logic {
+    private ArrayList<String> columns;
     private HashMap<String, String> minCombination;
     private ArrayList<HashMap<String,String>> furniture;
     private String[] manufacturers; 
     private String[] items;
+    // Can change to bigger value, placeholder for comparison
     private int minPrice = Integer.MAX_VALUE;
     private int price = 0; 
     private DatabaseConnection database;
     private Output output;
     private boolean validTable = true;  
-
     /**
       * Default constructor used for testing
 	  */
@@ -39,6 +42,7 @@ public class Logic {
     public Logic(DatabaseConnection initialDatabase, String faculty, String contact, String type, String category, int numberOfItems){
         
         database = initialDatabase;
+        //data on the specific item
         furniture = database.retrieveData(category, type);
         
         if(furniture == null){
@@ -47,8 +51,10 @@ public class Logic {
         
         price = 0; 
         ArrayList<String> itemsAL = new ArrayList<String>(); 
+        //Repeat until the number of items is satisfied
         for(int i =0; i < numberOfItems; i++){
-            if(furniture != null){
+            //makes sure furniture is not empty
+            if(validTable){
                 findMinPrice(furniture, furniture.size());
             }
             
@@ -56,45 +62,47 @@ public class Logic {
                 minCombination = null; // for further items down the loop
                 break;
             }
-            price += minPrice;
+            
+            price += minPrice; //add minPrice for the item into the total price
 
             if(minCombination != null){
-             String[] temp = minCombination.get("ID").split(" ");
-             for(String x: temp){
-                 itemsAL.add(x);
-             }
-             for(String temp1: temp){
-                for(int j = 0; j < furniture.size(); j++){
-                    if(temp1.equals(furniture.get(j).get("ID").toString())){
-                        furniture.remove(j);
-                    }
-                } 
-             }
-             minPrice = Integer.MAX_VALUE;
+                items = minCombination.get("ID").split(" "); //retrieves list of items by their IDs and puts them into a String[]
+                for(String x: items){
+                    itemsAL.add(x); //adds items into arrayList
+                }
+                //removes list of IDs from the furniture arraylist
+                for(String temp1: items){
+                    for(int j = 0; j < furniture.size(); j++){
+                        if(temp1.equals(furniture.get(j).get("ID").toString())){
+                            furniture.remove(j);
+                        }
+                    } 
+                }
+                minPrice = Integer.MAX_VALUE; //reset to default value (if no value is found then integer is max)
             }
 
         }
-        items = new String[itemsAL.size()];
-        items = itemsAL.toArray(items);
-        String request = type + " " + category + ", " + numberOfItems;
+    
+        String request = type + " " + category + ", " + numberOfItems;  
+
         if(minCombination != null){
-            output = new Output(faculty, contact, request, items, price);
-            database.deleteUsedItems(items, category);
+            output = new Output(faculty, contact, request, items, price); //creates new instance of Output where order can be fulfilled
+            database.deleteUsedItems(items, category); // deletes used items from the items list
         }else{
-            ArrayList < HashMap < String, String >> manufacturersResult = database.getPossibleManufacturer(category);
+            ArrayList < HashMap < String, String >> manufacturersResult = database.getPossibleManufacturer(category); //get list of possible manufacturers
             if(manufacturersResult == null)
             {
               return;
             }
-            Iterator < HashMap < String, String >> manufacturersResultIterator = manufacturersResult.iterator();
+            Iterator < HashMap < String, String >> manufacturersResultIterator = manufacturersResult.iterator(); 
             ArrayList <String> manufacturer = new ArrayList<String>();
             while (manufacturersResultIterator.hasNext()) {
                 Map < String, String > temp = manufacturersResultIterator.next();
                 manufacturer.add(temp.get("Name"));
             }
-            manufacturers = new String[manufacturer.size()];
+            manufacturers = new String[manufacturer.size()]; //adds list of manufacturers into String array
             manufacturers = manufacturer.toArray(manufacturers);
-            output = new Output(faculty, contact, request, manufacturers);
+            output = new Output(faculty, contact, request, manufacturers); // creates new instance of output where order cannot be fulfilled
         }
 
     }
