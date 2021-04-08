@@ -49,13 +49,13 @@ public class Output{
 	 */
     public Output(String faculty, String contact, String request, String[] manufacturers){
         
-        if(faculty.length() > 1){
+        if(faculty.length() > 0){
             this.faculty = capitalize(faculty);
         } else {
             this.faculty = faculty;
         }
         
-        if(contact.length() > 1){
+        if(contact.length() > 0){
             this.contact = capitalize(contact);
         } else {
             this.contact = contact;
