@@ -13,6 +13,7 @@ by Ahmed Abdullah, Dong Wook Son, Jonathan Chong and Ahmed Abbas
  ## Notes
  - The lib folder contains mysql-connector-java.jar file which is used as 
  an import in the DatabaseConnection class. 
+ - junit and hamscrest lib is not included and will need to be imported by user
  - Demonstration video and UML diagram are located in the repo
 
 ## Inspiration
