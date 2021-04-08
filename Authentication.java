@@ -6,29 +6,29 @@ import javax.swing.*;
 
 /**
 * Class responsible for collecting database credentials from users
+* @author Ahmed Abbas
 * @author Ahmed Abdullah
 * @author Dong Wook Son
 * @author Jonathan Chong
-* @author Ahmed Abbas
 * @version 1.6
 * @since 1.0
 */
 public class Authentication extends javax.swing.JFrame {
 
-    private String username, password;
+    private String username, password; // username and password to the database as inputs from the user
     private char[] pass;
-    private boolean validCredentials;
-    private GUI home;
+    private boolean validCredentials; // checks if login is valid
+    private GUI home; // instaniating the home GUI
     
     /**
-     * Creates new form NewJFrame
+     * Creates new form/GUI Authentication
      */
     public Authentication() {
         initComponents();
     }
 
     /**
-     * This method is called from within the constructor to initialize the form.
+     * This method is called from within the constructor to initialize the form with the various components
      */
     @SuppressWarnings("unchecked")
     private void initComponents() {
@@ -129,6 +129,13 @@ public class Authentication extends javax.swing.JFrame {
         pack();
     }
 
+	
+     /**
+     * If the submit button is clicked collect the fields, check for correct inputs, and if correct
+     * go to home GUI otherwise prompt the user to enter login again
+     *
+     * @param evt checks to see if the mouse is clicked
+     */
     private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {
         validCredentials = true;
         this.username = jTextField1.getText();
