@@ -14,9 +14,11 @@ by Ahmed Abdullah, Dong Wook Son, Jonathan Chong and Ahmed Abbas
  - The lib folder contains mysql-connector-java.jar file which is used as 
  an import in the DatabaseConnection class. 
  - The lib folder also contains junit and hamcrest for running the test cases
- - Test cases are included in the same folder as the rest of the .java files
  - Demonstration video and UML diagram are located in submissions folder int the directory
 
+## Testing
+ - Test cases are included in the same folder as the rest of the .java files
+ - For DatabaseConnectionTest.java and LogicTest.java, the inventory.sql should be run automatically before each test to reset the database. Although if errors occur, please try manually running inventory.sql to reset the database then running the tests again.  
 
 ## Inspiration
 The inspiration for our project closely relates to recent initiatives that the University of Calgary has taken. Currently, Supply Chain Management (SCM) at the university aims to divert filing cabinets, bookcases, and some furnishings in order to prevent usable materials from ending up in the landfill.
