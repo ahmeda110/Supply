@@ -90,7 +90,7 @@ public class GUI extends javax.swing.JFrame {
 
         jLabel6.setFont(new java.awt.Font("Segoe UI Light", 0, 14)); // NOI18N
         jLabel6.setForeground(new java.awt.Color(255, 102, 0));
-        jLabel6.setText("Item:");
+        jLabel6.setText("Type:");
 
         jLabel7.setFont(new java.awt.Font("Segoe UI Light", 0, 14)); // NOI18N
         jLabel7.setForeground(new java.awt.Color(255, 102, 0));
