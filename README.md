@@ -7,7 +7,7 @@ by Ahmed Abdullah, Dong Wook Son, Jonathan Chong and Ahmed Abbas
 3. A pop up screen should appear asking for a username and password,
  this is the username and password you would use to access your local 
  inventory.sql database. If the inventory.sql is not installed, 
- we have provided one for you to run in your workbench (located inside assets folder). 
+ we have provided one for you to run in your workbench (located in the root directory). 
  4. If the login was successful new screen should appear prompting your inputs. 
  
  ## Notes
@@ -15,7 +15,7 @@ by Ahmed Abdullah, Dong Wook Son, Jonathan Chong and Ahmed Abbas
  an import in the DatabaseConnection class. 
  - The lib folder also contains junit and hamcrest for running the test cases
  - Test cases are included in the same folder as the rest of the .java files
- - Demonstration video and UML diagram are located in submissions folder int the repository
+ - Demonstration video and UML diagram are located in submissions folder int the directory
 
 
 ## Inspiration
