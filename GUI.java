@@ -15,18 +15,20 @@ import java.util.HashMap;
 
 public class GUI extends javax.swing.JFrame {
 
-     String categoryE, typeE, numberOfTypeE, facultyE, contactE, itemE, username, password;
-     DatabaseConnection initialDatabase;
-     ArrayList <String> tables;
+     private String categoryE, typeE, numberOfTypeE, facultyE, contactE;
+     private final String USERNAME, PASSWORD;
+     private Logic myLogic; 
+     private DatabaseConnection initialDatabase;
+     private ArrayList <String> tables;
      
      /**
      * Creates new form GUI
      */
      public GUI(String username, String password) {
-        this.username = username;
-        this.password = password;
+        this.USERNAME = username;
+        this.PASSWORD = password;
         initComponents();
-        initialDatabase = new DatabaseConnection("jdbc:mysql://localhost/inventory", username, password);
+        initialDatabase = new DatabaseConnection("jdbc:mysql://localhost/inventory", USERNAME, PASSWORD);
         tables = initialDatabase.getAvailableTables();
     } 
 
@@ -364,12 +366,12 @@ public class GUI extends javax.swing.JFrame {
 
     private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseClicked
         this.categoryE = jTextField1.getText();
-        this.itemE = jTextField2.getText();
+        this.typeE = jTextField2.getText();
         this.numberOfTypeE = jTextField3.getText();
         this.facultyE = jTextField4.getText();
         this.contactE = jTextField5.getText();
         
-         boolean validNumber = false;
+        boolean validNumber = false;
         int intValue = 0;
         try {
         intValue = Integer.parseInt(numberOfTypeE);
@@ -378,7 +380,7 @@ public class GUI extends javax.swing.JFrame {
         System.out.println("Input String cannot be parsed to Integer.");
     }
         
-        Logic myLogic = new Logic(initialDatabase, facultyE, contactE, itemE, categoryE, intValue);
+        myLogic = new Logic(initialDatabase, facultyE, contactE, typeE, categoryE, intValue);
         //int labelSize = 300;
         if(tables.contains(categoryE.toLowerCase()) && validNumber){
             int fontSize = 14;
@@ -474,5 +476,4 @@ public class GUI extends javax.swing.JFrame {
     private javax.swing.JTextField jTextField3;
     private javax.swing.JTextField jTextField4;
     private javax.swing.JTextField jTextField5;
-    // End of variables declaration//GEN-END:variables
 }
