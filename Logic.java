@@ -1,5 +1,3 @@
-import java.sql.*;
-import java.time.chrono.MinguoEra;
 import java.util.*;
 
 /**
@@ -13,18 +11,19 @@ import java.util.*;
  */
 
 public class Logic {
-    private ArrayList<String> columns;
     private HashMap<String, String> minCombination;
     private ArrayList<HashMap<String,String>> furniture;
     private String[] manufacturers; 
     private String[] items;
-    // Can change to bigger value, placeholder for comparison
     private int minPrice = Integer.MAX_VALUE;
     private int price = 0; 
     private DatabaseConnection database;
     private Output output;
     private boolean validTable = true;  
 
+    /**
+      * Default constructor used for testing
+	  */
     public Logic() {}
 	
      /**
