@@ -2,9 +2,20 @@ import java.sql.*;
 import java.time.chrono.MinguoEra;
 import java.util.*;
 
+/**
+ * Class responsible for calculating the cheapest price combination for requested furnitures
+ * @author Ahmed Abdullah
+ * @author Dong Wook Son
+ * @author Jonathan Chong
+ * @author Ahmed Abbas
+ * @version 1.8
+ * @since 1.0
+ */
+
 public class Logic {
     private ArrayList<String> columns;
     private HashMap<String, String> minCombination;
+    private ArrayList<HashMap<String,String>> furniture;
     private String[] manufacturers; 
     private String[] items;
     // Can change to bigger value, placeholder for comparison
@@ -12,12 +23,24 @@ public class Logic {
     private int price = 0; 
     private DatabaseConnection database;
     private Output output;
-    private boolean validTable = true;
+    private boolean validTable = true;  
+
+    public Logic() {}
 	
+     /**
+      * A constructor, stores connection data as member variables and
+      * initializes connection with the database
+      * @param initialDatabase database connection made in DatabaseConnection.java
+      * @param faculty name of faculty inputted in GUI
+      * @param contact contact information inputted in GUI
+      * @param type type of furniture inputted in GUI
+      * @param category category of furniture inputted in GUI
+      * @param numberOfItems number of furtniture requested inputted in GUI
+	  */
     public Logic(DatabaseConnection initialDatabase, String faculty, String contact, String type, String category, int numberOfItems){
         
         database = initialDatabase;
-        ArrayList<HashMap<String,String>> furniture = database.retrieveData(category, type);
+        furniture = database.retrieveData(category, type);
         
         if(furniture == null){
             validTable = false;
@@ -77,21 +100,59 @@ public class Logic {
 
     }
 	
+    /**
+	 * Gets the stored price
+	 * @return A integer containing the price calculated
+	 */
 	public int getPrice(){
         return this.price;
     }
+
+    /**
+	 * Returns true if there's a validTable, false if there isn't
+	 * @return A boolean describing whether or not a valid table exists
+	 */
     public boolean getValidTable(){
       return this.validTable;
     }
+
+    /**
+	 * Gets the stored output
+	 * @return A Output object containing output file generated
+	 */
     public Output getOutput(){
         return output;
     }
+
+    /**
+	 * Gets the minPrice calculated
+     * Used for manual testing of findMinPrice
+	 * @return A integer that describes min price found
+	 */
+    public int getMinPrice(){
+        return this.minPrice;
+    }
+
+
+    /**
+	 * Intermediate method for finding minimum price, iterates through each each row of items
+     * @param furniture ArrayList containing rows of items that match the requested category and type
+     * @param rows total number of row of items in furniture
+	 */
     public void findMinPrice(ArrayList<HashMap<String,String>> furniture, int rows){
         for(HashMap<String,String> test: furniture) {
             findMinimumPrice(furniture, test, rows);
             // System.out.println(test.toString());
         }
     }
+
+    /**
+	 * Recursive method that calculated the minimum price. 
+     * Method runs once for every row in furniture. Starts a recursive tree for each row and branches down till a minimum price is found.
+     * @param furniture ArrayList containing rows of items that match the requested category and type
+     * @param current HashMap that contains the current "start" point for recursive tree
+     * @param rows total number of row of items in furniture
+	 */
     public void findMinimumPrice(ArrayList<HashMap<String,String>> furniture, HashMap<String,String> current, int rows) {
         // Check if all columns are Y, this is base case
         if(hasAllParts(current)) {
@@ -100,11 +161,18 @@ public class Logic {
                 minPrice = Integer.parseInt(current.get("Price"));
             }
             return;
-        } else if (current.get("ID").length() > (rows * 5 + rows - 1)) {
+        } 
+        // Termination here is made by checking the length of the ID.
+        // This will prevent the recursive tree from infinitely going down.
+        // Ex: if one branch of the tree continuously checks CS101,
+        // Then ID of current will become "CS101 CS101 CS101 CS101 CS101...." and so on.
+        // We make sure that the ID length never exceeds the total number of rows * length of ID (and spaces).
+        else if (current.get("ID").length() > (rows * 5 + rows - 1)) {
             // If this recursive route checked all elements once, then terminate.
             return;
-        } else {
-
+        } 
+        // Main component of method that calls recursively
+        else {
             for(HashMap<String,String> map : furniture) {
                 // Making copies of current to traverse down recursion tree
                 HashMap<String, String> tmp = makeCopy(current);
@@ -135,7 +203,11 @@ public class Logic {
         }
     }
 
-    // Checks if all components are Y, returns false otherwise
+    /**
+	 * Method that checks to see if a given row has all components (All components have "Y")
+     * @param components HashMap that contains data on all components of a given row
+     * @return true if all components are Y, returns false otherwise
+	 */
     public boolean hasAllParts(HashMap<String, String> components) {
 
         for(Map.Entry<String, String> entry: components.entrySet()) {
@@ -151,7 +223,11 @@ public class Logic {
         return true;
     }
 
-    // Makes a new copy of a HashMap
+    /**
+	 * Method that makes a copy of a HashMap.
+     * @param map HashMap that is to be copied
+     * @return copy of map
+	 */
     public HashMap<String, String> makeCopy(HashMap<String,String> map) {
         HashMap<String, String> copy = new HashMap<String,String>();
         for(Map.Entry<String, String> entry: map.entrySet()) {
@@ -160,14 +236,5 @@ public class Logic {
 
         return copy;
     }
-
-    // public static void main(String[] args) {
-    //     Logic logic = new Logic("jdbc:mysql://localhost/inventory","flare30","ensf409");
-    //     logic.initConnection();
-
-    //     // Assume situation where user wants a "chair" that's type "mesh" 
-    //     System.out.println(logic.retrieveData("chair", "Mesh"));
-        
-    // }
 
 }
