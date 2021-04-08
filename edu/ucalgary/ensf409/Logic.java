@@ -1,7 +1,5 @@
 package edu.ucalgary.ensf409;
 
-import java.sql.*;
-import java.time.chrono.MinguoEra;
 import java.util.*;
 
 /**

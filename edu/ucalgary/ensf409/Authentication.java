@@ -2,7 +2,6 @@ package edu.ucalgary.ensf409;
 import java.awt.*;
 import java.sql.DriverManager;
 import java.sql.*;
-import javax.swing.*;
 
 
 /**
