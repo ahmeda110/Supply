@@ -161,21 +161,12 @@ public class Logic {
             }
             return;
         } 
-        // Termination here is made by checking the length of the ID.
-        // This will prevent the recursive tree from infinitely going down.
-        // Ex: if one branch of the tree continuously checks CS101,
-        // Then ID of current will become "CS101 CS101 CS101 CS101 CS101...." and so on.
-        // We make sure that the ID length never exceeds the total number of rows * length of ID (and spaces).
-        else if (current.get("ID").length() > (rows * 5 + rows - 1)) {
-            // If this recursive route checked all elements once, then terminate.
-            return;
-        } 
         // Main component of method that calls recursively
         else {
             for(HashMap<String,String> map : furniture) {
                 // Making copies of current to traverse down recursion tree
                 HashMap<String, String> tmp = makeCopy(current);
-                if(!map.get("ID").contains(tmp.get("ID"))) {
+                if(!tmp.get("ID").contains(map.get("ID"))) {
                     // Ex: CS101 -> CS101 CS102
                     //      150  -> 200
                     // Assuming map ID = CS102, Price = 50
