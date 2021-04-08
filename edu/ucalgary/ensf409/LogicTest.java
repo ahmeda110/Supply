@@ -44,7 +44,7 @@ public class LogicTest {
         
 		BufferedReader input = null;
 		try { //--------------!important----------------
-			input = new BufferedReader(new FileReader("C:/Users/Luke/Desktop/Hackathons/HYL 2021 (ENSF 409)/supply-chain-management-lukesno/edu/ucalgary/ensf409/inventory.sql")); //inventory file must be in the 
+			input = new BufferedReader(new FileReader("./inventory.sql")); //inventory file must be in the 
 		} //directory from which program was run
 		catch (FileNotFoundException e) {
 			e.printStackTrace();
