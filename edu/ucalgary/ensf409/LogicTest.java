@@ -1,9 +1,11 @@
 package edu.ucalgary.ensf409;
 import java.util.ArrayList;
 import java.util.HashMap;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.*;
 import static org.junit.Assert.*;
+
+import java.io.*;
+import java.sql.*;
 
 
 /**
@@ -16,7 +18,88 @@ import static org.junit.Assert.*;
  * @since 1.0
  */
 public class LogicTest {
-    DatabaseConnection connect = new DatabaseConnection("jdbc:mysql://localhost/inventory","flare30","ensf409");
+
+    // IMPORTANT
+    // Please change the USERNAME and PASSWORD variables to your credentials.
+    private DatabaseConnection connect = null;
+    private static final String USERNAME = "flare30";
+    private static final String PASSWORD = "ensf409";
+    
+
+    /**
+	 * This method resets the inventory data base before the start of tests using the file
+	 * inventory.sql which should be placed in the directory from which the program was run
+	 * to make sure the state of the database is the same as the one that the program expects.
+	 */
+    @BeforeClass
+	public static void setUpClass() {
+		System.out.println("\n\n--------------------------------------------");
+		System.out.println("Resetting Local Database Before Starting Tests.");
+		System.out.println("Please Wait..............");
+		System.out.println("--------------------------------------------\n\n");
+		Connection testConnection = null;
+		try {
+			testConnection = DriverManager.getConnection("jdbc:mysql://localhost", USERNAME, PASSWORD);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		BufferedReader input = null;
+		try { //--------------!important----------------
+			input = new BufferedReader(new FileReader("./inventory.sql")); //inventory file must be in the 
+		} //directory from which program was run
+		catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+
+		Statement myStatment = null;
+		String currentLine = "";
+		StringBuilder result = new StringBuilder();
+		try {
+			myStatment = testConnection.createStatement();
+
+			while ((currentLine = input.readLine()) != null) {
+				result.append(currentLine.trim());
+			}
+			String[] executable = result.toString().replace("\n", "").split(";"); //remove all newline characters and 
+			// split at semi colons to have a complete statment
+			for (String
+				var: executable) {
+				myStatment.execute(var); // execute each statment in inventory.sql
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			if (myStatment != null) {
+				try {
+					myStatment.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+
+		}
+	}
+
+    /**
+	 *This method creates a new instance of DatabaseConnection before each test
+	 * to remove stored member variables left over from previous tests
+	 */
+	@Before
+	public void setUp() {
+		// creating an instance for each class to remove stored member variables 
+		// from previous tests
+		connect = new DatabaseConnection("jdbc:mysql://localhost/inventory", USERNAME, PASSWORD);
+	}
+
+	/**
+	 * Closes Connection object and ResultSet object after each test
+	 */
+	@After
+	public void tearDown() {
+		// close ResultSet and Connection after using it
+		connect.close();
+	}
     
     /**
 	 * Test of findMinimumPrice and getPrice method, of class Logic.
