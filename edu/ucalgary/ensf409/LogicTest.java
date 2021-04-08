@@ -18,6 +18,7 @@ import java.sql.*;
  * @since 1.0
  */
 public class LogicTest {
+<<<<<<< HEAD
 
     // IMPORTANT
     // Please change the USERNAME and PASSWORD variables to your credentials.
@@ -100,6 +101,9 @@ public class LogicTest {
 		// close ResultSet and Connection after using it
 		connect.close();
 	}
+=======
+    DatabaseConnection connect = new DatabaseConnection("jdbc:mysql://localhost/inventory","flare30","ensf409"); // CHANGE TO YOUR OWN DATABASE USERNAME AND PASSWORD
+>>>>>>> f6087d5c3b605d8d4002336786f6ae0ce5194449
     
     /**
 	 * Test of findMinimumPrice and getPrice method, of class Logic.
