@@ -31,6 +31,7 @@ public class Output{
      * @param price total price of the items ordered
 	 */
     public Output(String faculty, String contact, String request, String[] items, int price){
+   
         this.faculty = capitalize(faculty);
         this.contact = capitalize(contact);
         this.request = capitalize(request);
@@ -49,18 +50,8 @@ public class Output{
 	 */
     public Output(String faculty, String contact, String request, String[] manufacturers){
         
-        if(faculty.length() > 0){
-            this.faculty = capitalize(faculty);
-        } else {
-            this.faculty = faculty;
-        }
-        
-        if(contact.length() > 0){
-            this.contact = capitalize(contact);
-        } else {
-            this.contact = contact;
-        }
-        
+        this.faculty = capitalize(faculty);
+        this.contact = capitalize(contact);
         this.request = capitalize(request);
         this.manufacturers = manufacturers;
         setTheDate();
@@ -152,8 +143,10 @@ public class Output{
         String[] temp = words.split(" ");
         words = "";
         for(String temp1:temp){
-            temp1 = temp1.toUpperCase().charAt(0)+temp1.toLowerCase().substring(1,temp1.length());
-            words += temp1 + " ";
+            if(temp1.length() > 0){
+                temp1 = temp1.toUpperCase().charAt(0)+temp1.toLowerCase().substring(1,temp1.length());
+                words += temp1 + " ";
+            }
         }
         return words.trim();
     }

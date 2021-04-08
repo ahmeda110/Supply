@@ -17,6 +17,7 @@ public class GUI extends javax.swing.JFrame {
 
      String categoryE, typeE, numberOfTypeE, facultyE, contactE, itemE, username, password;
      DatabaseConnection initialDatabase;
+     ArrayList <String> tables;
      
      /**
      * Creates new form GUI
@@ -26,7 +27,8 @@ public class GUI extends javax.swing.JFrame {
         this.password = password;
         initComponents();
         initialDatabase = new DatabaseConnection("jdbc:mysql://localhost/inventory", username, password);
-    }
+        tables = initialDatabase.getAvailableTables();
+    } 
 
     
     @SuppressWarnings("unchecked")
@@ -378,7 +380,7 @@ public class GUI extends javax.swing.JFrame {
         
         Logic myLogic = new Logic(initialDatabase, facultyE, contactE, itemE, categoryE, intValue);
         //int labelSize = 300;
-        if(myLogic.getValidTable() && validNumber){
+        if(tables.contains(categoryE.toLowerCase()) && validNumber){
             int fontSize = 14;
            
            String outputText = "<span style=\"color:green;\">A text file has been made at the root directory</span>\n\n" + 
@@ -394,11 +396,14 @@ public class GUI extends javax.swing.JFrame {
            jTextField3.setText("");
            jTextField4.setText("");
            jTextField5.setText("");
-        } else if(!validNumber){
+        } /*else if(validNumber && tables.contains(categoryE.toLowerCase())) {
+            
+        }*/
+        else if(!validNumber){
             jLabel11.setText("Please enter a correct number of items.");
         }
         else {
-            jLabel11.setText("Please make sure that your categoty and type values are correct.");
+            jLabel11.setText("Please make sure that your categoty value is correct.");
         }
     }//GEN-LAST:event_jButton1MouseClicked
 

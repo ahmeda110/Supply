@@ -115,6 +115,16 @@ public class DatabaseConnection {
 	public ArrayList<String> getColumns() {
 		return this.columns;
 	}
+        
+        /**
+	 * Returns the names of all the tables in the inventory database
+	 * @return An ArrayList containing the names of the tables
+	 */
+	public ArrayList<String> getAvailableTables() {
+		return this.availableTables;
+	}
+        
+        
 
 	/**
 	 * Initializes the connection with the local database using the passed username,
