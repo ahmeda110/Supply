@@ -1,4 +1,3 @@
-package FinalProject;
 import java.awt.*;
 import java.sql.DriverManager;
 import java.sql.*;
