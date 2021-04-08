@@ -49,9 +49,9 @@ public class DatabaseConnectionTest {
 		}
 
 		BufferedReader input = null;
-		try { //--------------!important----------------
+		try {                                                                  //--------------!important----------------
 			input = new BufferedReader(new FileReader("./inventory.sql")); //inventory file must be in the 
-		} //directory from which program was run
+		}                                                                      //directory from which program was run
 		catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
@@ -184,7 +184,7 @@ public class DatabaseConnectionTest {
 		expResult.add(entryOne);
 		expResult.add(entryTwo);
 		ArrayList<HashMap<String, String>> result = instance.retrieveData(tableName, type);
-		assertEquals(expResult, result);
+		assertEquals("retrieving data for a valid item in a valid table failed", expResult, result);
 	}
 
 	/**
@@ -201,7 +201,7 @@ public class DatabaseConnectionTest {
 		ArrayList<HashMap<String, String>> expResult = null;
 
 		ArrayList<HashMap<String, String>> result = instance.retrieveData(tableName, type);
-		assertEquals(expResult, result);
+		assertEquals("retrieveData returned data even though table is invalid", expResult, result);
 	}
 
 	/**
@@ -218,7 +218,7 @@ public class DatabaseConnectionTest {
 		ArrayList<HashMap<String, String>> expResult = null;
 
 		ArrayList<HashMap<String, String>> result = instance.retrieveData(tableName, type);
-		assertEquals(expResult, result);
+		assertEquals("retrieveData returned data even though item type is invalid", expResult, result);
 	}
 
 	/**
@@ -261,7 +261,8 @@ public class DatabaseConnectionTest {
 		ArrayList<HashMap<String, String>> expResult = null;
 
 		ArrayList<HashMap<String, String>> result = instance.retrieveData(tableName, type);
-		assertEquals(expResult, result);
+		assertEquals("data was returned from a valid table even though table was empty", 
+                              expResult, result);
 
 		Statement myStatment = null;
 
@@ -296,7 +297,7 @@ public class DatabaseConnectionTest {
 		ArrayList<HashMap<String, String>> temp = instance.retrieveData(tableName, type);
 		int expResult = 7;
 		int result = instance.getRows();
-		assertEquals(expResult, result);
+		assertEquals("number of rows returned for a valid item in a valid table was incorrect", expResult, result);
 	}
 
 	/**
@@ -313,7 +314,7 @@ public class DatabaseConnectionTest {
 		instance.retrieveData(tableName, type);
 		int expResult = -1;
 		int result = instance.getRows();
-		assertEquals(expResult, result);
+		assertEquals("rows returned was a valid number rather than -1 when table and item were invalid", expResult, result);
 	}
 
 	/**
@@ -336,7 +337,7 @@ public class DatabaseConnectionTest {
 
 		Collections.addAll(expResult, resultArray);
 		ArrayList<String> result = instance.getColumns();
-		assertEquals(expResult, result);
+		assertEquals("coulmn names returned for a valid table (filing) were incorrect", expResult, result);
 	}
 
 	/**
@@ -355,7 +356,7 @@ public class DatabaseConnectionTest {
 		ArrayList<String> expResult = null;
 
 		ArrayList<String> result = instance.getColumns();
-		assertEquals(expResult, result);
+		assertEquals("column names weren't null for an invalid table", expResult, result);
 	}
 
 	/**
@@ -392,7 +393,8 @@ public class DatabaseConnectionTest {
 		expResult.add(entryThree);
 
 		ArrayList<HashMap<String, String>> result = instance.getPossibleManufacturer(itemTable);
-		assertTrue(expResult.size() == result.size() && expResult.containsAll(result) && result.containsAll(expResult));
+		assertTrue("Manufacturers returned for valid data and before any data was removed is incorrect",
+                            expResult.size() == result.size() && expResult.containsAll(result) && result.containsAll(expResult));
 	}
 
 	/**
@@ -407,7 +409,7 @@ public class DatabaseConnectionTest {
 		ArrayList<HashMap<String, String>> expResult = null;
 
 		ArrayList<HashMap<String, String>> result = instance.getPossibleManufacturer(itemTable);
-		assertEquals(expResult, result);
+		assertEquals("Manufacturers were not null when table was invalid", expResult, result);
 	}
 
 	/**
@@ -472,7 +474,9 @@ public class DatabaseConnectionTest {
 
 		ArrayList<HashMap<String, String>> result = instance.getPossibleManufacturer(itemTable);
 
-		assertTrue(expResult.size() == result.size() && expResult.containsAll(result) && result.containsAll(expResult));
+		assertTrue("Manufacturers were incorrect after deleting all records from a table. Class did not store "
+                         + "them at the beginning", expResult.size() == result.size() && expResult.containsAll(result) 
+                           && result.containsAll(expResult));
 
 		Statement myStatment = null;
 
@@ -541,7 +545,7 @@ public class DatabaseConnectionTest {
 		boolean expResult[] = {
 			false, false, false
 		};
-		assertArrayEquals(expResult, result);
+		assertArrayEquals("method deleteUsedItems did not delete the required IDs", expResult, result);
 
 		try {
 			myStatment.execute("INSERT INTO DESK (ID, Type, Legs, Top, Drawer, Price, ManuID) VALUES" +
