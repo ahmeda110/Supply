@@ -7,14 +7,14 @@ by Ahmed Abdullah, Dong Wook Son, Jonathan Chong and Ahmed Abbas
 3. A pop up screen should appear asking for a username and password,
  this is the username and password you would use to access your local 
  inventory.sql database. If the inventory.sql is not installed, 
- we have provided one for you to run in your workbench. 
+ we have provided one for you to run in your workbench (located inside assets folder). 
  4. If the login was successful new screen should appear prompting your inputs. 
  
  # Notes
  - The lib folder contains mysql-connector-java.jar file which is used as 
  an import in the DatabaseConnection class. 
- - Demonstration video and UML diagram are located in the repo
-
+ - Demonstration video and UML diagram are located in submissions folder int the repository
+ 
 # Inspiration
 The inspiration for our project closely relates to recent initiatives that the University of Calgary has taken. Currently, Supply Chain Management (SCM) at the university aims to divert filing cabinets, bookcases, and some furnishings in order to prevent usable materials from ending up in the landfill.
 
