@@ -15,9 +15,10 @@ import javax.swing.*;
 */
 public class Authentication extends javax.swing.JFrame {
 
-    String username, password;
-    char[] pass;
-    boolean validCredentials;
+    private String username, password;
+    private char[] pass;
+    private boolean validCredentials;
+    private GUI home;
     
     /**
      * Creates new form NewJFrame
@@ -144,7 +145,7 @@ public class Authentication extends javax.swing.JFrame {
 	}
         
         if(validCredentials){
-            GUI home = new GUI(username, password);
+            home = new GUI(username, password);
             dispose();
             home.setVisible(true);
         }
