@@ -169,6 +169,7 @@ public class Authentication extends javax.swing.JFrame {
         });
     }
 
+	//local variables
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
