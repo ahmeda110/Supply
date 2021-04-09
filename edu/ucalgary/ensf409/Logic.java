@@ -1,5 +1,4 @@
 package edu.ucalgary.ensf409;
-
 import java.util.*;
 
 /**
@@ -41,7 +40,12 @@ public class Logic {
         
         DatabaseConnection database = initialDatabase;
         //data on the specific item
-        furniture = database.retrieveData(category, type);
+        try{
+            furniture = database.retrieveData(category, type);
+        }catch(IllegalArgumentException e){
+            furniture = null;
+        }
+
         
         if(furniture == null){
             validTable = false;
@@ -87,7 +91,13 @@ public class Logic {
             output = new Output(faculty, contact, request, items, price); //creates new instance of Output where order can be fulfilled
             database.deleteUsedItems(items, category); // deletes used items from the items list
         }else{
-            ArrayList < HashMap < String, String >> manufacturersResult = database.getPossibleManufacturer(category); //get list of possible manufacturers
+            ArrayList < HashMap < String, String >> manufacturersResult;
+            try{
+                manufacturersResult = database.getPossibleManufacturer(category); //get list of possible manufacturers
+            } catch(IllegalArgumentException e){
+                manufacturersResult = null;
+            }
+           
             if(manufacturersResult == null)
             {
               return;

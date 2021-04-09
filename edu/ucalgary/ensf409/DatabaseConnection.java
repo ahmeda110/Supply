@@ -164,7 +164,7 @@ public class DatabaseConnection {
 			// if tablename is not available in the invntory database
 			if (queryResults.next() == false) {
 				myStatment.close();
-				return null;
+                                throw new IllegalArgumentException("invalid table");
 			}
 
 			queryResults.previous(); //go back to first result object
@@ -183,7 +183,7 @@ public class DatabaseConnection {
 
 			if (queryResults.next() == false) {
 				myStatment.close();
-				return null;
+                                throw new IllegalArgumentException("invalid furniture type");                             
 			}
 
 			queryResults.previous(); //go back to first result object
@@ -225,7 +225,7 @@ public class DatabaseConnection {
                 return manufacturers.get(itemTable.toLowerCase());
             }
             else{
-                return null;
+                throw new IllegalArgumentException("invalid table");
             }
         }
 
