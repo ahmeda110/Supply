@@ -30,7 +30,7 @@ public class LogicTest {
 	 * inventory.sql which should be placed in the directory from which the program was run
 	 * to make sure the state of the database is the same as the one that the program expects.
 	 */
-    public void resetDatabase() {
+    public static void resetDatabase() {
 		System.out.println("\n\n--------------------------------------------");
 		System.out.println("Resetting Local Database Before Starting Test.");
 		System.out.println("Please Wait..............");
@@ -44,7 +44,7 @@ public class LogicTest {
         
 		BufferedReader input = null;
 		try { //--------------!important----------------
-			input = new BufferedReader(new FileReader("C:/Users/Luke/Desktop/Hackathons/HYL 2021 (ENSF 409)/supply-chain-management-lukesno/edu/ucalgary/ensf409/inventory.sql")); //inventory file must be in the 
+			input = new BufferedReader(new FileReader("./inventory.sql")); //inventory file must be in the 
 		} //directory from which program was run
 		catch (FileNotFoundException e) {
 			e.printStackTrace();
@@ -92,14 +92,21 @@ public class LogicTest {
 	}
 
 	/**
-	 * Closes Connection object and ResultSet object after each test, and resets the database.
+	 * Closes Connection object and ResultSet object after each test
 	 */
 	@After
 	public void tearDown() {
 		// close ResultSet and Connection after using it
-        resetDatabase();
 		connect.close();
 	}
+
+    /**
+	 * Reset database after all tests were performed
+	 */
+    @AfterClass
+    public static void resetToDefault() {
+        resetDatabase();
+    }
     
     /**
 	 * Test of findMinimumPrice and getPrice method, of class Logic.
