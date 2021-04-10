@@ -185,7 +185,8 @@ public class DatabaseConnectionTest {
 		expResult.add(entryOne);
 		expResult.add(entryTwo);
 		ArrayList<HashMap<String, String>> result = instance.retrieveData(tableName, type);
-		assertEquals("retrieving data for a valid item in a valid table failed", expResult, result);
+                assertTrue("retrieving data for a valid item in a valid table failed",
+                            expResult.size() == result.size() && expResult.containsAll(result) && result.containsAll(expResult));
 	}
 
 	/**
@@ -345,7 +346,8 @@ public class DatabaseConnectionTest {
 
 		Collections.addAll(expResult, resultArray);
 		ArrayList<String> result = instance.getColumns();
-		assertEquals("coulmn names returned for a valid table (filing) were incorrect", expResult, result);
+                assertTrue("coulmn names returned for a valid table (filing) were incorrect",
+                            expResult.size() == result.size() && expResult.containsAll(result) && result.containsAll(expResult));
 	}
 
 	/**

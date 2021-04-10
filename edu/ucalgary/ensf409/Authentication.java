@@ -17,7 +17,7 @@ public class Authentication extends javax.swing.JFrame {
 
     private String username, password; // username and password to the database as inputs from the user
     private char[] pass;
-    private boolean validCredentials; // checks if login is valid
+    private boolean validCredentials = true; // checks if login is valid
     private GUI home; // instaniating the home GUI
     
     /**
@@ -25,6 +25,28 @@ public class Authentication extends javax.swing.JFrame {
      */
     public Authentication() {
         initComponents();
+    }
+    
+    /**
+     * This method attempts to establish a connection with the database using the 
+     * username and password provided, Throws an exception if establishing a connection fails. 
+     */
+    public void checkCredentials(String inputUsername, String inputPassword) throws SQLException {
+        try{
+            DriverManager.getConnection("jdbc:mysql://localhost/inventory", inputUsername, inputPassword);
+        }catch(Exception e){
+            validCredentials = false;
+            throw new SQLException();
+        }
+        
+    }
+    
+    /**
+    * Gets the stored validCredentials variable
+    * @return A Boolean indicating the validity of data
+    */
+    public boolean getValidCredentials(){
+        return this.validCredentials;
     }
 
     /**
@@ -142,13 +164,12 @@ public class Authentication extends javax.swing.JFrame {
         this.pass = jPasswordField1.getPassword();
         password = String.valueOf(pass);
         try{
-            Connection databaseConnection = DriverManager.getConnection("jdbc:mysql://localhost/inventory", username, password);
+            checkCredentials(this.username, this.password);
         }catch(SQLException ex) {
             validCredentials = false;
             jLabel2.setText("<html>Username:<br/><span style=\"color:red;font-size:10px;\">"
                     + "Invalid username or password</span></html>");
-            jPasswordField1.setText("");
-            
+            jPasswordField1.setText("");  
 	}
         
         if(validCredentials){
