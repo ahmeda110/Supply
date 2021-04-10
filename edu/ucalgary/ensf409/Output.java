@@ -22,6 +22,7 @@ public class Output{
     private int price; 
     private String[] manufacturers= {""};
     private String text; 
+    private File file;
     /**
 	 * A constructor, This constructor is called if the order can be fulfilled. 
      * Stores the data given and calls setTheDate() then printFile(true)
@@ -73,8 +74,13 @@ public class Output{
 
         try {
             //creates new text with orderform_'the date and time of order'.txt
-            File file = new File("orderform_" + newDate + ".txt" );
+            file = new File("orderform_" + newDate + ".txt" );
+            int num = 1;
             file.createNewFile();
+            while(file.length() != 0){
+                file = new File("orderform_" + newDate + "_"+ num+ ".txt" );
+                file.createNewFile();
+            }
             
         }catch (IOException e) {
             System.out.println("Error creating file.");
@@ -95,7 +101,7 @@ public class Output{
         }
         try{
             //write string in text into orderform_XX.txt 
-            FileWriter writer = new FileWriter("orderform_" + newDate + ".txt");
+            FileWriter writer = new FileWriter(file.getAbsolutePath());
             writer.write(text);
             writer.close();
         }catch (IOException e) {
@@ -141,15 +147,21 @@ public class Output{
      * @return capitalized version of string
      */
     public String capitalize(String words){
-        String[] temp = words.split(" ");
-        words = "";
-        for(String temp1:temp){
-            if(temp1.length() > 0){
-                temp1 = temp1.toUpperCase().charAt(0)+temp1.toLowerCase().substring(1,temp1.length());
-                words += temp1 + " ";
+        if(words != null){
+            String[] temp = words.split(" ");
+            words = "";
+            for(String temp1:temp){
+                if(temp1.length() > 0){
+                    temp1 = temp1.toUpperCase().charAt(0)+temp1.toLowerCase().substring(1,temp1.length());
+                    words += temp1 + " ";
+                }
             }
+            words = words.trim();
         }
-        return words.trim();
+        else{
+            words = "";
+        }
+        return words;
     }
     /**
      * returns the String version of what would be written in the .txt
@@ -164,5 +176,8 @@ public class Output{
      */
     public String getDate(){
         return date;
+    }
+    public File getFile(){
+        return file;
     }
 }
