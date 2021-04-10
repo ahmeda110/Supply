@@ -17,8 +17,7 @@ public class AuthenticationTest {
     private static final String USERNAME = "Ahmed"; //--------------!important----------------
     private static final String PASSWORD = "ensf409"; // CHANGE TO YOUR OWN DATABASE USERNAME AND PASSWORD
     
-    public AuthenticationTest() {
-    }
+    public AuthenticationTest() {}
     
     /**
      * Test of checkCredentials method, of class Authentication.
