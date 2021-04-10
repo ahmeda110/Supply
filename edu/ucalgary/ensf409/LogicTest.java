@@ -45,6 +45,7 @@ public class LogicTest {
 			while ((currentLine = input.readLine()) != null) {
 				result.append(currentLine.trim());
 			}
+			input.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

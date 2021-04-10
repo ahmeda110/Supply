@@ -78,7 +78,8 @@ public class DatabaseConnectionTest {
 			if (myStatment != null) {
 				try {
 					myStatment.close();
-				} catch (SQLException e) {
+					input.close();
+				} catch (Exception e) {
 					e.printStackTrace();
 				}
 			}
