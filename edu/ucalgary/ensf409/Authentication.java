@@ -19,6 +19,15 @@ public class Authentication extends javax.swing.JFrame {
     private char[] pass;
     private boolean validCredentials = true; // checks if login is valid
     private GUI home; // instaniating the home GUI
+    private javax.swing.JButton jButton1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPasswordField jPasswordField1;
+    private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JSeparator jSeparator2;
+    private javax.swing.JTextField jTextField1;
     
     /**
      * Creates new form/GUI Authentication
@@ -48,6 +57,33 @@ public class Authentication extends javax.swing.JFrame {
     public boolean getValidCredentials(){
         return this.validCredentials;
     }
+    
+    /**
+     * If the submit button is clicked collect the fields, check for correct inputs, and if correct
+     * go to home GUI otherwise prompt the user to enter login again
+     *
+     * @param evt checks to see if the mouse is clicked
+     */
+    private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {
+        validCredentials = true;
+        this.username = jTextField1.getText();
+        this.pass = jPasswordField1.getPassword();
+        password = String.valueOf(pass);
+        try{
+            checkCredentials(this.username, this.password); // check if username and password arevalid
+        }catch(SQLException ex) {
+            validCredentials = false;
+            jLabel2.setText("<html>Username:<br/><span style=\"color:red;font-size:10px;\">"
+                    + "Invalid username or password</span></html>"); 
+            jPasswordField1.setText("");  // reset password field on invalid input
+	}
+        
+        if(validCredentials){
+            home = new GUI(username, password);
+            dispose(); // remove authentication window from view
+            home.setVisible(true);
+        }
+    }    
 
     /**
      * This method is called from within the constructor to initialize the form with the various components
@@ -84,6 +120,7 @@ public class Authentication extends javax.swing.JFrame {
         jButton1.setText("Submit");
         jButton1.setBorder(null);
         jButton1.addMouseListener(new java.awt.event.MouseAdapter() {
+		
             @Override
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jButton1MouseClicked(evt);
@@ -151,34 +188,6 @@ public class Authentication extends javax.swing.JFrame {
         pack();
     }
 
-	
-     /**
-     * If the submit button is clicked collect the fields, check for correct inputs, and if correct
-     * go to home GUI otherwise prompt the user to enter login again
-     *
-     * @param evt checks to see if the mouse is clicked
-     */
-    private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {
-        validCredentials = true;
-        this.username = jTextField1.getText();
-        this.pass = jPasswordField1.getPassword();
-        password = String.valueOf(pass);
-        try{
-            checkCredentials(this.username, this.password);
-        }catch(SQLException ex) {
-            validCredentials = false;
-            jLabel2.setText("<html>Username:<br/><span style=\"color:red;font-size:10px;\">"
-                    + "Invalid username or password</span></html>");
-            jPasswordField1.setText("");  
-	}
-        
-        if(validCredentials){
-            home = new GUI(username, password);
-            dispose();
-            home.setVisible(true);
-        }
-    }    
-
     /**
      * @param args the command line arguments
      */
@@ -189,15 +198,4 @@ public class Authentication extends javax.swing.JFrame {
             }
         });
     }
-
-	//local variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JPasswordField jPasswordField1;
-    private javax.swing.JSeparator jSeparator1;
-    private javax.swing.JSeparator jSeparator2;
-    private javax.swing.JTextField jTextField1;
 }
