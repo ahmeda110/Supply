@@ -31,8 +31,10 @@ Change the variables **USERNAME** and **PASSWORD** at the top of the files *Auth
  
  ## Important Notes
 - Demonstration video and UML diagram are located in submissions folder at the root directory
- - The lib folder contains mysql-connector-java.jar file which is used as an import in the DatabaseConnection class. 
- - The lib folder also contains junit and hamcrest for running the test cases
+- Order text files will be produced in the root directory (directory 14)
+- Please find the correct text file by comparing the time in the text file name with the current time. Some extra files may be produced due to tests
+- The lib folder contains mysql-connector-java.jar file which is used as an import in the DatabaseConnection class. 
+- The lib folder also contains junit and hamcrest for running the test cases
  
 
 ## Inspiration
