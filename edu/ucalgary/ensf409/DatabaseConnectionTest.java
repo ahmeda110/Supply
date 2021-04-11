@@ -50,9 +50,9 @@ public class DatabaseConnectionTest {
 		}
 
 		BufferedReader input = null;
-		try {                                                                  //--------------!important----------------
-			input = new BufferedReader(new FileReader("./inventory.sql")); //inventory file must be in the 
-		}                                                                      //directory from which program was run
+		try { 																//--------------!important----------------
+			input = new BufferedReader(new FileReader("./inventory.sql")); 	//inventory file must be in the 
+		} 																	//directory from which program was run
 		catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
@@ -67,7 +67,7 @@ public class DatabaseConnectionTest {
 				result.append(currentLine.trim());
 			}
 			String[] executable = result.toString().replace("\n", "").split(";"); //remove all newline characters and 
-			// split at semi colons to have a complete statment
+																				// split at semi colons to have a complete statment
 			for (String
 				var: executable) {
 				myStatment.execute(var); // execute each statment in inventory.sql
@@ -186,8 +186,8 @@ public class DatabaseConnectionTest {
 		expResult.add(entryOne);
 		expResult.add(entryTwo);
 		ArrayList<HashMap<String, String>> result = instance.retrieveData(tableName, type);
-                assertTrue("retrieving data for a valid item in a valid table failed",
-                            expResult.size() == result.size() && expResult.containsAll(result) && result.containsAll(expResult));
+		assertTrue("retrieving data for a valid item in a valid table failed",
+			expResult.size() == result.size() && expResult.containsAll(result) && result.containsAll(expResult));
 	}
 
 	/**
@@ -195,13 +195,13 @@ public class DatabaseConnectionTest {
 	 * Creates an instance of DatabaseConnection, calls retrieveData method with
 	 * invalid table name and valid item type.
 	 */
-	@Test(expected=IllegalArgumentException.class)
+	@Test(expected = IllegalArgumentException.class)
 	public void testRetrieveDataInvalidTable() {
 		System.out.println("retrieveData Method With Invalid TableName Test....");
 		String tableName = "chairrr";
 		String type = "Kneeling";
-                
-                ArrayList<HashMap<String, String>> result = instance.retrieveData(tableName, type);
+
+		ArrayList<HashMap<String, String>> result = instance.retrieveData(tableName, type);
 	}
 
 	/**
@@ -209,7 +209,7 @@ public class DatabaseConnectionTest {
 	 * Creates an instance of DatabaseConnection, calls retrieveData method with
 	 * valid table name and invalid item type.
 	 */
-	@Test(expected=IllegalArgumentException.class)
+	@Test(expected = IllegalArgumentException.class)
 	public void testRetrieveDataInvalidType() {
 		System.out.println("retrieveData Method With Invalid Item Type Test....");
 		String tableName = "chair";
@@ -258,14 +258,14 @@ public class DatabaseConnectionTest {
 		ArrayList<HashMap<String, String>> expResult = null;
 
 		ArrayList<HashMap<String, String>> result;
-                try{
-                   result = instance.retrieveData(tableName, type);
-                } catch(IllegalArgumentException e){
-                    result = null;
-                }
-                
-		assertEquals("data was returned from a valid table even though table was empty", 
-                              expResult, result);
+		try {
+			result = instance.retrieveData(tableName, type);
+		} catch (IllegalArgumentException e) {
+			result = null;
+		}
+
+		assertEquals("data was returned from a valid table even though table was empty",
+			expResult, result);
 
 		Statement myStatment = null;
 
@@ -314,16 +314,16 @@ public class DatabaseConnectionTest {
 		System.out.println("getRows Method With Invalid Data....");
 		String tableName = "Lampp";
 		String type = "Deskkk";
-                
-                try{
-                   instance.retrieveData(tableName, type);
-                } catch(IllegalArgumentException e){
-                    
-                }
-		
+
+		try {
+			instance.retrieveData(tableName, type);
+		} catch (IllegalArgumentException e) {
+
+		}
+
 		int expResult = -1;
 		int result = instance.getRows();
-            
+
 		assertEquals("rows returned was a valid number rather than -1 when table and item were invalid", expResult, result);
 	}
 
@@ -347,8 +347,8 @@ public class DatabaseConnectionTest {
 
 		Collections.addAll(expResult, resultArray);
 		ArrayList<String> result = instance.getColumns();
-                assertTrue("coulmn names returned for a valid table (filing) were incorrect",
-                            expResult.size() == result.size() && expResult.containsAll(result) && result.containsAll(expResult));
+		assertTrue("coulmn names returned for a valid table (filing) were incorrect",
+			expResult.size() == result.size() && expResult.containsAll(result) && result.containsAll(expResult));
 	}
 
 	/**
@@ -362,11 +362,11 @@ public class DatabaseConnectionTest {
 		System.out.println("getColumns Method With InValid Data....");
 		String tableName = "notvalid";
 		String type = "invalid";
-		try{
-                   instance.retrieveData(tableName, type);
-                } catch(IllegalArgumentException e){
-                    
-                }
+		try {
+			instance.retrieveData(tableName, type);
+		} catch (IllegalArgumentException e) {
+
+		}
 
 		ArrayList<String> expResult = null;
 
@@ -409,14 +409,14 @@ public class DatabaseConnectionTest {
 
 		ArrayList<HashMap<String, String>> result = instance.getPossibleManufacturer(itemTable);
 		assertTrue("Manufacturers returned for valid data and before any data was removed is incorrect",
-                            expResult.size() == result.size() && expResult.containsAll(result) && result.containsAll(expResult));
+			expResult.size() == result.size() && expResult.containsAll(result) && result.containsAll(expResult));
 	}
 
 	/**
 	 * Test of getPossibleManufacturer method, of class DatabaseConnection.
 	 * Test getPossibleManufacturer method with invalid table name makes sure an exception is thrown
 	 */
-	@Test(expected=IllegalArgumentException.class)
+	@Test(expected = IllegalArgumentException.class)
 	public void testGetPossibleManufacturerInValidData() {
 		System.out.println("getPossibleManufacturer Method With Invalid Data");
 		String itemTable = "invalid";
@@ -485,9 +485,9 @@ public class DatabaseConnectionTest {
 
 		ArrayList<HashMap<String, String>> result = instance.getPossibleManufacturer(itemTable);
 
-		assertTrue("Manufacturers were incorrect after deleting all records from a table. Class did not store "
-                         + "them at the beginning", expResult.size() == result.size() && expResult.containsAll(result) 
-                           && result.containsAll(expResult));
+		assertTrue("Manufacturers were incorrect after deleting all records from a table. Class did not store " +
+			"them at the beginning", expResult.size() == result.size() && expResult.containsAll(result) &&
+			result.containsAll(expResult));
 
 		Statement myStatment = null;
 
@@ -522,8 +522,8 @@ public class DatabaseConnectionTest {
 
 	/**
 	 * Test of deleteUsedItems method, of class DatabaseConnection.
-         * Give valid IDs and valid tableName and check if method deletes items from
-         * the database
+	 * Give valid IDs and valid tableName and check if method deletes items from
+	 * the database
 	 */
 	@Test
 	public void testDeleteUsedItems() {
@@ -573,5 +573,5 @@ public class DatabaseConnectionTest {
 			e.printStackTrace();
 		}
 	}
-        
+
 }

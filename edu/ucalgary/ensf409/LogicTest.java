@@ -25,16 +25,16 @@ public class LogicTest {
 	private static final String PASSWORD = "ensf409";
 	private static String[] executable;
 
-        /**
+	/**
 	 * This method reads the file inventory.sql which should be placed in the directory 
-         * from which the program was run to make sure the state of the database is the same
-         * as the one that the program expects.
+	 * from which the program was run to make sure the state of the database is the same
+	 * as the one that the program expects.
 	 */
 	public static void readDatabase() {
 		BufferedReader input = null;
-		try {                                                                   //--------------!important----------------
-			input = new BufferedReader(new FileReader("./inventory.sql")); //inventory file must be in the 
-		}                                                                      //directory from which program was run
+		try { 																//--------------!important----------------
+			input = new BufferedReader(new FileReader("./inventory.sql"));	 //inventory file must be in the 
+		} 																	//directory from which program was run
 		catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
@@ -51,7 +51,7 @@ public class LogicTest {
 		}
 
 		executable = result.toString().replace("\n", "").split(";"); //remove all newline characters and 
-		// split at semi colons to have a complete statment
+																	// split at semi colons to have a complete statment
 
 	}
 
@@ -94,10 +94,10 @@ public class LogicTest {
 
 		}
 	}
-        
-        /**
-         * This method resets the database once before all the tests
-         */
+
+	/**
+	 * This method resets the database once before all the tests
+	 */
 	@BeforeClass
 	public static void setUpClass() {
 		readDatabase();

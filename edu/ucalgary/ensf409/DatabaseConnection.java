@@ -22,8 +22,8 @@ public class DatabaseConnection {
 	private PreparedStatement myPreparedStatment;
 	private ArrayList<String> columns;
 	private int rows = -1;
-        private ArrayList <String> availableTables;
-        private HashMap<String, ArrayList<HashMap<String, String>>> manufacturers;
+	private ArrayList<String> availableTables;
+	private HashMap<String, ArrayList<HashMap<String, String>>> manufacturers;
 
 	/**
 	 * A constructor, stores connection data as member variables and
@@ -41,20 +41,20 @@ public class DatabaseConnection {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-                availableTables = new ArrayList<String>();
-                populateAvailableTables();
-                
-                manufacturers = new HashMap<String, ArrayList<HashMap<String, String>>>();
-                for(int i = 0; i < availableTables.size(); i++){
-                    manufacturers.put(availableTables.get(i), getInitialPossibleManufacturer(availableTables.get(i)));
-                }             
+		availableTables = new ArrayList<String> ();
+		populateAvailableTables();
+
+		manufacturers = new HashMap<String, ArrayList<HashMap<String, String>>> ();
+		for (int i = 0; i<availableTables.size(); i++) {
+			manufacturers.put(availableTables.get(i), getInitialPossibleManufacturer(availableTables.get(i)));
+		}
 	}
-        
-        /**
+
+	/**
 	 * populates member variable availableTables with all table names in the
-         * database
+	 * database
 	 */
-        private void populateAvailableTables() {
+	private void populateAvailableTables() {
 		try {
 			myStatment = databaseConnection.createStatement();
 			queryResults = myStatment.executeQuery("Show tables");
@@ -63,7 +63,7 @@ public class DatabaseConnection {
 				availableTables.add(queryResults.getString(1).toLowerCase());
 			}
 			myStatment.close();
-		} catch(SQLException ex) {
+		} catch (SQLException ex) {
 			ex.printStackTrace();
 		}
 	}
@@ -116,16 +116,14 @@ public class DatabaseConnection {
 	public ArrayList<String> getColumns() {
 		return this.columns;
 	}
-        
-        /**
+
+	/**
 	 * Returns the names of all the tables in the inventory database
 	 * @return An ArrayList containing the names of the tables
 	 */
 	public ArrayList<String> getAvailableTables() {
 		return this.availableTables;
 	}
-        
-        
 
 	/**
 	 * Initializes the connection with the local database using the passed username,
@@ -164,7 +162,7 @@ public class DatabaseConnection {
 			// if tablename is not available in the invntory database
 			if (queryResults.next() == false) {
 				myStatment.close();
-                                throw new IllegalArgumentException("invalid table");
+				throw new IllegalArgumentException("invalid table");
 			}
 
 			queryResults.previous(); //go back to first result object
@@ -183,7 +181,7 @@ public class DatabaseConnection {
 
 			if (queryResults.next() == false) {
 				myStatment.close();
-                                throw new IllegalArgumentException("invalid furniture type");                             
+				throw new IllegalArgumentException("invalid furniture type");
 			}
 
 			queryResults.previous(); //go back to first result object
@@ -210,9 +208,8 @@ public class DatabaseConnection {
 		}
 		return furniture;
 	}
-        
-        
-        /**
+
+	/**
 	 * Given a table and an item type, returns a List of Maps having a String key and String value
 	 * representing a possible furniture manufacturer where the data of each manufacturer are stored
 	 * as key value pairs derived from initial database state
@@ -220,14 +217,13 @@ public class DatabaseConnection {
 	 * @return List of possible manufacturers of the given item stored as key-value pairs
 	 * in a Map from initial database state
 	 */
-        public ArrayList<HashMap<String, String>> getPossibleManufacturer(String itemTable){
-            if(availableTables.contains(itemTable.toLowerCase())){
-                return manufacturers.get(itemTable.toLowerCase());
-            }
-            else{
-                throw new IllegalArgumentException("invalid table");
-            }
-        }
+	public ArrayList<HashMap<String, String>> getPossibleManufacturer(String itemTable) {
+		if (availableTables.contains(itemTable.toLowerCase())) {
+			return manufacturers.get(itemTable.toLowerCase());
+		} else {
+			throw new IllegalArgumentException("invalid table");
+		}
+	}
 
 	/**
 	 * Given a table and an item type, returns a List of Maps having a String key and String value
@@ -252,8 +248,8 @@ public class DatabaseConnection {
 				return null;
 			} else {
 				// get all manufacturers of current table
-				possibleManufacturers.add(queryResults.getString("ManuID")); //add without calling next(), already
-				while (queryResults.next()) { //called in if statment
+				possibleManufacturers.add(queryResults.getString("ManuID")); //add without calling next(), already called in if statment
+				while (queryResults.next()) { 								
 					possibleManufacturers.add(queryResults.getString("ManuID"));
 				}
 				myStatment.close();
