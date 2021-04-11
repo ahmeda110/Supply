@@ -36,7 +36,6 @@ public class GUI extends javax.swing.JFrame {
     } 
      
      public void checkIfValid(String faculty, String contact, String type, String category, int numberOfItems){
-         
          try {
          intValue = Integer.parseInt(numberOfTypeE);
          validNumber = true;
