@@ -34,6 +34,17 @@ public class GUI extends javax.swing.JFrame {
         initialDatabase = new DatabaseConnection("jdbc:mysql://localhost/inventory", USERNAME, PASSWORD);
         tables = initialDatabase.getAvailableTables();
     } 
+     
+     public void checkIfValid(String faculty, String contact, String type, String category, int numberOfItems){
+         
+         try {
+         intValue = Integer.parseInt(numberOfTypeE);
+         validNumber = true;
+    } catch (NumberFormatException e) {
+        validNumber = false;
+        System.out.println("Input String cannot be parsed to Integer.");
+    }      
+    }
 
     /**
      * All the different compoenents that make up the GUI are in here
@@ -384,8 +395,7 @@ public class GUI extends javax.swing.JFrame {
         boolean validNumber = false;
         int intValue = 0;
         try {
-        intValue = Integer.parseInt(numberOfTypeE);
-        validNumber = true;
+        checkIfValid(facultyE, contactE, typeE, categoryE, intValue);
     } catch (NumberFormatException e) {
         System.out.println("Input String cannot be parsed to Integer.");
     }
