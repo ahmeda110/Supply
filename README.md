@@ -10,10 +10,10 @@ Our main method is located in the file Authentication.java (line 194). Authetica
 2. java -cp .;lib/mysql-connector-java-8.0.23.jar edu/ucalgary/ensf409/Authentication edu/ucalgary/ensf409/DatabaseConnection edu/ucalgary/ensf409/GUI edu/ucalgary/ensf409/Logic edu/ucalgary/ensf409/Output  
 
 3. A pop up screen should appear asking for a username and password, this is the username and password you would use to access your local inventory.sql database. If the inventory.sql is not installed, we have provided one for you to run in your workbench (located in the root directory).  
-4. If the login was successful new screen should appear prompting your inputs. 
+4. If the login was successful, a new screen should appear prompting your inputs. 
 ## Testing notes
 - Test cases are included in the same folder as the rest of the .java files (edu/ucalgary/ensf409)
-- For DatabaseConnectionTest.java and LogicTest.java, the inventory.sql should be run automatically before each test to reset the database. Although if errors occur, please try manually running inventory.sql to reset the database then running the tests again.
+- For DatabaseConnectionTest.java and LogicTest.java, the inventory.sql should be run automatically before some tests to reset the database. Although if errors occur, please try manually running inventory.sql to reset the database then running the tests again.
 ## Running the tests
 Our main method is located in the file Authentication.java (line 194). Authetication.java is in the directory edu/ucalgary/ensf409.
 ### Running the tests from command line:
