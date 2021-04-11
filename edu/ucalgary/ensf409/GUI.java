@@ -20,6 +20,40 @@ public class GUI extends javax.swing.JFrame {
      private Logic myLogic; // instantiating the logic class
      private DatabaseConnection initialDatabase; // instantiating the DatabaseConnection class
      private ArrayList <String> tables;
+     private int intValue = -1;
+     
+    private javax.swing.JButton jButton1;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
+    private javax.swing.JPanel jPanel5;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JSeparator jSeparator2;
+    private javax.swing.JSeparator jSeparator3;
+    private javax.swing.JSeparator jSeparator4;
+    private javax.swing.JSeparator jSeparator5;
+    private javax.swing.JSeparator jSeparator6;
+    private javax.swing.JSeparator jSeparator7;
+    private javax.swing.JSeparator jSeparator8;
+    private javax.swing.JTextField jTextField1;
+    private javax.swing.JTextField jTextField2;
+    private javax.swing.JTextField jTextField3;
+    private javax.swing.JTextField jTextField4;
+    private javax.swing.JTextField jTextField5;
+
      
      /**
      * Constructor - Launches the GUI as well as retrieve some parameters to be able to do so
@@ -33,10 +67,92 @@ public class GUI extends javax.swing.JFrame {
         initComponents();
         initialDatabase = new DatabaseConnection("jdbc:mysql://localhost/inventory", USERNAME, PASSWORD);
         tables = initialDatabase.getAvailableTables();
-    } 
+    }
+     
+    /**
+     * A method that checks if a given String is a valid integer and if so
+     * parse it to an integer
+     * @param itemsNumber the number of items to be converted to an integer
+     * @throws NumberFormatException 
+     */ 
+    public void validNumberOfItems(String itemsNumber) throws NumberFormatException{
+        intValue = Integer.parseInt(itemsNumber);
+    }
+    
+    /**
+     * A method that checks if a given table is available in the database
+     * @param table the name of the table (category of furniture) to be
+     * checked for validity
+     * @return A boolean representing the validity of the table
+     */
+    public boolean validTable(String table){
+         return tables.contains(table.toLowerCase());
+    }
+    
+    /**
+     * A method that gets the integer value of the number of items ordered
+     * @return An integer representing the number of items ordered
+     */
+    public int getIntValue(){
+        return this.intValue;
+    }
+        
+   
+    /**
+     * If the submit button is clicked collect the fields, check for correct inputs, and output result to GUI
+     * as well as creating a text file
+     * @param evt checks to see if the mouse is clicked
+     */
+    private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {
+        this.categoryE = jTextField1.getText();
+        this.typeE = jTextField2.getText();
+        this.numberOfTypeE = jTextField3.getText();
+        this.facultyE = jTextField4.getText();
+        this.contactE = jTextField5.getText();
+        
+        boolean validNumber;
+        
+        // check if number of items are valid
+        try{
+            validNumberOfItems(numberOfTypeE);
+            validNumber = true;
+        } catch(NumberFormatException e){
+            validNumber = false;
+        }
+ 
+        if(validTable(categoryE.toLowerCase()) && validNumber){
+            myLogic = new Logic(initialDatabase, facultyE, contactE, typeE, categoryE, intValue);
+            int fontSize = 14;
+           
+           String outputText = "<span style=\"color:green;\">A text file has been made at the root directory</span>\n\n" + 
+                                myLogic.getOutput().getText();
+          
+           if(outputText.split("\n").length > 12){
+               fontSize = 270 / outputText.split("\n").length; // change font size by a factor according to the size of
+                                                               // output to git all sizez
+           }
+           jLabel11.setFont(new Font("Serif", Font.PLAIN, fontSize));
+           jLabel11.setText("<html>" + outputText.replaceAll("\n", "<br/>") + "</html>"); // chnage newline to a line break
+           // reset fields if values are correct
+           jTextField1.setText("");
+           jTextField2.setText("");
+           jTextField3.setText("");
+           jTextField4.setText("");
+           jTextField5.setText("");
+        } 
+        // check for combinations of invalid input
+        else if(!validNumber && !validTable(categoryE.toLowerCase())){
+            jLabel11.setText("Please enter a correct number of items and a valid categoy.");
+        } else if(!validNumber){
+            jLabel11.setText("Please enter a correct number of items.");
+        }
+        else {
+            jLabel11.setText("Please make sure that your categoty value is correct.");
+        }
+    }
 
     /**
-     * All the different compoenents that make up the GUI are in here
+     * All the different components that make up the GUI are in here
      */
     @SuppressWarnings("unchecked")
     private void initComponents() {
@@ -92,11 +208,11 @@ public class GUI extends javax.swing.JFrame {
         jPanel3.setBackground(new java.awt.Color(255, 255, 255));
         jPanel3.setPreferredSize(new java.awt.Dimension(887, 1300));
 
-        jLabel1.setIcon(new javax.swing.ImageIcon("assets\\Capture.png")); // NOI18N
+        jLabel1.setIcon(new javax.swing.ImageIcon("assets\\Capture.png"));
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
-        jLabel2.setIcon(new javax.swing.ImageIcon("assets\\icons8-number-1-45.png")); // NOI18N
+        jLabel2.setIcon(new javax.swing.ImageIcon("assets\\icons8-number-1-45.png"));
 
         jLabel3.setFont(new java.awt.Font("Segoe UI Light", 0, 18)); // NOI18N
         jLabel3.setText("What are you looking for?                 . . . . . . . . . . .             Plese provide us with your info");
@@ -104,15 +220,15 @@ public class GUI extends javax.swing.JFrame {
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
         jPanel2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
-        jLabel5.setFont(new java.awt.Font("Segoe UI Light", 0, 14)); // NOI18N
+        jLabel5.setFont(new java.awt.Font("Segoe UI Light", 0, 14));
         jLabel5.setForeground(new java.awt.Color(255, 102, 0));
         jLabel5.setText("Category:");
 
-        jLabel6.setFont(new java.awt.Font("Segoe UI Light", 0, 14)); // NOI18N
+        jLabel6.setFont(new java.awt.Font("Segoe UI Light", 0, 14));
         jLabel6.setForeground(new java.awt.Color(255, 102, 0));
         jLabel6.setText("Type:");
 
-        jLabel7.setFont(new java.awt.Font("Segoe UI Light", 0, 14)); // NOI18N
+        jLabel7.setFont(new java.awt.Font("Segoe UI Light", 0, 14));
         jLabel7.setForeground(new java.awt.Color(255, 102, 0));
         jLabel7.setText("# of items:");
 
@@ -367,120 +483,4 @@ public class GUI extends javax.swing.JFrame {
 
         pack();
     }
-     
-     /**
-     * If the submit button is clicked collect the fields, check for correct inputs, and output result to GUI
-     * as well as creating a text file
-     *
-     * @param evt checks to see if the mouse is clicked
-     */
-    private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {
-        this.categoryE = jTextField1.getText();
-        this.typeE = jTextField2.getText();
-        this.numberOfTypeE = jTextField3.getText();
-        this.facultyE = jTextField4.getText();
-        this.contactE = jTextField5.getText();
-        
-        boolean validNumber = false;
-        int intValue = 0;
-        try {
-        intValue = Integer.parseInt(numberOfTypeE);
-        validNumber = true;
-    } catch (NumberFormatException e) {
-        System.out.println("Input String cannot be parsed to Integer.");
-    }
-        
-        myLogic = new Logic(initialDatabase, facultyE, contactE, typeE, categoryE, intValue);
-        //int labelSize = 300;
-        if(tables.contains(categoryE.toLowerCase()) && validNumber){
-            int fontSize = 14;
-           
-           String outputText = "<span style=\"color:green;\">A text file has been made at the root directory</span>\n\n" + 
-                                myLogic.getOutput().getText();
-          
-           if(outputText.split("\n").length > 12){
-               fontSize = 270 / outputText.split("\n").length;
-           }
-           jLabel11.setFont(new Font("Serif", Font.PLAIN, fontSize));
-           jLabel11.setText("<html>" + outputText.replaceAll("\n", "<br/>") + "</html>");
-           jTextField1.setText("");
-           jTextField2.setText("");
-           jTextField3.setText("");
-           jTextField4.setText("");
-           jTextField5.setText("");
-        } /*else if(validNumber && tables.contains(categoryE.toLowerCase())) {
-            
-        }*/
-        else if(!validNumber){
-            jLabel11.setText("Please enter a correct number of items.");
-        }
-        else {
-            jLabel11.setText("Please make sure that your categoty value is correct.");
-        }
-    }
-
-    /**
-     * main
-     *
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(GUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(GUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(GUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(GUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                
-            }
-        });
-    }
-
-    // Variables declaration 
-    private javax.swing.JButton jButton1;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel10;
-    private javax.swing.JLabel jLabel11;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
-    private javax.swing.JLabel jLabel9;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel3;
-    private javax.swing.JPanel jPanel4;
-    private javax.swing.JPanel jPanel5;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JSeparator jSeparator1;
-    private javax.swing.JSeparator jSeparator2;
-    private javax.swing.JSeparator jSeparator3;
-    private javax.swing.JSeparator jSeparator4;
-    private javax.swing.JSeparator jSeparator5;
-    private javax.swing.JSeparator jSeparator6;
-    private javax.swing.JSeparator jSeparator7;
-    private javax.swing.JSeparator jSeparator8;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
-    private javax.swing.JTextField jTextField5;
 }
