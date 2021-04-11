@@ -23,11 +23,11 @@ b) java -cp .;lib/mysql-connector-java-8.0.23.jar edu/ucalgary/ensf409/Authentic
 
 ## Testing
  - Test cases are included in the same folder as the rest of the .java files
- - For DatabaseConnectionTest.java and LogicTest.java, the inventory.sql should be run automatically before each test to reset the database. Although if errors occur, please try manually running inventory.sql to reset the database then running the tests again.  
- - Please remember to change the variables USERNAME and PASSWORD at the top of the files AuthenticationTest, DatabaseConnectionTest, LogicTest,  and GUI Test to your own  mysql database username and password.
+ - For DatabaseConnectionTest.java and LogicTest.java, the inventory.sql should be run automatically before each test to reset the database. Although if errors occur, please try manually running inventory.sql to reset the database before running each .java test.  
+ - The USERNAME and PASSWORD are set to the default: "scm" and "ensf409" respectively. If you are not using this username and password, please change the variables USERNAME and PASSWORD at the top of the files AuthenticationTest, DatabaseConnectionTest, LogicTest,  and GUI Test to your own  mysql database username and password.
 
 ### Running tests from command line (Please run from root directory):
-1. Change the variables USERNAME and PASSWORD at the top of the files AuthenticationTest, DatabaseConnectionTest, LogicTest,  and GUI Test to your own  mysql database username and password.
+1. Check that the variables USERNAME and PASSWORD at the top of the files AuthenticationTest, DatabaseConnectionTest, LogicTest, and GUI Test are the correct database username and password.
 
 2. 
   a) javac -cp .;lib/mysql-connector-java-8.0.23.jar edu/ucalgary/ensf409/Authentication.java edu/ucalgary/ensf409/DatabaseConnection.java edu/ucalgary/ensf409/GUI.java edu/ucalgary/ensf409/Logic.java edu/ucalgary/ensf409/Output.java

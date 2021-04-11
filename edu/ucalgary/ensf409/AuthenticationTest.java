@@ -14,7 +14,7 @@ import java.sql.*;
  * @since 1.0
  */
 public class AuthenticationTest {
-	private static final String USERNAME = "Ahmed"; //--------------!important----------------
+	private static final String USERNAME = "scm"; //--------------!important----------------
 	private static final String PASSWORD = "ensf409"; // CHANGE TO YOUR OWN DATABASE USERNAME AND PASSWORD
 
 	public AuthenticationTest() {}

@@ -23,7 +23,7 @@ import java.util.Collections;
  */
 public class DatabaseConnectionTest {
 	private static DatabaseConnection instance = null;
-	private static final String USERNAME = "Ahmed"; //--------------!important----------------
+	private static final String USERNAME = "scm"; //--------------!important----------------
 	private static final String PASSWORD = "ensf409"; // CHANGE TO YOUR OWN DATABASE USERNAME AND PASSWORD
 
 	/**

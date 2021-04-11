@@ -21,7 +21,7 @@ public class LogicTest {
 	// IMPORTANT
 	// Please change the USERNAME and PASSWORD variables to your credentials.
 	private DatabaseConnection connect = null;
-	private static final String USERNAME = "Ahmed";
+	private static final String USERNAME = "scm";
 	private static final String PASSWORD = "ensf409";
 	private static String[] executable;
 
