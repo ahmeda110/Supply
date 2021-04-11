@@ -12,6 +12,7 @@ by Ahmed Abdullah, Dong Wook Son, Jonathan Chong and Ahmed Abbas
 
 ### Running the program from command line (Please run from root directory):
 a) javac -cp .;lib/mysql-connector-java-8.0.23.jar edu/ucalgary/ensf409/Authentication.java edu/ucalgary/ensf409/DatabaseConnection.java edu/ucalgary/ensf409/GUI.java edu/ucalgary/ensf409/Logic.java edu/ucalgary/ensf409/Output.java
+
 b) java -cp .;lib/mysql-connector-java-8.0.23.jar edu/ucalgary/ensf409/Authentication edu/ucalgary/ensf409/DatabaseConnection edu/ucalgary/ensf409/GUI edu/ucalgary/ensf409/Logic edu/ucalgary/ensf409/Output
 
  ## Notes
@@ -28,9 +29,11 @@ b) java -cp .;lib/mysql-connector-java-8.0.23.jar edu/ucalgary/ensf409/Authentic
 1. Change the variables USERNAME and PASSWORD at the top of the files AuthenticationTest, DatabaseConnectionTest, LogicTest,  and GUI Test to your own  mysql database username and password.
 
 2. 
-a) javac -cp .;lib/mysql-connector-java-8.0.23.jar edu/ucalgary/ensf409/Authentication.java edu/ucalgary/ensf409/DatabaseConnection.java edu/ucalgary/ensf409/GUI.java edu/ucalgary/ensf409/Logic.java edu/ucalgary/ensf409/Output.java
-b) javac -cp .;lib/junit-4.13.2.jar;lib/hamcrest-core-1.3.jar;lib/mysql-connector-java-8.0.23.jar edu/ucalgary/ensf409/AuthenticationTest.java edu/ucalgary/ensf409/DatabaseConnectionTest.java edu/ucalgary/ensf409/GUITest.java edu/ucalgary/ensf409/LogicTest.java edu/ucalgary/ensf409/OutputTest.java
-c) java -cp .;lib/junit-4.13.2.jar;lib/hamcrest-core-1.3.jar;lib/mysql-connector-java-8.0.23.jar org.junit.runner.JUnitCore edu.ucalgary.ensf409.AuthenticationTest edu.ucalgary.ensf409.DatabaseConnectionTest edu.ucalgary.ensf409.GUITest edu.ucalgary.ensf409.LogicTest edu.ucalgary.ensf409.OutputTest
+  a) javac -cp .;lib/mysql-connector-java-8.0.23.jar edu/ucalgary/ensf409/Authentication.java edu/ucalgary/ensf409/DatabaseConnection.java edu/ucalgary/ensf409/GUI.java edu/ucalgary/ensf409/Logic.java edu/ucalgary/ensf409/Output.java
+
+  b) javac -cp .;lib/junit-4.13.2.jar;lib/hamcrest-core-1.3.jar;lib/mysql-connector-java-8.0.23.jar edu/ucalgary/ensf409/AuthenticationTest.java edu/ucalgary/ensf409/DatabaseConnectionTest.java edu/ucalgary/ensf409/GUITest.java edu/ucalgary/ensf409/LogicTest.java edu/ucalgary/ensf409/OutputTest.java
+
+  c) java -cp .;lib/junit-4.13.2.jar;lib/hamcrest-core-1.3.jar;lib/mysql-connector-java-8.0.23.jar org.junit.runner.JUnitCore edu.ucalgary.ensf409.AuthenticationTest edu.ucalgary.ensf409.DatabaseConnectionTest edu.ucalgary.ensf409.GUITest edu.ucalgary.ensf409.LogicTest edu.ucalgary.ensf409.OutputTest
 
 ## Inspiration
 The inspiration for our project closely relates to recent initiatives that the University of Calgary has taken. Currently, Supply Chain Management (SCM) at the university aims to divert filing cabinets, bookcases, and some furnishings in order to prevent usable materials from ending up in the landfill.
