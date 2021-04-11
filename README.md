@@ -24,6 +24,7 @@ b) java -cp .;lib/mysql-connector-java-8.0.23.jar edu/ucalgary/ensf409/Authentic
 ## Testing
  - Test cases are included in the same folder as the rest of the .java files
  - For DatabaseConnectionTest.java and LogicTest.java, the inventory.sql should be run automatically before each test to reset the database. Although if errors occur, please try manually running inventory.sql to reset the database then running the tests again.  
+ - Please remember to change the variables USERNAME and PASSWORD at the top of the files AuthenticationTest, DatabaseConnectionTest, LogicTest,  and GUI Test to your own  mysql database username and password.
 
 ### Running tests from command line (Please run from root directory):
 1. Change the variables USERNAME and PASSWORD at the top of the files AuthenticationTest, DatabaseConnectionTest, LogicTest,  and GUI Test to your own  mysql database username and password.
