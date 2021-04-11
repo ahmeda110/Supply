@@ -18,7 +18,7 @@ import java.util.Collections;
  * @author Dong Wook Son
  * @author Jonathan Chong
  * @author Ahmed Abbas
- * @version 1.1
+ * @version 1.3
  * @since 1.0
  */
 public class DatabaseConnectionTest {
