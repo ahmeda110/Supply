@@ -18,7 +18,7 @@ Our main method is located in the file Authentication.java (line 194). Authetica
 Our main method is located in the file Authentication.java (line 194). Authetication.java is in the directory edu/ucalgary/ensf409.
 ### Running the tests from command line:
 **Please run all of the following commands from the root directory (directory name: 14), inventory.sql and assets directoy's relative path are necessary, put them in the directory from which the program runs if using an IDE**
-##### The username and password for the test files are set as:
+#### The username and password for the test files are set as:
 *Username:* scm
 *Password:* ensf409
 Change the variables **USERNAME** and **PASSWORD** at the top of the files *AuthenticationTest, DatabaseConnectionTest, LogicTest,  and GUITest* to your own  mysql database username and password if they are different from the ones mentioned above.
