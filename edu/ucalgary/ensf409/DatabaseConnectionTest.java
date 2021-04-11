@@ -50,9 +50,9 @@ public class DatabaseConnectionTest {
 		}
 
 		BufferedReader input = null;
-		try { 																//--------------!important----------------
+		try { 									//--------------!important----------------
 			input = new BufferedReader(new FileReader("./inventory.sql")); 	//inventory file must be in the 
-		} 																	//directory from which program was run
+		} 									//directory from which program was run
 		catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
@@ -67,7 +67,7 @@ public class DatabaseConnectionTest {
 				result.append(currentLine.trim());
 			}
 			String[] executable = result.toString().replace("\n", "").split(";"); //remove all newline characters and 
-																				// split at semi colons to have a complete statment
+											// split at semi colons to have a complete statment
 			for (String
 				var: executable) {
 				myStatment.execute(var); // execute each statment in inventory.sql
