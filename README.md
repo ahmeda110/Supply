@@ -1,40 +1,39 @@
 # ENSF 409 Final Project for Supply Chain Management 
 by Ahmed Abdullah, Dong Wook Son, Jonathan Chong and Ahmed Abbas
 
-## How to run the program
-1. Head to the Authetication.java class
-2. Run our main method located around line 164 of our Authetication class
-3. A pop up screen should appear asking for a username and password,
- this is the username and password you would use to access your local 
- inventory.sql database. If the inventory.sql is not installed, 
- we have provided one for you to run in your workbench (located in the root directory). 
- 4. If the login was successful new screen should appear prompting your inputs. 
+## Running the program
+Our main method is located in the file Authentication.java (line 194). Authetication.java is in the directory edu/ucalgary/ensf409.
+### Running the program from command line:
+**Please run all of the following commands from the root directory (directory name: 14), inventory.sql and assets directoy's relative path are necessary, put them in the directory from which the program runs if using an IDE**
+1. javac -cp .;lib/mysql-connector-java-8.0.23.jar edu/ucalgary/ensf409/Authentication.java edu/ucalgary/ensf409/DatabaseConnection.java edu/ucalgary/ensf409/GUI.java edu/ucalgary/ensf409/Logic.java edu/ucalgary/ensf409/Output.java  
 
-### Running the program from command line (Please run from root directory):
-a) javac -cp .;lib/mysql-connector-java-8.0.23.jar edu/ucalgary/ensf409/Authentication.java edu/ucalgary/ensf409/DatabaseConnection.java edu/ucalgary/ensf409/GUI.java edu/ucalgary/ensf409/Logic.java edu/ucalgary/ensf409/Output.java
+2. java -cp .;lib/mysql-connector-java-8.0.23.jar edu/ucalgary/ensf409/Authentication edu/ucalgary/ensf409/DatabaseConnection edu/ucalgary/ensf409/GUI edu/ucalgary/ensf409/Logic edu/ucalgary/ensf409/Output  
 
-b) java -cp .;lib/mysql-connector-java-8.0.23.jar edu/ucalgary/ensf409/Authentication edu/ucalgary/ensf409/DatabaseConnection edu/ucalgary/ensf409/GUI edu/ucalgary/ensf409/Logic edu/ucalgary/ensf409/Output
+3. A pop up screen should appear asking for a username and password, this is the username and password you would use to access your local inventory.sql database. If the inventory.sql is not installed, we have provided one for you to run in your workbench (located in the root directory).  
+4. If the login was successful new screen should appear prompting your inputs. 
+## Testing notes
+- Test cases are included in the same folder as the rest of the .java files (edu/ucalgary/ensf409)
+- For DatabaseConnectionTest.java and LogicTest.java, the inventory.sql should be run automatically before each test to reset the database. Although if errors occur, please try manually running inventory.sql to reset the database then running the tests again.
+## Running the tests
+Our main method is located in the file Authentication.java (line 194). Authetication.java is in the directory edu/ucalgary/ensf409.
+### Running the tests from command line:
+**Please run all of the following commands from the root directory (directory name: 14), inventory.sql and assets directoy's relative path are necessary, put them in the directory from which the program runs if using an IDE**
+##### The username and password for the test files are set as:
+*Username:* scm
+*Password:* ensf409
+Change the variables **USERNAME** and **PASSWORD** at the top of the files *AuthenticationTest, DatabaseConnectionTest, LogicTest,  and GUITest* to your own  mysql database username and password if they are different from the ones mentioned above.
 
- ## Notes
- - The lib folder contains mysql-connector-java.jar file which is used as 
- an import in the DatabaseConnection class. 
+1. javac -cp .;lib/mysql-connector-java-8.0.23.jar edu/ucalgary/ensf409/Authentication.java edu/ucalgary/ensf409/DatabaseConnection.java edu/ucalgary/ensf409/GUI.java edu/ucalgary/ensf409/Logic.java edu/ucalgary/ensf409/Output.java
+
+2. javac -cp .;lib/junit-4.13.2.jar;lib/hamcrest-core-1.3.jar;lib/mysql-connector-java-8.0.23.jar edu/ucalgary/ensf409/AuthenticationTest.java edu/ucalgary/ensf409/DatabaseConnectionTest.java edu/ucalgary/ensf409/GUITest.java edu/ucalgary/ensf409/LogicTest.java edu/ucalgary/ensf409/OutputTest.java
+
+3. java -cp .;lib/junit-4.13.2.jar;lib/hamcrest-core-1.3.jar;lib/mysql-connector-java-8.0.23.jar org.junit.runner.JUnitCore edu.ucalgary.ensf409.AuthenticationTest edu.ucalgary.ensf409.DatabaseConnectionTest edu.ucalgary.ensf409.GUITest edu.ucalgary.ensf409.LogicTest edu.ucalgary.ensf409.OutputTest
+ 
+ ## Important Notes
+- Demonstration video and UML diagram are located in submissions folder at the root directory
+ - The lib folder contains mysql-connector-java.jar file which is used as an import in the DatabaseConnection class. 
  - The lib folder also contains junit and hamcrest for running the test cases
- - Demonstration video and UML diagram are located in submissions folder int the directory
-
-## Testing
- - Test cases are included in the same folder as the rest of the .java files
- - For DatabaseConnectionTest.java and LogicTest.java, the inventory.sql should be run automatically before each test to reset the database. Although if errors occur, please try manually running inventory.sql to reset the database before running each .java test.  
- - The USERNAME and PASSWORD are set to the default: "scm" and "ensf409" respectively. If you are not using this username and password, please change the variables USERNAME and PASSWORD at the top of the files AuthenticationTest, DatabaseConnectionTest, LogicTest,  and GUI Test to your own  mysql database username and password.
-
-### Running tests from command line (Please run from root directory):
-1. Check that the variables USERNAME and PASSWORD at the top of the files AuthenticationTest, DatabaseConnectionTest, LogicTest, and GUI Test are the correct database username and password.
-
-2. 
-  a) javac -cp .;lib/mysql-connector-java-8.0.23.jar edu/ucalgary/ensf409/Authentication.java edu/ucalgary/ensf409/DatabaseConnection.java edu/ucalgary/ensf409/GUI.java edu/ucalgary/ensf409/Logic.java edu/ucalgary/ensf409/Output.java
-
-  b) javac -cp .;lib/junit-4.13.2.jar;lib/hamcrest-core-1.3.jar;lib/mysql-connector-java-8.0.23.jar edu/ucalgary/ensf409/AuthenticationTest.java edu/ucalgary/ensf409/DatabaseConnectionTest.java edu/ucalgary/ensf409/GUITest.java edu/ucalgary/ensf409/LogicTest.java edu/ucalgary/ensf409/OutputTest.java
-
-  c) java -cp .;lib/junit-4.13.2.jar;lib/hamcrest-core-1.3.jar;lib/mysql-connector-java-8.0.23.jar org.junit.runner.JUnitCore edu.ucalgary.ensf409.AuthenticationTest edu.ucalgary.ensf409.DatabaseConnectionTest edu.ucalgary.ensf409.GUITest edu.ucalgary.ensf409.LogicTest edu.ucalgary.ensf409.OutputTest
+ 
 
 ## Inspiration
 The inspiration for our project closely relates to recent initiatives that the University of Calgary has taken. Currently, Supply Chain Management (SCM) at the university aims to divert filing cabinets, bookcases, and some furnishings in order to prevent usable materials from ending up in the landfill.
