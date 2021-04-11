@@ -143,7 +143,7 @@ public class GUI extends javax.swing.JFrame {
 		} else if (!validNumber) {
 			jLabel11.setText("Please enter a correct number of items.");
 		} else {
-			jLabel11.setText("Please make sure that your categoty value is correct.");
+			jLabel11.setText("Please make sure that your category value is correct.");
 		}
 	}
 
