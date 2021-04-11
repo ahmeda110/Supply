@@ -137,7 +137,7 @@ public class LogicTest {
 	 */
 	@Test
 	public void findMinPrice1() {
-		Logic logic = new Logic(connect, "Test", "Test", "Mesh", "chair", 1);
+		Logic logic = new Logic(connect, null, null, "Mesh", "chair", 1);
 
 		Assert.assertEquals("Lowest price was not returned.", 200, logic.getPrice());
 	}
@@ -148,7 +148,7 @@ public class LogicTest {
 	 */
 	@Test
 	public void findMinPrice2() {
-		Logic logic = new Logic(connect, "Test", "Test", "Adjustable", "desk", 2);
+		Logic logic = new Logic(connect, null, null, "Adjustable", "desk", 2);
 
 		Assert.assertEquals("Lowest price was not returned.", 800, logic.getPrice());
 	}
@@ -159,7 +159,7 @@ public class LogicTest {
 	 */
 	@Test
 	public void findMinPrice3() {
-		Logic logic = new Logic(connect, "Test", "Test", "Medium", "filing", 3);
+		Logic logic = new Logic(connect, null, null, "Medium", "filing", 3);
 
 		Assert.assertEquals("Lowest price was not returned.", 600, logic.getPrice());
 	}
@@ -170,7 +170,7 @@ public class LogicTest {
 	 */
 	@Test
 	public void findMinPrice4() {
-		Logic logic = new Logic(connect, "Test", "Test", "Desk", "lamp", 3);
+		Logic logic = new Logic(connect, null, null, "Desk", "lamp", 3);
 
 		Assert.assertEquals("Lowest price was not returned.", 60, logic.getPrice());
 		resetDatabase();
@@ -184,7 +184,7 @@ public class LogicTest {
 	@Test
 	public void accessInvalidTable() {
 		// abcdef is a non existing furniture category
-		Logic logic = new Logic(connect, "Test", "Test", "Desk", "abcdef", 3);
+		Logic logic = new Logic(connect, null, null, "Desk", "abcdef", 3);
 
 		assertFalse("Access to invalid table returned true", logic.getValidTable());
 	}
@@ -201,7 +201,7 @@ public class LogicTest {
 		ArrayList<HashMap<String, String>> initialReturn = connect.retrieveData("lamp", "Desk");
 
 		// Attempting to buy 4 desk lamps
-		Logic logic = new Logic(connect, "Test", "Test", "Desk", "lamp", 4);
+		Logic logic = new Logic(connect, null, null, "Desk", "lamp", 4);
 
 		// If transaction didn't go through, no desk lamps should have been deleted
 		ArrayList<HashMap<String, String>> afterFailBuy = connect.retrieveData("lamp", "Desk");
@@ -221,7 +221,7 @@ public class LogicTest {
 	 */
 	@Test
 	public void hasAllParts() {
-		Logic logic = new Logic(connect, "Test", "Test", "Desk", "lamp", 4);
+		Logic logic = new Logic(connect, null, null, "Desk", "lamp", 4);
 
 		HashMap<String, String> test = new HashMap<String, String> ();
 		test.put("Base", "Y");
@@ -243,7 +243,7 @@ public class LogicTest {
 	 */
 	@Test
 	public void doesNotHaveAllParts() {
-		Logic logic = new Logic(connect, "Test", "Test", "Desk", "lamp", 4);
+		Logic logic = new Logic(connect, null, null, "Desk", "lamp", 4);
 
 		HashMap<String, String> test = new HashMap<String, String> ();
 		test.put("Base", "Y");
@@ -264,7 +264,7 @@ public class LogicTest {
 	 */
 	@Test
 	public void makeCopy() {
-		Logic logic = new Logic(connect, "Test", "Test", "Desk", "lamp", 4);
+		Logic logic = new Logic(connect, null, null, "Desk", "lamp", 4);
 
 		HashMap<String, String> test = new HashMap<String, String> ();
 		test.put("Base", "Y");

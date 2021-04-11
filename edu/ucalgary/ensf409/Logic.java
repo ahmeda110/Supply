@@ -88,7 +88,9 @@ public class Logic {
         String request = type + " " + category + ", " + numberOfItems;  
 
         if(minCombination != null){
-            output = new Output(faculty, contact, request, items, price); //creates new instance of Output where order can be fulfilled
+			if(faculty != null && contact != null){
+				output = new Output(faculty, contact, request, items, price); //creates new instance of Output where order can be fulfilled
+			}
             database.deleteUsedItems(items, category); // deletes used items from the items list
         }else{
             ArrayList < HashMap < String, String >> manufacturersResult;
@@ -110,7 +112,10 @@ public class Logic {
             }
             manufacturers = new String[manufacturer.size()]; //adds list of manufacturers into String array
             manufacturers = manufacturer.toArray(manufacturers);
-            output = new Output(faculty, contact, request, manufacturers); // creates new instance of output where order cannot be fulfilled
+			if(faculty != null && contact != null){
+				output = new Output(faculty, contact, request, manufacturers); // creates new instance of output where order cannot be fulfilled
+			}
+            
         }
 
     }

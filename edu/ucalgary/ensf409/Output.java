@@ -80,6 +80,7 @@ public class Output{
             while(file.length() != 0){
                 file = new File("orderform_" + newDate + "_"+ num+ ".txt" );
                 file.createNewFile();
+				num++;
             }
             
         }catch (IOException e) {
