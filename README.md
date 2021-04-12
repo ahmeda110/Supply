@@ -4,30 +4,34 @@ by Ahmed Abdullah, Dong Wook Son, Jonathan Chong and Ahmed Abbas
 ## Running the program
 Our main method is located in the file Authentication.java (line 194). Authetication.java is in the directory edu/ucalgary/ensf409.
 ### Running the program from command line:
-**Please run all of the following commands from the root directory (directory name: 14), inventory.sql and assets directoy's relative path are necessary, put them in the directory from which the program runs if using an IDE**
-1. javac -cp .;lib/mysql-connector-java-8.0.23.jar edu/ucalgary/ensf409/Authentication.java edu/ucalgary/ensf409/DatabaseConnection.java edu/ucalgary/ensf409/GUI.java edu/ucalgary/ensf409/Logic.java edu/ucalgary/ensf409/Output.java  
+**Please run all of the following commands from the root directory (directory name: 14), assets directoy's relative path is necessary, put it in the directory from which the program runs if using an IDE**
 
-2. java -cp .;lib/mysql-connector-java-8.0.23.jar edu/ucalgary/ensf409/Authentication edu/ucalgary/ensf409/DatabaseConnection edu/ucalgary/ensf409/GUI edu/ucalgary/ensf409/Logic edu/ucalgary/ensf409/Output  
+**You can update your local database with any database named inventory containing any data having the same structure as the original inventory database. Do not replace the inventory.sql file found in the root directory with another version. This file will be used to reset your local database for testing purposes.**
+1. `javac -cp .;lib/mysql-connector-java-8.0.23.jar edu/ucalgary/ensf409/Authentication.java edu/ucalgary/ensf409/DatabaseConnection.java edu/ucalgary/ensf409/GUI.java edu/ucalgary/ensf409/Logic.java edu/ucalgary/ensf409/Output.java` 
+
+2. `java -cp .;lib/mysql-connector-java-8.0.23.jar edu/ucalgary/ensf409/Authentication edu/ucalgary/ensf409/DatabaseConnection edu/ucalgary/ensf409/GUI edu/ucalgary/ensf409/Logic edu/ucalgary/ensf409/Output`  
 
 3. A pop up screen should appear asking for a username and password, this is the username and password you would use to access your local inventory.sql database. If the inventory.sql is not installed, we have provided one for you to run in your workbench (located in the root directory).  
 4. If the login was successful, a new screen should appear prompting your inputs. 
-## Testing notes
-- Test cases are included in the same folder as the rest of the .java files (edu/ucalgary/ensf409)
-- For DatabaseConnectionTest.java and LogicTest.java, the inventory.sql should be run automatically before some tests to reset the database. Although if errors occur, please try manually running inventory.sql to reset the database then running the tests again.
+
 ## Running the tests
-Our main method is located in the file Authentication.java (line 194). Authetication.java is in the directory edu/ucalgary/ensf409.
+### Testing notes
+- Test cases are included in the same folder as the rest of the .java files (edu/ucalgary/ensf409)
+- For DatabaseConnectionTest.java and LogicTest.java, the inventory.sql provided in the root directory should be run automatically before some tests to reset the database. Although if errors occur, please try manually running inventory.sql to reset the database then running the tests again.
+- We use the data in the inventory.sql file provided in the root directory for our tests, please do not replace or modify the file.
 ### Running the tests from command line:
-**Please run all of the following commands from the root directory (directory name: 14), inventory.sql and assets directoy's relative path are necessary, put them in the directory from which the program runs if using an IDE**
+**Please run all of the following commands from the root directory (directory name: 14), inventory.sql relative path is necessary, put it in the directory from which the program runs if using an IDE**
 #### The username and password for the test files are set as:
 *Username:* scm  
 *Password:* ensf409  
+---
 Change the variables **USERNAME** and **PASSWORD** at the top of the files *AuthenticationTest, DatabaseConnectionTest, LogicTest,  and GUITest* to your own  mysql database username and password if they are different from the ones mentioned above.
 
-1. javac -cp .;lib/mysql-connector-java-8.0.23.jar edu/ucalgary/ensf409/Authentication.java edu/ucalgary/ensf409/DatabaseConnection.java edu/ucalgary/ensf409/GUI.java edu/ucalgary/ensf409/Logic.java edu/ucalgary/ensf409/Output.java
+1. `javac -cp .;lib/mysql-connector-java-8.0.23.jar edu/ucalgary/ensf409/Authentication.java edu/ucalgary/ensf409/DatabaseConnection.java edu/ucalgary/ensf409/GUI.java edu/ucalgary/ensf409/Logic.java edu/ucalgary/ensf409/Output.java`
 
-2. javac -cp .;lib/junit-4.13.2.jar;lib/hamcrest-core-1.3.jar;lib/mysql-connector-java-8.0.23.jar edu/ucalgary/ensf409/AuthenticationTest.java edu/ucalgary/ensf409/DatabaseConnectionTest.java edu/ucalgary/ensf409/GUITest.java edu/ucalgary/ensf409/LogicTest.java edu/ucalgary/ensf409/OutputTest.java
+2. `javac -cp .;lib/junit-4.13.2.jar;lib/hamcrest-core-1.3.jar;lib/mysql-connector-java-8.0.23.jar edu/ucalgary/ensf409/AuthenticationTest.java edu/ucalgary/ensf409/DatabaseConnectionTest.java edu/ucalgary/ensf409/GUITest.java edu/ucalgary/ensf409/LogicTest.java edu/ucalgary/ensf409/OutputTest.java`
 
-3. java -cp .;lib/junit-4.13.2.jar;lib/hamcrest-core-1.3.jar;lib/mysql-connector-java-8.0.23.jar org.junit.runner.JUnitCore edu.ucalgary.ensf409.AuthenticationTest edu.ucalgary.ensf409.DatabaseConnectionTest edu.ucalgary.ensf409.GUITest edu.ucalgary.ensf409.LogicTest edu.ucalgary.ensf409.OutputTest
+3. `java -cp .;lib/junit-4.13.2.jar;lib/hamcrest-core-1.3.jar;lib/mysql-connector-java-8.0.23.jar org.junit.runner.JUnitCore edu.ucalgary.ensf409.AuthenticationTest edu.ucalgary.ensf409.DatabaseConnectionTest edu.ucalgary.ensf409.GUITest edu.ucalgary.ensf409.LogicTest edu.ucalgary.ensf409.OutputTest`
  
  ## Important Notes
 - Demonstration video and UML diagram are located in submissions folder at the root directory
