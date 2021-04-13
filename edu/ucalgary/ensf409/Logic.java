@@ -1,5 +1,6 @@
 package edu.ucalgary.ensf409;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Class responsible for calculating the cheapest price combination for requested furnitures
@@ -51,7 +52,7 @@ public class Logic {
 		}
 
 		price = 0;
-		ArrayList<String> itemsAL = new ArrayList<String> ();
+		ArrayList<String> itemsAL = new ArrayList<String>();
 		//Repeat until the number of items is satisfied
 		for (int i = 0; i<numberOfItems; i++) {
 			//makes sure furniture is not empty
@@ -66,28 +67,67 @@ public class Logic {
 
 			price += minPrice; //add minPrice for the item into the total price
 
-			if (minCombination != null) {
-				items = minCombination.get("ID").split(" "); //retrieves list of items by their IDs and puts them into a String[]
-				for (String x: items) {
-					itemsAL.add(x); //adds items into arrayList
-				}
-				//removes list of IDs from the furniture arraylist
-				for (String temp1: items) {
-					for (int j = 0; j<furniture.size(); j++) {
-						if (temp1.equals(furniture.get(j).get("ID").toString())) {
-							furniture.remove(j);
+				if (minCombination != null) {
+					items = minCombination.get("ID").split(" "); //retrieves list of items by their IDs and puts them into a String[]
+					for (String x: items) {
+						itemsAL.add(x); //adds items into arrayList
+					}
+					ArrayList<ArrayList<Integer>> parts = new ArrayList<ArrayList<Integer>>(); //arraylist of parts for each item
+					HashMap<String,String> sample = new HashMap<String,String>(); // stores a sample item in which parts values will be replaced
+					//removes list of IDs from the furniture arraylist
+					for (String temp1: items) {
+						for (int j = 0; j<furniture.size(); j++) {
+							if (temp1.equals(furniture.get(j).get("ID").toString())) {
+								ArrayList<Integer> part = new ArrayList<Integer>();
+								for (Map.Entry<String, String> entry: furniture.get(j).entrySet()){
+									String columnName = entry.getKey();
+									if (!columnName.equals("ID") && !columnName.equals("Type") && !columnName.equals("Price") && !columnName.equals("ManuID")) {
+										if(entry.getValue().equals("Y")){
+											part.add(1); //if part = Y then = 1 else 0
+										}else{
+											part.add(0);
+										}
+									}
+								}
+								sample = furniture.get(j); //sets used item as 
+								parts.add(part); //adds list of parts for 1 item
+								furniture.remove(j);
+							}
 						}
 					}
+					//iterates over each part
+					for(int j = 0; j < parts.get(0).size(); j++){
+						int sum = 0;
+						//iterates over each item
+						for(int s = 0; s < parts.size(); s++){
+							sum += parts.get(s).get(j); //how many of the same parts for list of objects
+						}
+						while(sum-- > 1){ //while there is still an extra spare part
+							int counter = j; //which specific part it is
+							for (Map.Entry<String, String> entry: sample.entrySet()){
+								String columnName = entry.getKey();
+								if (!columnName.equals("ID") && !columnName.equals("Type") && !columnName.equals("Price") && !columnName.equals("ManuID") && counter-- == 0) {
+									sample.put(columnName, "Y");
+								} else if(!columnName.equals("ID") && !columnName.equals("Type") && !columnName.equals("Price") && !columnName.equals("ManuID")){
+									sample.put(columnName, "N");
+								}
+							}
+							sample.put("Price", "0");
+							furniture.add(sample); //change sample then add it to list of furniture
+						}
+
+						minPrice = Integer.MAX_VALUE; //reset to default value (if no value is found then integer is max)
+					}
 				}
-				minPrice = Integer.MAX_VALUE; //reset to default value (if no value is found then integer is max)
-			}
 
 		}
 
 		String request = type + " " + category + ", " + numberOfItems;
-
 		if (minCombination != null) {
 			if (faculty != null && contact != null) {
+				LinkedHashSet<String> removeDup = new LinkedHashSet<>(itemsAL); //removes duplicates in list
+				itemsAL = new ArrayList<>(removeDup);
+				items = itemsAL.toArray(new String[0]);
 				output = new Output(faculty, contact, request, items, price); //creates new instance of Output where order can be fulfilled
 			}
 			database.deleteUsedItems(items, category); // deletes used items from the items list
@@ -115,7 +155,6 @@ public class Logic {
 			}
 
 		}
-
 	}
 
 	/**
@@ -196,7 +235,7 @@ public class Logic {
 					for (Map.Entry<String, String> entry: current.entrySet()) {
 						// Checking parts data
 						String columnName = entry.getKey();
-						if (columnName != "ID" && columnName != "Type" && columnName != "Price" && columnName != "ManuID") {
+						if (!columnName.equals("ID") && !columnName.equals("Type") && !columnName.equals("Price") && !columnName.equals("ManuID")) {
 							// If our current parts is missing a part that b has, add it in.
 							if (entry.getValue().equals("N") && map.get(columnName).equals("Y")) {
 								tmp.replace(columnName, map.get(columnName));
@@ -220,7 +259,7 @@ public class Logic {
 
 		for (Map.Entry<String, String> entry: components.entrySet()) {
 			String columnName = entry.getKey();
-			if (columnName != "ID" && columnName != "Type" && columnName != "Price" && columnName != "ManuID") {
+			if (!columnName.equals("ID") && !columnName.equals("Type") && !columnName.equals("Price") && !columnName.equals("ManuID")) {
 				// Checking to see if all parts are usable
 				if (entry.getValue().equals("N")) {
 					return false;
