@@ -109,11 +109,13 @@ public class Logic {
 						int counter = j; //which specific part it is
 						for (Map.Entry<String, String> entry: sample.entrySet()){
 							String columnName = entry.getKey();
-							if (!columnName.equals("ID") && !columnName.equals("Type") && !columnName.equals("Price") && !columnName.equals("ManuID") && counter-- == 0) {
-								sample.put(columnName, "Y");
-							} else if(!columnName.equals("ID") && !columnName.equals("Type") && !columnName.equals("Price") && !columnName.equals("ManuID")){
-								sample.put(columnName, "N");
-							}
+							if (!columnName.equals("ID") && !columnName.equals("Type") && !columnName.equals("Price") && !columnName.equals("ManuID")) {
+								if(counter-- == 0){
+									sample.put(columnName, "Y");
+								}else{
+									sample.put(columnName, "N");
+								}
+							} 
 						}
 						sample.put("Price", "0");
 						sample.put("ID","temp" + String.valueOf(tempID++));
