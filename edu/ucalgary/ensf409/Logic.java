@@ -130,8 +130,6 @@ public class Logic {
 		String request = type + " " + category + ", " + numberOfItems;
 		if (minCombination != null) {
 			if (faculty != null && contact != null) {
-				LinkedHashSet<String> removeDup = new LinkedHashSet<>(itemsAL); //removes duplicates in list
-				itemsAL = new ArrayList<>(removeDup);
 				items = itemsAL.toArray(new String[0]);
 				output = new Output(faculty, contact, request, items, price); //creates new instance of Output where order can be fulfilled
 			}
