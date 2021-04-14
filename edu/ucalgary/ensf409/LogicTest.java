@@ -1,6 +1,8 @@
 package edu.ucalgary.ensf409;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
+
 import org.junit.*;
 import static org.junit.Assert.*;
 
@@ -111,7 +113,6 @@ public class LogicTest {
 	public void setUp() {
 		// creating an instance for each class to remove stored member variables 
 		// from previous tests
-		
 		connect = new DatabaseConnection("jdbc:mysql://localhost/inventory", USERNAME, PASSWORD);
 	}
 
@@ -217,24 +218,25 @@ public class LogicTest {
 
 	/**
 	 * Test of hasAllParts method, of class Logic.
-	 * This test will check data to see if all keys have a value of "Y"
+	 * This test models a case where 4 pieces of furniture are requested.
+	 * Therefore, we need 4 of each parts.
 	 * With the data provide, hasAllParts should return true
 	 */
 	@Test
 	public void hasAllParts() {
-		Logic logic = new Logic(connect, null, null, "Desk", "lamp", 4);
+		Logic logic = new Logic();
 
-		HashMap<String, String> test = new HashMap<String, String> ();
-		test.put("Base", "Y");
-		test.put("Bulb", "Y");
-		test.put("Cord", "Y");
-		test.put("Plug", "Y");
-		test.put("Cover", "Y");
-		test.put("Pole", "Y");
-		test.put("Battery", "Y");
-		test.put("Switch", "Y");
+		HashMap<String, Integer> test = new HashMap<String, Integer> ();
+		test.put("Base", 4);
+		test.put("Bulb", 4);
+		test.put("Cord", 4);
+		test.put("Plug", 4);
+		test.put("Cover", 4);
+		test.put("Pole", 4);
+		test.put("Battery", 4);
+		test.put("Switch", 4);
 
-		assertTrue("test has all parts, therefore should've returned true", logic.hasAllParts(test));
+		assertTrue("test has all parts, therefore should've returned true", logic.hasAllParts(test, 4));
 	}
 
 	/**
@@ -244,24 +246,24 @@ public class LogicTest {
 	 */
 	@Test
 	public void doesNotHaveAllParts() {
-		Logic logic = new Logic(connect, null, null, "Desk", "lamp", 4);
+		Logic logic = new Logic();
 
-		HashMap<String, String> test = new HashMap<String, String> ();
-		test.put("Base", "Y");
-		test.put("Bulb", "Y");
-		test.put("Cord", "Y");
-		test.put("Plug", "Y");
-		test.put("Cover", "Y");
-		test.put("Pole", "Y");
-		test.put("Battery", "N");
-		test.put("Switch", "Y");
+		HashMap<String, Integer> test = new HashMap<String, Integer> ();
+		test.put("Base", 4);
+		test.put("Bulb", 4);
+		test.put("Cord", 4);
+		test.put("Plug", 4);
+		test.put("Cover", 4);
+		test.put("Pole", 4);
+		test.put("Battery", 3);
+		test.put("Switch", 4);
 
-		assertFalse("test doesn't have all parts, therefore should've returned false", logic.hasAllParts(test));
+		assertFalse("test doesn't have all parts, therefore should've returned false", logic.hasAllParts(test, 4));
 	}
 
 	/**
 	 * Test of makeCopy method, of class Logic.
-	 * This test will check if copy of a HashMap is successfully made
+	 * This test will check if copy of a HashMap with key value pair String and String is successfully made
 	 */
 	@Test
 	public void makeCopy() {
@@ -278,6 +280,27 @@ public class LogicTest {
 		test.put("Switch", "Y");
 
 		assertEquals("Invalid copy was made", test, logic.makeCopy(test));
+	}
+
+	/**
+	 * Test of makeIntCopy method, of class Logic.
+	 * This test will check if copy of a HashMap with key value pair String and Integer is successfully made
+	 */
+	@Test
+	public void makeIntCopy() {
+		Logic logic = new Logic(connect, null, null, "Desk", "lamp", 4);
+
+		HashMap<String, Integer> test = new HashMap<String, Integer> ();
+		test.put("Base", 1);
+		test.put("Bulb", 2);
+		test.put("Cord", 5);
+		test.put("Plug", 123);
+		test.put("Cover", 3);
+		test.put("Pole", 5);
+		test.put("Battery", 12);
+		test.put("Switch", 3);
+
+		assertEquals("Invalid copy was made", test, logic.makeIntCopy(test));
 	}
 
 	/**
@@ -328,14 +351,36 @@ public class LogicTest {
 			furniture.add(parts);
 		}
 
-		// calculate minimum price
-		logic.findMinPrice(furniture, rows);
+		
+		for (HashMap<String, String> current: furniture) {
+
+			// Creating a HashMap to keep track of current number of parts obtained from each item.
+			HashMap<String, Integer> currentParts = new HashMap<String,Integer>();
+
+			for (Map.Entry<String, String> entry: current.entrySet()) {
+				// Checking parts data
+				String columnName = entry.getKey();
+				if (!columnName.equals("ID") && !columnName.equals("Type") && !columnName.equals("Price") && !columnName.equals("ManuID")) {
+					// If our current parts is missing a part that b has, add it in.
+					if(current.get(columnName).equals("Y")) {
+						currentParts.put(columnName, 1);
+					} else {
+						currentParts.put(columnName, 0);
+					}
+				}
+			}
+			// ex: if mesh chair is requested currentParts currently looks like this:
+			// Legs: 0, Arms: 0, Seat: 0, Cushion: 0
+
+			logic.findMinimumPrice(furniture, current, currentParts, 1);
+		}
 
 		// using getMinPrice instead of getPrice since getPrice is used to handle
 		// multiple items being bought in the constructor.
 		assertEquals(50, logic.getMinPrice());
 
 	}
+
 	/**
 	 * Test of findMinimumPrice and getPrice method, of class Logic.
 	 * This test obtains the lowest possible price for ordering 2 standing desks
@@ -368,9 +413,10 @@ public class LogicTest {
 		try {
 			myStatment = databaseConnection.createStatement();
 			myStatment.execute("INSERT INTO DESK (ID, Type, Legs, Top, Drawer, Price, ManuID) VALUES" +
-				"('ref34',	'Standing',	'Y',	'Y',	'N',	100,	'001')," +
-				"('bf9s3',	'Standing',	'Y',	'N',	'Y',	150,	'001')," +
-				"('Refw9',	'Standing',	'N',	'Y',	'Y',	200,	'004');");
+				"('ref34',	'Unique',	'Y',	'Y',	'N',	100,	'001')," +
+				"('asb31',	'Unique',	'N',	'N',	'Y',	100,	'001')," +
+				"('bf9s3',	'Unique',	'Y',	'N',	'Y',	150,	'001')," +
+				"('Refw9',	'Unique',	'N',	'Y',	'Y',	200,	'004');");
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -380,7 +426,7 @@ public class LogicTest {
 			e.printStackTrace();
 		}
 		
-		Logic logic = new Logic(connect, null, null, "Standing", "Desk", 2);
+		Logic logic = new Logic(connect, null, null, "Unique", "Desk", 2);
 		
 		Assert.assertEquals("Lowest price was not returned when parts could be reused", 450, logic.getPrice());
 		resetDatabase();
@@ -436,7 +482,7 @@ public class LogicTest {
 		
 		Logic logic = new Logic(connect, null, null, "Executive", "Chair", 3);
 		
-		Assert.assertEquals("Lowest price was not returned when parts could be reused", 475, logic.getPrice());
+		Assert.assertEquals("Lowest price was not returned when parts could be reused", 465, logic.getPrice());
 		
 		resetDatabase();		
 	}
