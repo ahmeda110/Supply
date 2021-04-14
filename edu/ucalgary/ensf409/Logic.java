@@ -50,7 +50,6 @@ public class Logic {
 			validTable = false;
 		}
 
-		// ArrayList<String> itemsAL = new ArrayList<String> ();
 		HashMap<String, Integer> currentParts;
 
 		// Only apply algorithm when valid table was queried.
@@ -79,44 +78,40 @@ public class Logic {
 				price = minPrice;
 				/*	End of Logic calculation!  */
 			}
+			items = minCombination.get("ID").split(" ");
 		}
 
+		String request = type + " " + category + ", " + numberOfItems;
 
+		if (minCombination != null) {
+			if (faculty != null && contact != null) {
+				output = new Output(faculty, contact, request, items, price); //creates new instance of Output where order can be fulfilled
+			}
+			database.deleteUsedItems(items, category); // deletes used items from the items list
+		} else {
+			ArrayList<HashMap<String, String>> manufacturersResult;
+			try {
+				manufacturersResult = database.getPossibleManufacturer(category); //get list of possible manufacturers
+			} catch (IllegalArgumentException e) {
+				manufacturersResult = null;
+			}
 
-		// From Luke: I commented out the output stuff below.
+			if (manufacturersResult == null) {
+				return;
+			}
+			Iterator<HashMap<String, String>> manufacturersResultIterator = manufacturersResult.iterator();
+			ArrayList<String> manufacturer = new ArrayList<String> ();
+			while (manufacturersResultIterator.hasNext()) {
+				Map<String, String> temp = manufacturersResultIterator.next();
+				manufacturer.add(temp.get("Name"));
+			}
+			manufacturers = new String[manufacturer.size()]; //adds list of manufacturers into String array
+			manufacturers = manufacturer.toArray(manufacturers);
+			if (faculty != null && contact != null) {
+				output = new Output(faculty, contact, request, manufacturers); // creates new instance of output where order cannot be fulfilled
+			}
 
-
-		// String request = type + " " + category + ", " + numberOfItems;
-
-		// if (minCombination != null) {
-		// 	if (faculty != null && contact != null) {
-		// 		output = new Output(faculty, contact, request, items, price); //creates new instance of Output where order can be fulfilled
-		// 	}
-		// 	database.deleteUsedItems(items, category); // deletes used items from the items list
-		// } else {
-		// 	ArrayList<HashMap<String, String>> manufacturersResult;
-		// 	try {
-		// 		manufacturersResult = database.getPossibleManufacturer(category); //get list of possible manufacturers
-		// 	} catch (IllegalArgumentException e) {
-		// 		manufacturersResult = null;
-		// 	}
-
-		// 	if (manufacturersResult == null) {
-		// 		return;
-		// 	}
-		// 	Iterator<HashMap<String, String>> manufacturersResultIterator = manufacturersResult.iterator();
-		// 	ArrayList<String> manufacturer = new ArrayList<String> ();
-		// 	while (manufacturersResultIterator.hasNext()) {
-		// 		Map<String, String> temp = manufacturersResultIterator.next();
-		// 		manufacturer.add(temp.get("Name"));
-		// 	}
-		// 	manufacturers = new String[manufacturer.size()]; //adds list of manufacturers into String array
-		// 	manufacturers = manufacturer.toArray(manufacturers);
-		// 	if (faculty != null && contact != null) {
-		// 		output = new Output(faculty, contact, request, manufacturers); // creates new instance of output where order cannot be fulfilled
-		// 	}
-
-		// }
+		}
 
 	}
 
@@ -162,7 +157,6 @@ public class Logic {
 	public void findMinimumPrice(ArrayList<HashMap<String, String>> furniture, HashMap<String, String> current, HashMap<String,Integer> currentParts, int numberOfItems) {
 		// Check if all columns are Y, this is base case
 		if (hasAllParts(currentParts, numberOfItems)) {
-			System.out.println(current.get("Price"));
 			if (Integer.parseInt(current.get("Price")) < minPrice) {
 				minCombination = current;
 				minPrice = Integer.parseInt(current.get("Price"));
