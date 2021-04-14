@@ -78,12 +78,12 @@ public class Logic {
 				price = minPrice;
 				/*	End of Logic calculation!  */
 			}
-			items = minCombination.get("ID").split(" ");
 		}
 
 		String request = type + " " + category + ", " + numberOfItems;
 
 		if (minCombination != null) {
+			items = minCombination.get("ID").split(" ");
 			if (faculty != null && contact != null) {
 				output = new Output(faculty, contact, request, items, price); //creates new instance of Output where order can be fulfilled
 			}
