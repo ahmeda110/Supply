@@ -113,7 +113,6 @@ public class LogicTest {
 		// from previous tests
 		
 		connect = new DatabaseConnection("jdbc:mysql://localhost/inventory", USERNAME, PASSWORD);
-		resetDatabase(); 
 	}
 
 	/**
