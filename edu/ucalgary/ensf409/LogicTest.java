@@ -111,6 +111,7 @@ public class LogicTest {
 	public void setUp() {
 		// creating an instance for each class to remove stored member variables 
 		// from previous tests
+		
 		connect = new DatabaseConnection("jdbc:mysql://localhost/inventory", USERNAME, PASSWORD);
 	}
 
@@ -334,5 +335,109 @@ public class LogicTest {
 		// multiple items being bought in the constructor.
 		assertEquals(50, logic.getMinPrice());
 
+	}
+	/**
+	 * Test of findMinimumPrice and getPrice method, of class Logic.
+	 * This test obtains the lowest possible price for ordering 2 standing desks
+	 * with custom data where parts from the first chair can be reused to make parts 
+	 * of the second chair
+	 */
+	@Test
+	public void findMinPriceMultipleReusableItems() {
+
+		String itemTable = "Desk";
+		
+		Connection databaseConnection = null;
+		try {
+			databaseConnection = DriverManager.getConnection("jdbc:mysql://localhost/inventory", USERNAME, PASSWORD);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		try {
+			String query = "DELETE FROM " + itemTable;
+			PreparedStatement myPreparedStatment = databaseConnection.prepareStatement(query);
+			int rowCount = myPreparedStatment.executeUpdate();
+			System.out.println("Rows deleted: " + rowCount);
+			myPreparedStatment.close();
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+		}
+		
+		Statement myStatment = null;
+		try {
+			myStatment = databaseConnection.createStatement();
+			myStatment.execute("INSERT INTO DESK (ID, Type, Legs, Top, Drawer, Price, ManuID) VALUES" +
+				"('ref34',	'Standing',	'Y',	'Y',	'N',	100,	'001')," +
+				"('bf9s3',	'Standing',	'Y',	'N',	'Y',	150,	'001')," +
+				"('Refw9',	'Standing',	'N',	'Y',	'Y',	200,	'004');");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		try {
+			myStatment.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		Logic logic = new Logic(connect, null, null, "Standing", "Desk", 2);
+		
+		Assert.assertEquals("Lowest price was not returned when parts could be reused", 450, logic.getPrice());
+		resetDatabase();
+		
+	}
+	
+	/**
+	 * Test of findMinimumPrice and getPrice method, of class Logic.
+	 * This test obtains the lowest possible price for ordering 3 Executive chairs
+	 * with custom data where parts from the first chair can be reused to make parts 
+	 * of the second chair and the third chair
+	 */
+	@Test
+	public void findMinPriceMultipleReusableItems2() {
+
+		String itemTable = "Chair";
+		
+		Connection databaseConnection = null;
+		try {
+			databaseConnection = DriverManager.getConnection("jdbc:mysql://localhost/inventory", USERNAME, PASSWORD);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		try {
+			String query = "DELETE FROM " + itemTable;
+			PreparedStatement myPreparedStatment = databaseConnection.prepareStatement(query);
+			int rowCount = myPreparedStatment.executeUpdate();
+			System.out.println("Rows deleted: " + rowCount);
+			myPreparedStatment.close();
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+		}
+		
+		Statement myStatment = null;
+		try {
+			myStatment = databaseConnection.createStatement();
+			myStatment.execute("INSERT INTO CHAIR (ID, Type, Legs, Arms, Seat, Cushion, Price, ManuID) VALUES" +
+				"('54432',	'Executive',	'Y',	'N',	'Y',	'N',	50,	'002')," +
+				"('r5g32',	'Executive',	'Y',	'N',	'N',	'N',	10,	'002')," +
+				"('gr8sj',	'Executive',	'N',	'Y',	'Y',	'N',	5,	'002')," +
+				"('tgrre',	'Executive',	'Y',	'N',	'Y',	'Y',	10,	'002')," +
+				"('refg5',	'Executive',	'Y',	'Y',	'N',	'Y',	300,	'002')," +
+				"('35rr3',	'Executive',	'N',	'Y',	'N',	'Y',	100,	'002');");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		try {
+			myStatment.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		Logic logic = new Logic(connect, null, null, "Executive", "Chair", 3);
+		
+		Assert.assertEquals("Lowest price was not returned when parts could be reused", 475, logic.getPrice());
+		
+		resetDatabase();		
 	}
 }
