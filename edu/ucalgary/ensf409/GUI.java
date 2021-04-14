@@ -199,6 +199,7 @@ public class GUI extends javax.swing.JFrame {
 		jScrollPane1.setHorizontalScrollBar(null);
 		jScrollPane1.setPreferredSize(new java.awt.Dimension(17, 30));
 		jScrollPane1.setViewportView(jPanel3);
+		jScrollPane1.getVerticalScrollBar().setUnitIncrement(10);
 
 		jPanel3.setBackground(new java.awt.Color(255, 255, 255));
 		jPanel3.setPreferredSize(new java.awt.Dimension(887, 1300));
