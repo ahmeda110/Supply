@@ -19,6 +19,7 @@ Our main method is located in the file Authentication.java (line 194). Authetica
 - Test cases are included in the same folder as the rest of the .java files (edu/ucalgary/ensf409)
 - For DatabaseConnectionTest.java and LogicTest.java, the inventory.sql provided in the root directory should be run automatically before some tests to reset the database. Although if errors occur, please try manually running inventory.sql to reset the database then running the tests again.
 - We use the data in the inventory.sql file provided in the root directory for our tests, please do not replace or modify the file.
+- If you are experiencing errors while running the tests, please try running the tests from the command line with the instructions below.
 ### Running the tests from command line:
 **Please run all of the following commands from the root directory (directory name: 14), inventory.sql relative path is necessary for testing, put it in the directory from which the program runs if using an IDE**
 #### The username and password for the test files are set as:
