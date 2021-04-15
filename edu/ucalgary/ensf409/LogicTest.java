@@ -96,6 +96,17 @@ public class LogicTest {
 
 		}
 	}
+	
+	public void deleteFile(Logic logic){
+		File outputFile = new File("");
+		try{
+			outputFile = logic.getOutput().getFile();
+		} catch(Exception e){}
+		 
+		if (outputFile.delete()) { 
+		  System.out.println("Deleted text file: " + outputFile.getName());
+		}
+	}
 
 	/**
 	 * This method resets the database once before all the tests
@@ -140,6 +151,7 @@ public class LogicTest {
 	@Test
 	public void findMinPrice1() {
 		Logic logic = new Logic(connect, null, null, "Mesh", "chair", 1);
+		deleteFile(logic);
 
 		Assert.assertEquals("Lowest price was not returned.", 200, logic.getPrice());
 	}
@@ -151,6 +163,7 @@ public class LogicTest {
 	@Test
 	public void findMinPrice2() {
 		Logic logic = new Logic(connect, null, null, "Adjustable", "desk", 2);
+		deleteFile(logic);
 
 		Assert.assertEquals("Lowest price was not returned.", 800, logic.getPrice());
 	}
@@ -162,6 +175,7 @@ public class LogicTest {
 	@Test
 	public void findMinPrice3() {
 		Logic logic = new Logic(connect, null, null, "Medium", "filing", 3);
+		deleteFile(logic);
 
 		Assert.assertEquals("Lowest price was not returned.", 600, logic.getPrice());
 	}
@@ -173,6 +187,7 @@ public class LogicTest {
 	@Test
 	public void findMinPrice4() {
 		Logic logic = new Logic(connect, null, null, "Desk", "lamp", 3);
+		deleteFile(logic);
 		
 		resetDatabase();
 		Assert.assertEquals("Lowest price was not returned.", 60, logic.getPrice());
@@ -187,6 +202,7 @@ public class LogicTest {
 	public void accessInvalidTable() {
 		// abcdef is a non existing furniture category
 		Logic logic = new Logic(connect, null, null, "Desk", "abcdef", 3);
+		deleteFile(logic);
 
 		assertFalse("Access to invalid table returned true", logic.getValidTable());
 	}
@@ -204,6 +220,7 @@ public class LogicTest {
 
 		// Attempting to buy 4 desk lamps
 		Logic logic = new Logic(connect, null, null, "Desk", "lamp", 4);
+		deleteFile(logic);
 
 		// If transaction didn't go through, no desk lamps should have been deleted
 		ArrayList<HashMap<String, String>> afterFailBuy = connect.retrieveData("lamp", "Desk");
@@ -268,6 +285,7 @@ public class LogicTest {
 	@Test
 	public void makeCopy() {
 		Logic logic = new Logic(connect, null, null, "Desk", "lamp", 4);
+		deleteFile(logic);
 
 		HashMap<String, String> test = new HashMap<String, String> ();
 		test.put("Base", "Y");
@@ -289,6 +307,7 @@ public class LogicTest {
 	@Test
 	public void makeIntCopy() {
 		Logic logic = new Logic(connect, null, null, "Desk", "lamp", 4);
+		deleteFile(logic);
 
 		HashMap<String, Integer> test = new HashMap<String, Integer> ();
 		test.put("Base", 1);
@@ -427,6 +446,7 @@ public class LogicTest {
 		}
 		
 		Logic logic = new Logic(connect, null, null, "Unique", "Desk", 2);
+		deleteFile(logic);
 		resetDatabase();
 		
 		Assert.assertEquals("Lowest price was not returned when parts could be reused", 450, logic.getPrice());		
@@ -480,6 +500,7 @@ public class LogicTest {
 		}
 		
 		Logic logic = new Logic(connect, null, null, "Executive", "Chair", 3);
+		deleteFile(logic);
 		resetDatabase();
 		
 		Assert.assertEquals("Lowest price was not returned when parts could be reused", 465, logic.getPrice());		
