@@ -139,7 +139,7 @@ public class GUI extends javax.swing.JFrame {
 		}
 		// check for combinations of invalid input
 		else if (!validNumber && !validTable(categoryE.toLowerCase())) {
-			jLabel11.setText("Please enter a correct number of items and a valid categoy.");
+			jLabel11.setText("Please enter a correct number of items and a valid category.");
 		} else if (!validNumber) {
 			jLabel11.setText("Please enter a correct number of items.");
 		} else {
