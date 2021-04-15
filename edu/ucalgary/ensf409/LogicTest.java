@@ -173,9 +173,9 @@ public class LogicTest {
 	@Test
 	public void findMinPrice4() {
 		Logic logic = new Logic(connect, null, null, "Desk", "lamp", 3);
-
-		Assert.assertEquals("Lowest price was not returned.", 60, logic.getPrice());
+		
 		resetDatabase();
+		Assert.assertEquals("Lowest price was not returned.", 60, logic.getPrice());
 	}
 
 	/**
@@ -207,13 +207,13 @@ public class LogicTest {
 
 		// If transaction didn't go through, no desk lamps should have been deleted
 		ArrayList<HashMap<String, String>> afterFailBuy = connect.retrieveData("lamp", "Desk");
-
-		assertEquals("Items were deleted when transaction was unsuccessful", initialReturn, afterFailBuy);
+		
 		if (!(initialReturn.size() == afterFailBuy.size() &&
 				initialReturn.containsAll(afterFailBuy) && afterFailBuy.containsAll(initialReturn))) {
 			resetDatabase();
 		}
 
+		assertEquals("Items were deleted when transaction was unsuccessful", initialReturn, afterFailBuy);
 	}
 
 	/**
@@ -427,10 +427,9 @@ public class LogicTest {
 		}
 		
 		Logic logic = new Logic(connect, null, null, "Unique", "Desk", 2);
-		
-		Assert.assertEquals("Lowest price was not returned when parts could be reused", 450, logic.getPrice());
 		resetDatabase();
 		
+		Assert.assertEquals("Lowest price was not returned when parts could be reused", 450, logic.getPrice());		
 	}
 	
 	/**
@@ -481,9 +480,8 @@ public class LogicTest {
 		}
 		
 		Logic logic = new Logic(connect, null, null, "Executive", "Chair", 3);
+		resetDatabase();
 		
-		Assert.assertEquals("Lowest price was not returned when parts could be reused", 465, logic.getPrice());
-		
-		resetDatabase();		
+		Assert.assertEquals("Lowest price was not returned when parts could be reused", 465, logic.getPrice());		
 	}
 }

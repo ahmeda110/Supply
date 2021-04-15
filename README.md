@@ -4,7 +4,7 @@ by Ahmed Abdullah, Dong Wook Son, Jonathan Chong and Ahmed Abbas
 ## Running the program
 Our main method is located in the file Authentication.java (line 194). Authetication.java is in the directory edu/ucalgary/ensf409.
 ### Running the program from command line:
-**Please run all of the following commands from the root directory (directory name: 14), assets directoy's relative path is necessary to load the images used in our design, put it in the directory from which the program runs if using an IDE**
+**Please run all of the following commands from the root directory (directory name: 14), assets directory's relative path is necessary to load the images used in our design, put it in the directory from which the program runs if using an IDE**
 
 **You can update your local database with any database named inventory containing any data having the same structure as the original inventory database. Do not replace the inventory.sql file found in the root directory with another version. This file will be used to reset your local database for testing purposes.**
 1. `javac -cp .;lib/mysql-connector-java-8.0.23.jar edu/ucalgary/ensf409/Authentication.java edu/ucalgary/ensf409/DatabaseConnection.java edu/ucalgary/ensf409/GUI.java edu/ucalgary/ensf409/Logic.java edu/ucalgary/ensf409/Output.java` 

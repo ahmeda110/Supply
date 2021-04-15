@@ -263,10 +263,7 @@ public class DatabaseConnectionTest {
 		} catch (IllegalArgumentException e) {
 			result = null;
 		}
-
-		assertEquals("data was returned from a valid table even though table was empty",
-			expResult, result);
-
+		
 		Statement myStatment = null;
 
 		// Reset changes made as tests are not run in a specific order
@@ -284,6 +281,8 @@ public class DatabaseConnectionTest {
 			e.printStackTrace();
 		}
 
+		assertEquals("data was returned from a valid table even though table was empty",
+			expResult, result);
 	}
 
 	/**
@@ -484,11 +483,7 @@ public class DatabaseConnectionTest {
 		expResult.add(entryFour);
 
 		ArrayList<HashMap<String, String>> result = instance.getPossibleManufacturer(itemTable);
-
-		assertTrue("Manufacturers were incorrect after deleting all records from a table. Class did not store " +
-			"them at the beginning", expResult.size() == result.size() && expResult.containsAll(result) &&
-			result.containsAll(expResult));
-
+		
 		Statement myStatment = null;
 
 		// Reset changes made as tests are not run in a specific order
@@ -518,6 +513,10 @@ public class DatabaseConnectionTest {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+
+		assertTrue("Manufacturers were incorrect after deleting all records from a table. Class did not store " +
+			"them at the beginning", expResult.size() == result.size() && expResult.containsAll(result) &&
+			result.containsAll(expResult));
 	}
 
 	/**
@@ -556,8 +555,7 @@ public class DatabaseConnectionTest {
 		boolean expResult[] = {
 			false, false, false
 		};
-		assertArrayEquals("method deleteUsedItems did not delete the required IDs", expResult, result);
-
+		
 		try {
 			myStatment.execute("INSERT INTO DESK (ID, Type, Legs, Top, Drawer, Price, ManuID) VALUES" +
 				"('D9352',	'Traditional',	'Y',	'N',	'Y',	75,	'002')," +
@@ -572,6 +570,9 @@ public class DatabaseConnectionTest {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+		
+		assertArrayEquals("method deleteUsedItems did not delete the required IDs", expResult, result);
+
 	}
 
 }
