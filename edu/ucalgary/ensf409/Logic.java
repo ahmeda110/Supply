@@ -153,6 +153,8 @@ public class Logic {
 	 * Method runs once for every row in furniture. Starts a recursive tree for each row and branches down till a minimum price is found.
 	 * @param furniture ArrayList containing rows of items that match the requested category and type
 	 * @param current HashMap that contains the current "start" point for recursive tree
+	 * @param currentParts HashMap that contains the parts currently available which will be added to in the recursive call
+	 * @param numberOfItems integer representing the number of items ordered
 	 */
 	public void findMinimumPrice(ArrayList<HashMap<String, String>> furniture, HashMap<String, String> current, HashMap<String,Integer> currentParts, int numberOfItems) {
 		// Check if all columns are Y, this is base case
@@ -200,7 +202,8 @@ public class Logic {
 
 	/**
 	 * Method that checks to see if a given row has all components (All components have "Y")
-	 * @param components HashMap that contains data on all components of a given row
+	 * @param currentParts HashMap that contains data on all components of a given row
+	 * @param numberOfItems number of ordered items
 	 * @return true if all components are Y, returns false otherwise
 	 */
 	public boolean hasAllParts(HashMap<String,Integer> currentParts, int numberOfItems) {

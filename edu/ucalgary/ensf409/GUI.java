@@ -71,7 +71,7 @@ public class GUI extends javax.swing.JFrame {
 	 * A method that checks if a given String is a valid integer and if so
 	 * parse it to an integer
 	 * @param itemsNumber the number of items to be converted to an integer
-	 * @throws NumberFormatException 
+	 * @throws NumberFormatException if Integer is invalid
 	 */
 	public void validNumberOfItems(String itemsNumber) throws NumberFormatException {
 		intValue = Integer.parseInt(itemsNumber);

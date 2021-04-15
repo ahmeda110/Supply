@@ -97,6 +97,10 @@ public class LogicTest {
 		}
 	}
 	
+	/**
+	* A method that deletes output text files produced from tests
+	* @param logic An Object representing the logic instance that caused the production of the text file
+	*/
 	public void deleteFile(Logic logic){
 		File outputFile = new File("");
 		try{

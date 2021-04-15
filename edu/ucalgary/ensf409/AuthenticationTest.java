@@ -22,6 +22,7 @@ public class AuthenticationTest {
 	/**
 	 * Test of checkCredentials method, of class Authentication.
 	 * tests that an exception is thrown is credentials are invalid
+	 * @throws SQLException if username or password are invalid
 	 */
 	@Test(expected = SQLException.class)
 	public void testCheckCredentialsException() throws SQLException {

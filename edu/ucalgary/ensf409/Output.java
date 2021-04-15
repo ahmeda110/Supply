@@ -149,6 +149,7 @@ public class Output {
 	}
 	/**
 	 * splits string into individual words then capitalizes them all
+	 * @param words the words to be changed to a capitalized format
 	 * @return capitalized version of string
 	 */
 	public String capitalize(String words) {

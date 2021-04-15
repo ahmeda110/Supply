@@ -39,6 +39,9 @@ public class Authentication extends javax.swing.JFrame {
 	/**
 	 * This method attempts to establish a connection with the database using the 
 	 * username and password provided, Throws an exception if establishing a connection fails. 
+	 * @param inputUsername username of the local database inputted by the user
+	 * @param inputPassword password of the local database inputted by the user
+	 * @throws SQLException if username or password are invalid
 	 */
 	public void checkCredentials(String inputUsername, String inputPassword) throws SQLException {
 		try {
