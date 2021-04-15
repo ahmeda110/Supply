@@ -34,6 +34,9 @@ Change the variables **USERNAME** and **PASSWORD** at the top of the files *Auth
 
 3. `java -cp .;lib/junit-4.13.2.jar;lib/hamcrest-core-1.3.jar;lib/mysql-connector-java-8.0.23.jar org.junit.runner.JUnitCore edu.ucalgary.ensf409.AuthenticationTest edu.ucalgary.ensf409.DatabaseConnectionTest edu.ucalgary.ensf409.GUITest edu.ucalgary.ensf409.LogicTest edu.ucalgary.ensf409.OutputTest`
  
+ ## Getting Documentation via javadoc
+ If you encounter any errors producing the documentation please use the following line in the command line:
+ - `javadoc -cp .;lib/junit-4.13.2.jar;lib/hamcrest-core-1.3.jar edu/ucalgary/ensf409/*.java`
  ## Important Notes
 - Demonstration video and UML diagram are located in the submissions folder at the root directory
 - Order text files will be produced in the root directory (directory 14)
