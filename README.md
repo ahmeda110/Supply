@@ -1,4 +1,4 @@
-# ENSF 409 Final Project for Supply Chain Management 
+# Supply Chain Management 
 by Ahmed Abdullah, Dong Wook Son, Jonathan Chong and Ahmed Abbas
 
 ## Running the program
