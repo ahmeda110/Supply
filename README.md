@@ -1,5 +1,5 @@
 # Supply Chain Management 
-by Ahmed Abdullah, Dong Wook Son, Jonathan Chong and Ahmed Abbas
+by Ahmed Abbas, Ahmed Abdullah, Dong Wook Son and Jonathan Chong
 
 ## Running the program
 Our main method is located in the file Authentication.java (line 194). Authetication.java is in the directory edu/ucalgary/ensf409.
